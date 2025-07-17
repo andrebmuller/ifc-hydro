@@ -169,7 +169,7 @@ This project is licensed under the MIT License.
 
 ## Authors
 
-- [André Buchmann Müller] (https://abm.eng.br/)
+- [André Buchmann Müller](https://abm.eng.br/)
 
 ## Version History
 
