@@ -640,9 +640,13 @@ class HydroCalculator():
         else:
             return 0
 
+        # Fair Whipple-Hsiao equation for PVC pipes
+        # Recommended for pipes with d between 12.5 mm and 100 mm
+        pressure_drop = local_pressure_drop_table.get(conn_prop.get('type')) * (0.000859 * ((design_flow * 0.001) ** 1.75) *  (0.025 ** -4.75))
+        
         # Hazen-Williams equation with equivalent length for PVC (C = 140)
         # Using standard reference diameter of 25mm for equivalent length calculations
-        pressure_drop = (10.67 * local_pressure_drop_table.get(conn_prop.get('type')) * (design_flow * 0.001) ** 1.852) / ((140 ** 1.852) * (0.025 ** 4.87))
+        # pressure_drop = (10.67 * local_pressure_drop_table.get(conn_prop.get('type')) * (design_flow * 0.001) ** 1.852) / ((140 ** 1.852) * (0.025 ** 4.87))
 
         Base.append_log(self, f"> Local pressure drop:")
         Base.append_log(self, f"> {round(pressure_drop, 5)} m")
