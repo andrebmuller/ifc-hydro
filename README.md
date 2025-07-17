@@ -143,11 +143,11 @@ Uses standardized design flow rates:
 
 ## File Structure
 
-IfcHydro/ 	
-		├── 2.0.0_IfcHydroMain.py    		# Main module with all classes
-		├── README.md                		# This file
-		├── IfcHydro.log            		# Log file (generated during execution) 
-		└── ProjetoRamalBanheiro_Revit.ifc  # Sample IFC model
+IfcHydro/\
+├── 2.0.0_IfcHydroMain.py    		# Main module with all classes\
+├── README.md                		# This file\
+├── IfcHydro.log            		# Log file (generated during execution) \
+└── ProjetoRamalBanheiro_Revit.ifc 	# Sample IFC model
 		
 ## Requirements
 
