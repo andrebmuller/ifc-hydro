@@ -1,4 +1,4 @@
-# IfcHydro
+# ifc-hydro
 
 A Python library for hydraulic system analysis of IFC (Industry Foundation Classes) building models. IfcHydro provides tools for analyzing water supply and drainage systems in building information models, including topology creation, property extraction, and hydraulic calculations.
 
