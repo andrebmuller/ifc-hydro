@@ -21,9 +21,9 @@ A Python library for hydraulic system analysis of IFC (Industry Foundation Class
 
 ### Basic Example
 
-'''
+```
 from IfcHydroMain import TopologyCreator, PropCalculator, HydroCalculator import ifcopenshell as ifc
-'''
+```
 
 - **Initialize topology creator**:
 
