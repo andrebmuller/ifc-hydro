@@ -1,5 +1,5 @@
 """
-IfcHydro Implementation - Main Module
+ifc-hydro
 
 This module provides hydraulic system analysis capabilities for IFC (Industry Foundation Classes) models.
 It includes functionality for topology creation, property calculation, and hydraulic calculations
