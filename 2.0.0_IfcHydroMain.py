@@ -12,7 +12,7 @@ The module contains the following main classes:
 - PropCalculator: Extracts properties from IFC components
 - HydroCalculator: Performs hydraulic calculations
 
-Author: IfcHydro Development Team
+Author: andrebmuller
 Version: 2.0.0
 """
 
