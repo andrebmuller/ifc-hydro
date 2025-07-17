@@ -27,39 +27,39 @@ from IfcHydroMain import TopologyCreator, PropCalculator, HydroCalculator import
 
 - **Initialize topology creator**:
 
-'''
+```
 topology = TopologyCreator()
-'''
+```
 
 - **Create system topology graph**:
 
-'''
+```
 graph = topology.graph_creator()
-'''
+```
 
 - **Find all paths from terminals to tanks**:
 
-'''
+```
 all_paths = topology.all_paths_finder()
-'''
+```
 
 - **Initialize calculators**:
 
-'''
+```
 prop_calc = PropCalculator() hydro_calc = HydroCalculator()
-'''
+```
 
 - **Load IFC model**:
 
-'''
+```
 model = ifc.open('your_model.ifc')
-'''
+```
 
 - **Calculate available pressure at a terminal**:
 
-'''
+```
 terminal = model.by_id(5423)  # Replace with actual terminal ID available_pressure = hydro_calc.available_pressure(terminal, all_paths) print(f"Available pressure: {available_pressure:.2f} m")
-'''
+```
 
 ### Advanced Usage
 
@@ -67,34 +67,34 @@ terminal = model.by_id(5423)  # Replace with actual terminal ID available_pressu
 
 - **Extract pipe properties**:
 
-'''
+```
 pipe = model.by_id(5399)  # Replace with actual pipe ID 
 pipe_props = prop_calc.pipe_properties(pipe)
 print(f"Pipe length: {pipe_props['len']} m")
 print(f"Pipe diameter: {pipe_props['dim']} m")
-'''
+```
 
 - **Extract fitting properties**:
 
-'''
+```
 fitting = model.by_id(7020)  # Replace with actual fitting ID
 fitting_props = prop_calc.fitt_properties(fitting)
 print(f"Fitting type: {fitting_props['type']}")
-'''
+```
 
 #### Hydraulic Calculations
 
 - **Calculate flow rates throughout the system**:
 
-'''
+```
 pipe_pressure_drop = hydro_calc.linear_pressure_drop(pipe, all_paths)
-'''
+```
 
 - **Calculate local pressure drop in fittings/valves**:
 
-'''
+```
 fitting_pressure_drop = hydro_calc.local_pressure_drop(fitting, all_paths)
-'''
+```
 
 ## Classes
 
