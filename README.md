@@ -1,6 +1,6 @@
 # ifc-hydro
 
-A Python library for hydraulic system analysis of IFC (Industry Foundation Classes) building models. IfcHydro provides tools for analyzing water supply and drainage systems in building information models, including topology creation, property extraction, and hydraulic calculations.
+A Python library for hydraulic system analysis of IFC (Industry Foundation Classes) building models. ifc-hydro provides tools for analyzing water supply and drainage systems in building information models, including topology creation, property extraction, and hydraulic calculations.
 
 ## Features
 
@@ -22,7 +22,7 @@ A Python library for hydraulic system analysis of IFC (Industry Foundation Class
 ### Basic Example
 
 ```
-from IfcHydroMain import TopologyCreator, PropCalculator, HydroCalculator import ifcopenshell as ifc
+from ifc-hydro-main import TopologyCreator, PropCalculator, HydroCalculator import ifcopenshell as ifc
 ```
 
 - **Initialize topology creator**:
@@ -143,11 +143,11 @@ Uses standardized design flow rates:
 
 ## File Structure
 
-IfcHydro/\
-├── 2.0.0_IfcHydroMain.py    		# Main module with all classes\
+ifc-hydro/\
+├── ifc-hydro-main.py    		# Main module with all classes\
 ├── README.md                		# This file\
-├── IfcHydro.log            		# Log file (generated during execution) \
-└── ProjetoRamalBanheiro_Revit.ifc 	# Sample IFC model
+├── ifc-hydro.log            		# Log file (generated during execution) \
+└── projeto-demonstracao.ifc 	# Sample IFC model
 		
 ## Requirements
 
