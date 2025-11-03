@@ -13,7 +13,7 @@ The module contains the following main classes:
 - HydroCalculator: Performs hydraulic calculations
 
 Author: andrebmuller
-Version: 3.0.0
+Version: 2.0.0
 """
 
 from datetime import datetime as time
@@ -325,7 +325,6 @@ class PropCalculator():
         """
         Base.append_log(self, f"> Getting pipe properties for pipe with ID {pipe.id()}...")
         pipe_prop = {}
-        real_dim = 0
 
         # Extract pipe length from IFC geometry representation
         pipe_len = pipe[6][2][0][3][0][3]
@@ -333,30 +332,8 @@ class PropCalculator():
 
         # Extract pipe diameter (radius * 2) from IFC geometry
         pipe_dim = pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+        pipe_prop['dim'] = round(pipe_dim, 3)
 
-        if round(pipe_dim, 3) == 0.015:
-            real_dim = 0.0170
-        if round(pipe_dim, 3) == 0.020:
-            real_dim = 0.0216
-        elif round(pipe_dim, 3) == 0.025:
-            real_dim = 0.0278
-        elif round(pipe_dim, 3) == 0.032:
-            real_dim = 0.0352
-        elif round(pipe_dim, 3) == 0.040:
-            real_dim = 0.0440
-        elif round(pipe_dim, 3) == 0.050:
-            real_dim = 0.0534
-        elif round(pipe_dim, 3) == 0.065:
-            real_dim = 0.0666
-        elif round(pipe_dim, 3) == 0.075:
-            real_dim = 0.0756
-        elif round(pipe_dim, 3) == 0.100:
-            real_dim = 0.0978
-        else:
-            real_dim = 0.000
-        
-        pipe_prop['dim'] = real_dim
-          
         Base.append_log(self, f"> Pipe properties:")
         Base.append_log(self, f"> {pipe_prop}")
         return pipe_prop
@@ -665,7 +642,7 @@ class HydroCalculator():
 
         # Fair Whipple-Hsiao equation for PVC pipes
         # Recommended for pipes with d between 12.5 mm and 100 mm
-        pressure_drop = local_pressure_drop_table.get(conn_prop.get('type')) * (0.000859 * ((design_flow * 0.001) ** 1.75) *  (0.0278 ** -4.75))
+        pressure_drop = local_pressure_drop_table.get(conn_prop.get('type')) * (0.000859 * ((design_flow * 0.001) ** 1.75) *  (0.025 ** -4.75))
         
         # Hazen-Williams equation with equivalent length for PVC (C = 140)
         # Using standard reference diameter of 25mm for equivalent length calculations
@@ -739,7 +716,7 @@ if __name__ == '__main__':
 
     # Load IFC model and initialize calculators
     model = ifc.open('projeto-demonstracao.ifc')
-    prop_calc = PropCalculator()  
+    prop_calc = PropCalculator()
     hydro_calc = HydroCalculator()
 
     # Commented test cases for individual component analysis
@@ -764,8 +741,5 @@ if __name__ == '__main__':
     """
     
     # Test available pressure calculation for a specific terminal
-    # Shower         --> 5423
-    # Wash and Basin --> 6986
-    # WC Seat        --> 7061
     term_test = model.by_id(5423)
     press_test = hydro_calc.available_pressure(term_test, test_path)
