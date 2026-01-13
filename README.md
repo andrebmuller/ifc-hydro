@@ -109,15 +109,15 @@ Creates hydraulic system topology from IFC models.
 Extracts properties from IFC components.
 
 - `pipe_properties(pipe)`: Extracts length and diameter from pipe segments
-- `fitt_properties(fitt)`: Extracts dimensions, directions, and type from fittings
-- `valv_properties(valv)`: Extracts dimensions and type from valves
+- `fitt_properties(fitt, path)`: Extracts dimensions, directions, and type from fittings (requires the path)
+- `valv_properties(valv, path)`: Extracts dimensions and type from valves (requires the path)
 
 ### `HydroCalculator`
 Performs hydraulic calculations.
 
 - `flow(all_paths)`: Calculates design flow for all components
 - `linear_pressure_drop(pipe, all_paths)`: Calculates linear pressure drop in pipes
-- `local_pressure_drop(conn, all_paths)`: Calculates local pressure drop in connections
+- `local_pressure_drop(conn, path, all_paths)`: Calculates local pressure drop in connections
 - `available_pressure(term, all_paths)`: Calculates available pressure at terminals
 
 ### `Graph`
@@ -126,7 +126,7 @@ Graph data structure for representing system topology.
 - `add(node1, node2)`: Adds connection between nodes
 - `remove(node)`: Removes node from graph
 - `is_connected(node1, node2)`: Checks if nodes are connected
-- `find_path(node1, node2)`: Finds path between nodes
+- `find_path(node1, node2)`: Finds path between nodes (depth-first, not guaranteed shortest)
 
 ## Hydraulic Calculation Methods
 
@@ -137,30 +137,30 @@ Uses standardized design flow rates:
 - WC seat: 0.15 L/s
 
 ### Pressure Drop Calculations
-- **Linear losses**: Fair Whipple-Hsiao equation for PVC pipes
+- **Linear losses**: Fair Whipple-Hsiao empirical relation (applied here for PVC pipes)
 - **Local losses**: Equivalent length method with tabulated coefficients
 - **Available pressure**: Gravity potential minus total pressure losses
 
 ## File Structure
 
 ifc-hydro/\
-├── ifc-hydro-main.py    		# Main module with all classes\
-├── README.md                		# This file\
-├── ifc-hydro.log            		# Log file (generated during execution) \
-└── projeto-demonstracao.ifc 	# Sample IFC model
-		
+├── ifc-hydro-main.py        # Main module with all classes (rename to import as module)\
+├── README.md                # This file\
+├── ifc-hydro.log            # Log file (generated during execution) \
+└── projeto-demonstracao.ifc # Sample IFC model
+
 ## Requirements
 
-- Python 3.6+
-- IfcOpenShell
+- Python 3.6+  
+- IfcOpenShell  
 - Standard library modules: `datetime`, `collections`, `sys`, `os`
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+1. Fork the repository  
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)  
+3. Commit your changes (`git commit -m 'Add amazing feature'`)  
+4. Push to the branch (`git push origin feature/amazing-feature`)  
 5. Open a Pull Request
 
 ## License
@@ -173,9 +173,9 @@ This project is licensed under the MIT License.
 
 ## Version History
 
-- **1.0.0** - First version with Hazen-Williams formula implementation.
-- **2.0.0** - Version with improved hydraulic calculations (Fair Whipple-Hsiao).
-- **3.0.0** - Current version with improved logging functionality and bug fixes.
+- **1.0.0** - First version with Hazen-Williams formula implementation.  
+- **2.0.0** - Version with improved hydraulic calculations (Fair Whipple-Hsiao).  
+- **3.0.0** - Current version with improved logging, updated comments, and stability fixes.
 
 ## Support
 
@@ -184,3 +184,10 @@ For questions and support, please open an issue on the GitHub repository or send
 ## Acknowledgments
 
 - Built for my Master's degree at the Polytechnic School of Universidade de São Paulo
+
+## Notes and Warnings
+
+- IFC access in `ifc-hydro-main.py` is implemented using positional numeric indexes into the IfcOpenShell entity representation. Those index-based accesses are brittle and depend on the exact IFC structure and IfcOpenShell version. If you update IfcOpenShell or use a different IFC file, verify the indices or replace positional access with robust property extraction.
+
+- Importing the module:
+  - The distributed file is named `ifc-hydro-main.py`. Python module names cannot contain hyphens. To import the code as a module, rename the file to a valid module name (for example `ifc_hydro_main.py`) or run the script directly:
