@@ -34,8 +34,8 @@ class Base:
         _counter (int): Instance counter for tracking object creation (class variable)
     """
     
-    _log     = "ifc-hydro"       # name of log file
-    _counter = 0                     # instance counter
+    _log     = "ifc-hydro"      # name of log file
+    _counter = 0                # instance counter
 
     def __init__(self, log: str = ""):
         """
@@ -76,7 +76,7 @@ class Base:
 
         Base.append_log(Base, f">>> Project {log_name}:")
         Base.append_log(Base, f">>> New run started at {time.now().strftime('%d/%m/%Y %H:%M:%S')}.")
-        Base.append_log(Base, f"!")
+        Base.append_log(Base, f"!!!")
 
         return cls._log
 
@@ -319,11 +319,16 @@ class TopologyCreator():
         term_list = model.by_type("IfcSanitaryTerminal")
         tank_list = model.by_type("IfcTank")
 
+        Base.append_log(Base, f"> Creating topology...")
+
         # Calculate paths between all terminal-tank combinations
         for term in term_list:
             for tank in tank_list:
                 all_paths.append(graph.find_path(term, tank))
                 
+        Base.append_log(Base, f"> Topology created with {len(all_paths)} paths...")
+        Base.append_log(Base, f"!!!")
+
         return all_paths
     
 class PropCalculator():
@@ -337,6 +342,82 @@ class PropCalculator():
     def __init__(self) -> None:
         """Initialize the PropCalculator."""
         pass
+
+    def _vector_magnitude(self, vector: tuple) -> float:
+        """
+        Calculate the magnitude (length) of a vector.
+        Args:
+            vector (tuple): 3D vector as (x, y, z)
+        Returns:
+            float: Magnitude of the vector
+        """
+        return (vector[0]**2 + vector[1]**2 + vector[2]**2)**0.5
+
+    def _normalize_vector(self, vector: tuple) -> tuple:
+        """
+        Normalize a vector to unit length.
+        Args:
+            vector (tuple): 3D vector as (x, y, z)
+        Returns:
+            tuple: Unit vector in the same direction
+        """
+        magnitude = self._vector_magnitude(vector)
+        if magnitude == 0:
+            return (0.0, 0.0, 0.0)
+        return (round(vector[0]/magnitude, 0), round(vector[1]/magnitude, 0), round(vector[2]/magnitude, 0))
+
+    def _dot_product(self, vector1: tuple, vector2: tuple) -> float:
+        """
+        Calculate the dot product of two vectors.
+        Args:
+            vector1 (tuple): First 3D vector as (x, y, z)
+            vector2 (tuple): Second 3D vector as (x, y, z)
+        Returns:
+            float: Dot product of the two vectors
+        """
+        return vector1[0]*vector2[0] + vector1[1]*vector2[1] + vector1[2]*vector2[2]
+
+    def _angle_between_vectors(self, vector1: tuple, vector2: tuple) -> float:
+        """
+        Calculate the angle between two vectors in degrees.
+        Args:
+            vector1 (tuple): First 3D vector as (x, y, z)
+            vector2 (tuple): Second 3D vector as (x, y, z)
+        Returns:
+            float: Angle between vectors in degrees (0-180)
+        """
+        import math
+
+        # Normalize vectors
+        unit1 = self._normalize_vector(vector1)
+        unit2 = self._normalize_vector(vector2)
+
+        # Calculate dot product
+        dot = self._dot_product(unit1, unit2)
+
+        # Clamp dot product to [-1, 1] to handle numerical errors
+        dot = max(-1.0, min(1.0, dot))
+
+        # Calculate angle in radians then convert to degrees
+        angle_rad = math.acos(dot)
+        angle_deg = math.degrees(angle_rad)
+
+        return round(angle_deg, 2)
+
+    def _create_direction_vector(self, from_point: tuple, to_point: tuple) -> tuple:
+        """
+        Create a direction vector from one point to another.
+        Args:
+            from_point (tuple): Starting point as (x, y, z)
+            to_point (tuple): Ending point as (x, y, z)
+        Returns:
+            tuple: Direction vector as (dx, dy, dz)
+        """
+        return (
+            round(to_point[0] - from_point[0], 3),
+            round(to_point[1] - from_point[1], 3),
+            round(to_point[2] - from_point[2], 3)
+        )
 
     def pipe_properties(self, pipe) -> dict:
         """
@@ -386,15 +467,15 @@ class PropCalculator():
         Base.append_log(self, f"> {pipe_prop}")
         return pipe_prop
     
-    def fitt_properties(self, fitt) -> dict:
+    def fitt_properties(self, fitt, path: list) -> dict:
         """
-        Extract properties from a pipe fitting.
-        
-        Analyzes the fitting's position in the hydraulic network to determine
-        dimensions and flow directions.
+        Extract properties from a pipe fitting for a specific path.
+
+        Analyzes the fitting's position in the provided hydraulic path to determine
         
         Args:
             fitt: IFC pipe fitting object
+            path (list): The specific hydraulic path containing this fitting
             
         Returns:
             dict: Dictionary containing dimensions ('dim'), directions ('dir'), and type ('type')
@@ -402,87 +483,55 @@ class PropCalculator():
         Base.append_log(self, f"> Getting fitting properties for fitting with ID {fitt.id()}...")
         fitt_prop = {}        
 
-        # Get topology and all paths in the system
-        topo = TopologyCreator()
-        all_paths = topo.all_paths_finder()
+        # Find fitting position in the provided path
+        fitt_index = None
+        for i, component in enumerate(path):
+            if component.id() == fitt.id():
+                fitt_index = i
+                break
 
-        # Create path list with component IDs for easier searching
-        all_paths_id = []
-        n = 0
-        for path in all_paths:
-            all_paths_id.append([])
-            for item in path:
-                all_paths_id[n].append(all_paths[n][all_paths[n].index(item)].id())
-            n += 1
+        if fitt_index is None:
+            Base.append_log(self, f"> ERROR: Fitting with ID {fitt.id()} not found in the provided path")
+            return None
 
-        # Find fitting position in each path
-        fitt_index = []
-        for path in all_paths_id:
-            for item in path:
-                if item == fitt.id():
-                    fitt_index.append(path.index(item))
-            if fitt.id() not in path:
-                fitt_index.append(None)
+        # Get adjacent components (incoming pipe, fitting, outgoing pipe)
+        incoming_pipe = path[fitt_index - 1]
+        outgoing_pipe = path[fitt_index + 1]
 
-        # Get adjacent pipes for each occurrence of the fitting
-        pipe_list = []
-        start_index = 0
-        for item in fitt_index:
-            if item is not None:
-                pipe_list.append((all_paths[fitt_index.index(item, start_index)][item-1], 
-                                all_paths[fitt_index.index(item, start_index)][item], 
-                                all_paths[fitt_index.index(item)][item+1]))
-                start_index = fitt_index.index(item) + 1
-            else:
-                pipe_list.append(None)
+        # Get adjacent components (incoming pipe, fitting, outgoing pipe)
+        incoming_pipe = path[fitt_index - 1]
+        outgoing_pipe = path[fitt_index + 1]
 
         # Extract diameters from adjacent pipes
-        pipe_dim_list = []
-        for item in pipe_list:
-            if item is not None:
-                pipe_dim_1 = pipe_list[pipe_list.index(item)][0][6][2][0][3][0][0][2][0][0][0][0] * 2
-                pipe_dim_2 = pipe_list[pipe_list.index(item)][2][6][2][0][3][0][0][2][0][0][0][0] * 2
-                pipe_dim_list.append((round(pipe_dim_1, 3), round(pipe_dim_2, 3)))
-            else:
-                pipe_dim_list.append(None)
-        
-        fitt_prop['dim'] = pipe_dim_list
+        pipe_dim_1 = incoming_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+        pipe_dim_2 = outgoing_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+        fitt_prop['dim'] = (round(pipe_dim_1, 3), round(pipe_dim_2, 3))
 
-        # Calculate flow direction vectors
-        exit_vec_list = []
-        for item in pipe_list:
-            if item is not None:
-                exit_pipe = pipe_list[pipe_list.index(item)][0][6][2][0][3][0][1][0][0]
-                fitt_vec = pipe_list[pipe_list.index(item)][1][5][1][0][0]
-                exit_vec_list.append((exit_pipe, fitt_vec))
-            else:
-                exit_vec_list.append(None)
+        # Calculate unit vectors and angles for flow direction change
+        # Get center points from IFC geometry
+        incoming_pipe_center = incoming_pipe[6][2][0][3][0][1][0][0]
+        fitting_center = fitt[5][1][0][0]
+        outgoing_pipe_center = outgoing_pipe[6][2][0][3][0][1][0][0]
 
-        # Calculate resultant vectors between pipes and fitting
-        exit_res_vec_list = []
-        for item in exit_vec_list:
-            if item is not None:
-                exit_res_vec_list.append(tuple((x-y) for x, y in zip(exit_vec_list[exit_vec_list.index(item)][0], 
-                                                                   exit_vec_list[exit_vec_list.index(item)][1])))
-            else:
-                exit_res_vec_list.append(None)
+        # Create direction vectors between points
+        # Incoming: from incoming pipe center TO fitting center
+        incoming_dir = self._create_direction_vector(incoming_pipe_center, fitting_center)
+        # Outgoing: from fitting center TO outgoing pipe center
+        outgoing_dir = self._create_direction_vector(fitting_center, outgoing_pipe_center)
 
-        # Determine flow direction (normalized to 0 or 1 for each coordinate)
-        exit_dir_list = []
-        for item in exit_res_vec_list:
-            exit_dir_tuple = ()
-            if item is not None:
-                for coordinate in item:
-                    if round(coordinate, 3) != 0:
-                        exit_dir_tuple += (1, )
-                    else:
-                        exit_dir_tuple += (0, )
-                exit_dir_list.append(exit_dir_tuple)
-                del(exit_dir_tuple)
-            else:
-                exit_dir_list.append(None)
+        # Normalize to unit vectors
+        incoming_unit = self._normalize_vector(incoming_dir)
+        outgoing_unit = self._normalize_vector(outgoing_dir)
 
-        fitt_prop['dir'] = exit_dir_list
+        # Calculate angle between vectors
+        angle = self._angle_between_vectors(incoming_dir, outgoing_dir)
+
+        # Store as dictionary with all relevant information
+        fitt_prop['dir'] = {
+            'incoming_unit_vector': incoming_unit,
+            'outgoing_unit_vector': outgoing_unit,
+            'direction_change_angle': angle
+        }
 
         # Extract fitting type from IFC properties
         fitt_type = fitt[8]
@@ -492,63 +541,68 @@ class PropCalculator():
         Base.append_log(self, f"> {fitt_prop}")
         return fitt_prop
 
-    def valv_properties(self, valv) -> dict:
+    def valv_properties(self, valv, path: list) -> dict:
         """
-        Extract properties from a valve.
+        Extract properties from a valve for a specific path.
+
+        Analyzes the valve's position in the provided hydraulic path to determine
+        dimensions and flow directions.
         
         Args:
             valv: IFC valve object
+            path (list): The specific hydraulic path containing this valve
             
         Returns:
-            dict: Dictionary containing dimensions ('dim') and type ('type')
+            dict: Dictionary containing dimensions ('dim'), direction ('dir'), and type ('type')
         """
         Base.append_log(self, f"> Getting valve properties for valve with ID {valv.id()}...")
         valv_prop = {}
 
-        # Get topology and all paths (similar to fitting analysis)
-        topo = TopologyCreator()
-        all_paths = topo.all_paths_finder()
-        all_paths_id = []
+        # Find valve position in the provided path
+        valv_index = None
+        for i, component in enumerate(path):
+            if component.id() == valv.id():
+                valv_index = i
+                break
 
-        n = 0
-        for path in all_paths:
-            all_paths_id.append([])
-            for item in path:
-                all_paths_id[n].append(all_paths[n][all_paths[n].index(item)].id())
-            n += 1
+        if valv_index is None:
+            Base.append_log(self, f"> ERROR: Valve with ID {valv.id()} not found in the provided path")
+            return None
 
-        # Find valve position in paths
-        valv_index = []
-        for path in all_paths_id:
-            for item in path:
-                if item == valv.id():
-                    valv_index.append(path.index(item))
-            if valv.id() not in path:
-                valv_index.append(None)
-
-        # Get adjacent pipes
-        pipe_list = []
-        start_index = 0
-        for item in valv_index:
-            if item is not None:
-                pipe_list.append((all_paths[valv_index.index(item, start_index)][item-1], 
-                                all_paths[valv_index.index(item, start_index)][item], 
-                                all_paths[valv_index.index(item)][item+1]))
-                start_index = valv_index.index(item) + 1
-            else:
-                pipe_list.append(None)
+        # Get adjacent components (incoming pipe, valve, outgoing pipe)
+        incoming_pipe = path[valv_index - 1]
+        outgoing_pipe = path[valv_index + 1]
 
         # Extract diameters from adjacent pipes
-        pipe_dim_list = []
-        for item in pipe_list:
-            if item is not None:
-                pipe_dim_1 = pipe_list[pipe_list.index(item)][0][6][2][0][3][0][0][2][0][0][0][0] * 2
-                pipe_dim_2 = pipe_list[pipe_list.index(item)][2][6][2][0][3][0][0][2][0][0][0][0] * 2
-                pipe_dim_list.append((round(pipe_dim_1, 3), round(pipe_dim_2, 3)))
-            else:
-                pipe_dim_list.append(None)
-        
-        valv_prop['dim'] = pipe_dim_list
+        pipe_dim_1 = incoming_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+        pipe_dim_2 = outgoing_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+        valv_prop['dim'] = (round(pipe_dim_1, 3), round(pipe_dim_2, 3))
+
+        # Calculate unit vectors and angles for flow direction change
+        # Get center points from IFC geometry
+        incoming_pipe_center = incoming_pipe[6][2][0][3][0][1][0][0]
+        valve_center = valv[5][1][0][0]
+        outgoing_pipe_center = outgoing_pipe[6][2][0][3][0][1][0][0]
+
+        # Create direction vectors between points
+        # Incoming: from incoming pipe center TO valve center
+        incoming_dir = self._create_direction_vector(incoming_pipe_center, valve_center)
+        # Outgoing: from valve center TO outgoing pipe center
+        outgoing_dir = self._create_direction_vector(valve_center, outgoing_pipe_center)
+
+        # Normalize to unit vectors
+        incoming_unit = self._normalize_vector(incoming_dir)
+        outgoing_unit = self._normalize_vector(outgoing_dir)
+
+        # Calculate angle between vectors
+        angle = self._angle_between_vectors(incoming_dir, outgoing_dir)
+
+        # Store as dictionary with all relevant information
+        valv_prop['dir'] = {
+            'incoming_unit_vector': incoming_unit,
+            'outgoing_unit_vector': outgoing_unit,
+            'direction_change_angle': angle
+        }
 
         # Extract valve type
         valv_type = valv[8]
@@ -643,7 +697,7 @@ class HydroCalculator():
         Base.append_log(self, f"> Linear pressure drop: {round(pressure_drop, 3)} m")
         return pressure_drop
 
-    def local_pressure_drop(self, conn, all_paths: list) -> float:
+    def local_pressure_drop(self, conn, path: list, all_paths: list) -> float:
         """
         Calculate local pressure drop in fittings and valves using equivalent length method.
         
@@ -652,7 +706,8 @@ class HydroCalculator():
         
         Args:
             conn: IFC connection object (fitting or valve)
-            all_paths (list): List of all hydraulic paths
+            path (list): The specific hydraulic path containing this connection
+            all_paths (list): List of all hydraulic paths (for flow calculation)
             
         Returns:
             float: Local pressure drop in meters of water column
@@ -674,16 +729,16 @@ class HydroCalculator():
         Base.append_log(self, f"> Getting local pressure drop for connection with ID {conn.id()}...")
 
         # Calculate cumulative design flow for the specified connection
-        for path in flow:
-            for component in path:
+        for flow_path in flow:
+            for component in flow_path:
                 if component[0] == conn[0]:
                     design_flow += component[1]
 
-        # Get connection properties based on type
+        # Get connection properties based on type (pass the specific path)
         if conn.is_a() == 'IfcValve':
-            conn_prop = prop_calc.valv_properties(conn)
+            conn_prop = prop_calc.valv_properties(conn, path)
         elif conn.is_a() == 'IfcPipeFitting':
-            conn_prop = prop_calc.fitt_properties(conn)
+            conn_prop = prop_calc.fitt_properties(conn, path)
         else:
             return 0
 
@@ -727,7 +782,7 @@ class HydroCalculator():
         Base.append_log(self, f"> Tank height: {round((tank_pipe_location[2] + selected_path[len(selected_path)-2][5][0][1][0][0][2]), 3)} m")
         Base.append_log(self, f"> Terminal height: {round(terminal_pipe_location[2], 3)} m")    
         Base.append_log(self, f"> Initial pressure from gravity potential: {round(pressure, 3)} m")
-        Base.append_log(self, f"!")
+        Base.append_log(self, f"!!!")
 
         # Subtract pressure losses from each component along the path
         for component in selected_path:
@@ -736,26 +791,26 @@ class HydroCalculator():
                 pressure_drop = self.linear_pressure_drop(component, all_paths)
                 pressure -= pressure_drop
                 Base.append_log(self, f"> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
-                Base.append_log(self, f"!")
+                Base.append_log(self, f"!!!")
             elif component.is_a() == "IfcPipeFitting":
                 # Local pressure drop in fittings
-                pressure_drop = self.local_pressure_drop(component, all_paths)
+                pressure_drop = self.local_pressure_drop(component, selected_path, all_paths)
                 pressure -= pressure_drop
                 Base.append_log(self, f"> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
-                Base.append_log(self, f"!")
+                Base.append_log(self, f"!!!")
             elif component.is_a() == "IfcValve":
                 # Local pressure drop in valves
-                pressure_drop = self.local_pressure_drop(component, all_paths)
+                pressure_drop = self.local_pressure_drop(component, selected_path, all_paths)
                 pressure -= pressure_drop  
                 Base.append_log(self, f"> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
-                Base.append_log(self, f"!")                
+                Base.append_log(self, f"!!!")                
             else:
                 # Skip other component types (terminals, tanks)
                 pass 
 
         Base.append_log(self, f"> Available pressure at the sanitary terminal:")
         Base.append_log(self, f"> {round(pressure, 3)} m")
-        Base.append_log(self, f"!")   
+        Base.append_log(self, f"!!!")   
         return pressure
 
 # Test environment
@@ -773,12 +828,9 @@ if __name__ == '__main__':
     Base.configure_log(Base,log_dir=log_dir_input, log_name=log_name_input)
 
     # Initialize topology creator and calculate all paths
-    Base.append_log(Base, f"> Creating topology...")
     topology = TopologyCreator()
     test_path = topology.all_paths_finder()
-    Base.append_log(Base, f"> Topology created with {len(test_path)} paths...")
-    Base.append_log(Base, f"!")
-
+            
     # Load IFC model and initialize calculators
     model = ifc.open('projeto-demonstracao.ifc')
     prop_calc = PropCalculator()  
@@ -811,5 +863,5 @@ if __name__ == '__main__':
     # Shower         --> 5423
     # Wash and Basin --> 6986
     # WC Seat        --> 7061
-    term_test = model.by_id(7061)
+    term_test = model.by_id(6986)
     press_test = hydro_calc.available_pressure(term_test, test_path)

@@ -173,9 +173,9 @@ This project is licensed under the MIT License.
 
 ## Version History
 
-- **1.0.0** - First version with Hazen-Williams formula implementation
-- **2.0.0** - Version with improved hydraulic calculations (Fair Whipple-Hsiao)
-- **3.0.0** - Current version with improved logging functionality and bug fixes
+- **1.0.0** - First version with Hazen-Williams formula implementation.
+- **2.0.0** - Version with improved hydraulic calculations (Fair Whipple-Hsiao).
+- **3.0.0** - Current version with improved logging functionality and bug fixes.
 
 ## Support
 
