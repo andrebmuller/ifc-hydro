@@ -34,7 +34,7 @@ class Base:
         _counter (int): Instance counter for tracking object creation (class variable)
     """
     
-    _log     = "ifc-hydro.log"        # name of log file
+    _log     = "ifc-hydro"       # name of log file
     _counter = 0                     # instance counter
 
     def __init__(self, log: str = ""):
@@ -44,10 +44,41 @@ class Base:
         Args:
             log (str, optional): Custom log file name. If empty, uses default log file.
         """
+
         if log != "": 
             Base._log = log
 
         Base._counter += 1
+
+    def configure_log(cls, log_dir: str = "", log_name: str = "") -> str:
+        """
+        Configure the log file location and name for the current run.
+
+        Args:
+            log_dir (str, optional): Directory where the log file should be stored.
+                Defaults to the current working directory.
+            log_name (str, optional): Log file name. Defaults to "ifc-hydro.log".
+
+        Returns:
+            str: The full path to the configured log file.
+        """
+
+        if log_name == "":
+            log_name = "ifc-hydro"
+
+        if log_dir == "":
+            log_dir = os.getcwd()
+
+        log_dir = os.path.expanduser(log_dir)
+        os.makedirs(log_dir, exist_ok=True)
+
+        cls._log = os.path.join(log_dir, log_name+".log")
+
+        Base.append_log(Base, f">>> Project {log_name}:")
+        Base.append_log(Base, f">>> New run started at {time.now().strftime('%d/%m/%Y %H:%M:%S')}.")
+        Base.append_log(Base, f"!")
+
+        return cls._log
 
     def append_log(self, text: str):
         """
@@ -60,9 +91,8 @@ class Base:
         tstamp = "%2.2d.%2.2d.%2.2d " % (t.hour, t.minute, t.second)
 
         otext = tstamp + text
-        f = open(Base._log, "a")
-        f.write(otext + "\n")
-        f.close()
+        with open(Base._log, "a") as f:
+            f.write(otext + "\n")
         print(otext)
     
     def resource_path(self, relative_path: str) -> str:
@@ -227,9 +257,6 @@ class TopologyCreator():
         """
         model = self.model
 
-        Base.append_log(self, "> Model imported...")
-        Base.append_log(self, "> Creating topology...")
-
         connections = []
 
         # Extract nest and connection relationships from IFC model
@@ -266,7 +293,6 @@ class TopologyCreator():
         model = self.model
         graph = self.graph_creator()
 
-        Base.append_log(self, "> Finding path...")
         path = []
 
         # Find components by GUID and calculate path
@@ -287,7 +313,6 @@ class TopologyCreator():
         model = self.model
         graph = self.graph_creator()
 
-        Base.append_log(self, "> Finding path...")
         all_paths = []
 
         # Get all terminals and tanks from the model
@@ -448,7 +473,7 @@ class PropCalculator():
             exit_dir_tuple = ()
             if item is not None:
                 for coordinate in item:
-                    if round(coordinate, 2) != 0:
+                    if round(coordinate, 3) != 0:
                         exit_dir_tuple += (1, )
                     else:
                         exit_dir_tuple += (0, )
@@ -615,8 +640,7 @@ class HydroCalculator():
         # Legacy Hazen-Williams equation (commented out)
         # pressure_drop = (10.67 * pipe_prop.get('len') * (design_flow * 0.001) ** 1.852) / ((140 ** 1.852) * (pipe_prop.get('dim') ** 4.87))
 
-        Base.append_log(self, f"> Linear pressure drop:")
-        Base.append_log(self, f"> {round(pressure_drop, 5)} m")
+        Base.append_log(self, f"> Linear pressure drop: {round(pressure_drop, 3)} m")
         return pressure_drop
 
     def local_pressure_drop(self, conn, all_paths: list) -> float:
@@ -671,8 +695,7 @@ class HydroCalculator():
         # Using standard reference diameter of 25mm for equivalent length calculations
         # pressure_drop = (10.67 * local_pressure_drop_table.get(conn_prop.get('type')) * (design_flow * 0.001) ** 1.852) / ((140 ** 1.852) * (0.025 ** 4.87))
 
-        Base.append_log(self, f"> Local pressure drop:")
-        Base.append_log(self, f"> {round(pressure_drop, 5)} m")
+        Base.append_log(self, f"> Local pressure drop: {round(pressure_drop, 3)} m")
         return pressure_drop
 
     def available_pressure(self, term, all_paths: list) -> float:
@@ -701,6 +724,10 @@ class HydroCalculator():
         pressure = (tank_pipe_location[2] + selected_path[len(selected_path)-2][5][0][1][0][0][2]) - terminal_pipe_location[2]
 
         Base.append_log(self, f"> Getting available pressure at sanitary terminal with ID {selected_path[0].id()}...")
+        Base.append_log(self, f"> Tank height: {round((tank_pipe_location[2] + selected_path[len(selected_path)-2][5][0][1][0][0][2]), 3)} m")
+        Base.append_log(self, f"> Terminal height: {round(terminal_pipe_location[2], 3)} m")    
+        Base.append_log(self, f"> Initial pressure from gravity potential: {round(pressure, 3)} m")
+        Base.append_log(self, f"!")
 
         # Subtract pressure losses from each component along the path
         for component in selected_path:
@@ -708,20 +735,27 @@ class HydroCalculator():
                 # Linear pressure drop in pipes
                 pressure_drop = self.linear_pressure_drop(component, all_paths)
                 pressure -= pressure_drop
+                Base.append_log(self, f"> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
+                Base.append_log(self, f"!")
             elif component.is_a() == "IfcPipeFitting":
                 # Local pressure drop in fittings
                 pressure_drop = self.local_pressure_drop(component, all_paths)
                 pressure -= pressure_drop
+                Base.append_log(self, f"> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
+                Base.append_log(self, f"!")
             elif component.is_a() == "IfcValve":
                 # Local pressure drop in valves
                 pressure_drop = self.local_pressure_drop(component, all_paths)
-                pressure -= pressure_drop            
+                pressure -= pressure_drop  
+                Base.append_log(self, f"> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
+                Base.append_log(self, f"!")                
             else:
                 # Skip other component types (terminals, tanks)
-                pass
+                pass 
 
         Base.append_log(self, f"> Available pressure at the sanitary terminal:")
-        Base.append_log(self, f"> {round(pressure, 2)} m")
+        Base.append_log(self, f"> {round(pressure, 3)} m")
+        Base.append_log(self, f"!")   
         return pressure
 
 # Test environment
@@ -733,9 +767,17 @@ if __name__ == '__main__':
     for analyzing hydraulic systems from IFC models.
     """
     
+    # Configure log file for this run
+    log_dir_input = input("Enter log directory (leave blank for current directory): ").strip()
+    log_name_input = input("Enter log file name (leave blank for ifc-hydro.log): ").strip()
+    Base.configure_log(Base,log_dir=log_dir_input, log_name=log_name_input)
+
     # Initialize topology creator and calculate all paths
+    Base.append_log(Base, f"> Creating topology...")
     topology = TopologyCreator()
     test_path = topology.all_paths_finder()
+    Base.append_log(Base, f"> Topology created with {len(test_path)} paths...")
+    Base.append_log(Base, f"!")
 
     # Load IFC model and initialize calculators
     model = ifc.open('projeto-demonstracao.ifc')
@@ -746,11 +788,13 @@ if __name__ == '__main__':
     """
     # Test flow calculations
     flow_calc_test = hydro_calc.flow(test_path)
+    Base.append_log(Base, f"> Flow calculated...")
 
     # Test pipe property extraction and pressure drop calculation
     pipe_test = model.by_id(5399)
     pipe_prop_test = prop_calc.pipe_properties(pipe_test)
     pipe_calc_test = hydro_calc.linear_pressure_drop(pipe_test, test_path)
+    Base.append_log(Base, f"> Pipes calculated...")
 
     # Test fitting property extraction and pressure drop calculation
     fitt_test = model.by_id(7020)
@@ -767,5 +811,5 @@ if __name__ == '__main__':
     # Shower         --> 5423
     # Wash and Basin --> 6986
     # WC Seat        --> 7061
-    term_test = model.by_id(5423)
+    term_test = model.by_id(7061)
     press_test = hydro_calc.available_pressure(term_test, test_path)
