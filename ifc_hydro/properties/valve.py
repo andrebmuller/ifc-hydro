@@ -31,6 +31,9 @@ class Valve:
 
         Returns:
             dict: Dictionary containing dimensions ('dim'), direction ('dir'), and type ('type')
+
+        Raises:
+            ValueError: If valve is not found in path or IFC properties cannot be extracted
         """
         Base.append_log(None, f"> Getting valve properties for valve with ID {valv.id()}...")
         valv_prop = {}
@@ -43,23 +46,40 @@ class Valve:
                 break
 
         if valv_index is None:
-            Base.append_log(None, f"> ERROR: Valve with ID {valv.id()} not found in the provided path")
-            return None
+            error_msg = f"ERROR: Valve with ID {valv.id()} not found in the provided path"
+            Base.append_log(None, error_msg)
+            raise ValueError(error_msg)
+
+        # Validate that valve has adjacent components
+        if valv_index == 0 or valv_index >= len(path) - 1:
+            error_msg = f"ERROR: Valve with ID {valv.id()} does not have both incoming and outgoing pipes in the path"
+            Base.append_log(None, error_msg)
+            raise ValueError(error_msg)
 
         # Get adjacent components (incoming pipe, valve, outgoing pipe)
         incoming_pipe = path[valv_index - 1]
         outgoing_pipe = path[valv_index + 1]
 
-        # Extract diameters from adjacent pipes
-        pipe_dim_1 = incoming_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
-        pipe_dim_2 = outgoing_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
-        valv_prop['dim'] = (round(pipe_dim_1, 3), round(pipe_dim_2, 3))
+        # Extract diameters from adjacent pipes with error handling
+        try:
+            pipe_dim_1 = incoming_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+            pipe_dim_2 = outgoing_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+            valv_prop['dim'] = (round(pipe_dim_1, 3), round(pipe_dim_2, 3))
+        except (IndexError, TypeError, KeyError) as e:
+            error_msg = f"ERROR: Failed to extract diameter from adjacent pipes for valve ID {valv.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
+            Base.append_log(None, error_msg)
+            raise ValueError(error_msg)
 
         # Calculate unit vectors and angles for flow direction change
-        # Get center points from IFC geometry
-        incoming_pipe_center = incoming_pipe[6][2][0][3][0][1][0][0]
-        valve_center = valv[5][1][0][0]
-        outgoing_pipe_center = outgoing_pipe[6][2][0][3][0][1][0][0]
+        # Get center points from IFC geometry with error handling
+        try:
+            incoming_pipe_center = incoming_pipe[6][2][0][3][0][1][0][0]
+            valve_center = valv[5][1][0][0]
+            outgoing_pipe_center = outgoing_pipe[6][2][0][3][0][1][0][0]
+        except (IndexError, TypeError, KeyError) as e:
+            error_msg = f"ERROR: Failed to extract center points for valve ID {valv.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
+            Base.append_log(None, error_msg)
+            raise ValueError(error_msg)
 
         # Create direction vectors between points
         # Incoming: from incoming pipe center TO valve center
@@ -81,9 +101,14 @@ class Valve:
             'direction_change_angle': angle
         }
 
-        # Extract valve type
-        valv_type = valv[8]
-        valv_prop['type'] = valv_type
+        # Extract valve type with error handling
+        try:
+            valv_type = valv[8]
+            valv_prop['type'] = valv_type
+        except (IndexError, TypeError, KeyError) as e:
+            error_msg = f"WARNING: Failed to extract type for valve ID {valv.id()}. Using 'Unknown' as type. Details: {str(e)}"
+            Base.append_log(None, error_msg)
+            valv_prop['type'] = 'Unknown'
 
         Base.append_log(None, f"> Valve properties:")
         Base.append_log(None, f"> {valv_prop}")

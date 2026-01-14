@@ -26,17 +26,30 @@ class Pipe:
 
         Returns:
             dict: Dictionary containing pipe length ('len') and diameter ('dim')
+
+        Raises:
+            ValueError: If pipe properties cannot be extracted from the IFC element
         """
         Base.append_log(None, f"> Getting pipe properties for pipe with ID {pipe.id()}...")
         pipe_prop = {}
         real_dim = 0
 
-        # Extract pipe length from IFC geometry representation
-        pipe_len = pipe[6][2][0][3][0][3]
-        pipe_prop['len'] = round(pipe_len, 3)
+        # Extract pipe length from IFC geometry representation with error handling
+        try:
+            pipe_len = pipe[6][2][0][3][0][3]
+            pipe_prop['len'] = round(pipe_len, 3)
+        except (IndexError, TypeError, KeyError) as e:
+            error_msg = f"ERROR: Failed to extract length from pipe ID {pipe.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
+            Base.append_log(None, error_msg)
+            raise ValueError(error_msg)
 
-        # Extract pipe diameter (radius * 2) from IFC geometry
-        pipe_dim = pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+        # Extract pipe diameter (radius * 2) from IFC geometry with error handling
+        try:
+            pipe_dim = pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+        except (IndexError, TypeError, KeyError) as e:
+            error_msg = f"ERROR: Failed to extract diameter from pipe ID {pipe.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
+            Base.append_log(None, error_msg)
+            raise ValueError(error_msg)
 
         # Map nominal pipe diameter to real internal diameter (in meters)
         if round(pipe_dim, 3) == 0.015:
