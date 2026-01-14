@@ -77,8 +77,9 @@ class PressureDrop:
             float: Local pressure drop in meters of water column
         """
         # Equivalent length factors for different connection types
+        # JUNCTION uses tuple: (0.9 for 0° angle, 2.4 for other angles)
         local_pressure_drop_table = {
-            'JUNCTION': 2.4,
+            'JUNCTION': (0.9, 2.4),  # (straight flow, flow with direction change)
             'BEND': 1.2,
             'EXIT': 1.2,
             'ISOLATING': 0.2,
@@ -105,9 +106,29 @@ class PressureDrop:
         else:
             return 0
 
+        # Get the coefficient from the table
+        table_value = local_pressure_drop_table.get(conn_prop.get('type'))
+
+        # Handle angle-based coefficients (JUNCTION uses tuple structure)
+        if isinstance(table_value, tuple):
+            # Get direction change angle for angle-based coefficient lookup
+            direction_info = conn_prop.get('dir', {})
+            direction_angle = direction_info.get('direction_change_angle', None)
+
+            # Select coefficient based on angle: index 0 for 0.0°, index 1 for others
+            if direction_angle == 0.0:
+                coefficient = table_value[0]
+                Base.append_log(self, f"> JUNCTION with {direction_angle}° angle: using coefficient {coefficient}")
+            else:
+                coefficient = table_value[1]
+                Base.append_log(self, f"> JUNCTION with {direction_angle}° angle: using coefficient {coefficient}")
+        else:
+            # Simple numeric coefficient
+            coefficient = table_value
+
         # Fair Whipple-Hsiao equation for PVC pipes
         # Recommended for pipes with d between 12.5 mm and 100 mm
-        pressure_drop = local_pressure_drop_table.get(conn_prop.get('type')) * (0.000859 * ((design_flow * 0.001) ** 1.75) *  (0.0278 ** -4.75))
+        pressure_drop = coefficient * (0.000859 * ((design_flow * 0.001) ** 1.75) *  (0.0278 ** -4.75))
 
         # Hazen-Williams equation with equivalent length for PVC (C = 140)
         # Using standard reference diameter of 25mm for equivalent length calculations
