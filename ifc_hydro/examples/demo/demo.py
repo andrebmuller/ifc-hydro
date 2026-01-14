@@ -16,7 +16,7 @@ def main():
     # Configure log file for this run
     log_dir_input = input("Enter log directory (leave blank for current directory): ").strip()
     if not log_dir_input:
-        log_dir_input = '.\ifc_hydro\examples'
+        log_dir_input = '.\ifc_hydro\examples\demo'
 
     log_name_input = input("Enter log file name (leave blank for ifc-hydro.log): ").strip()
     Base.configure_log(Base, log_dir=log_dir_input, log_name=log_name_input)
@@ -24,7 +24,7 @@ def main():
     # Load IFC model
     ifc_file_path = input("Enter IFC file path (leave blank for 'demo-project.ifc'): ").strip()
     if not ifc_file_path:
-        ifc_file_path = '.\ifc_hydro\examples\demo-project.ifc'
+        ifc_file_path = '.\ifc_hydro\examples\demo\demo-project.ifc'
 
     model = ifc.open(ifc_file_path)
 
