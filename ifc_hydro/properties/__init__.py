@@ -2,6 +2,8 @@
 Properties module for extracting IFC component properties.
 """
 
-from .prop_calculator import PropCalculator
+from .pipe import Pipe
+from .fitting import Fitting
+from .valve import Valve
 
-__all__ = ["PropCalculator"]
+__all__ = ["Pipe", "Fitting", "Valve"]

@@ -31,7 +31,7 @@ pip install -e .
 
 ```python
 import ifcopenshell as ifc
-from ifc_hydro import Base, TopologyCreator, PropCalculator, HydroCalculator
+from ifc_hydro import Base, TopologyCreator, HydroCalculator
 
 # Configure logging
 Base.configure_log(Base, log_dir="", log_name="my-analysis")
@@ -43,8 +43,7 @@ model = ifc.open('your_model.ifc')
 topology = TopologyCreator(model)
 all_paths = topology.all_paths_finder()
 
-# Initialize calculators
-prop_calc = PropCalculator()
+# Initialize hydraulic calculator
 hydro_calc = HydroCalculator()
 
 # Calculate available pressure at a terminal
@@ -60,9 +59,11 @@ For a complete working example, see `example.py` in the repository root.
 #### Property Extraction
 
 ```python
+from ifc_hydro import Pipe, Fitting, Valve
+
 # Extract pipe properties
 pipe = model.by_id(5399)  # Replace with actual pipe ID
-pipe_props = prop_calc.pipe_properties(pipe)
+pipe_props = Pipe.properties(pipe)
 print(f"Pipe length: {pipe_props['len']} m")
 print(f"Pipe diameter: {pipe_props['dim']} m")
 
@@ -71,7 +72,7 @@ fitting = model.by_id(7020)  # Replace with actual fitting ID
 # Find the path containing this fitting
 for path in all_paths:
     if fitting in path:
-        fitting_props = prop_calc.fitt_properties(fitting, path)
+        fitting_props = Fitting.properties(fitting, path)
         print(f"Fitting type: {fitting_props['type']}")
         break
 ```
@@ -111,12 +112,29 @@ Creates hydraulic system topology from IFC models.
 - `path_finder(term_guid, tank_guid)`: Finds path between specific terminal and tank
 - `all_paths_finder()`: Finds all paths from terminals to tanks
 
-### `PropCalculator`
-Extracts properties from IFC components.
+### `Vector`
+Provides 3D vector operations for geometric calculations.
 
-- `pipe_properties(pipe)`: Extracts length and diameter from pipe segments
-- `fitt_properties(fitt, path)`: Extracts dimensions, directions, and type from fittings (requires the path)
-- `valv_properties(valv, path)`: Extracts dimensions and type from valves (requires the path)
+- `create_direction_vector(from_point, to_point)`: Creates a direction vector between two points
+- `magnitude(vector)`: Calculates the magnitude (length) of a vector
+- `normalize(vector)`: Normalizes a vector to unit length
+- `dot_product(vector1, vector2)`: Calculates the dot product of two vectors
+- `angle_between(vector1, vector2)`: Calculates the angle between two vectors in degrees
+
+### `Pipe`
+Extracts properties from IFC pipe segments.
+
+- `properties(pipe)`: Extracts length and diameter from pipe segments
+
+### `Fitting`
+Extracts properties from IFC pipe fittings.
+
+- `properties(fitt, path)`: Extracts dimensions, directions, and type from fittings (requires the path)
+
+### `Valve`
+Extracts properties from IFC valves.
+
+- `properties(valv, path)`: Extracts dimensions and type from valves (requires the path)
 
 ### `HydroCalculator`
 Performs hydraulic calculations.
@@ -156,13 +174,16 @@ ifc-hydro/
 │   ├── core/                       # Core classes and data structures
 │   │   ├── __init__.py
 │   │   ├── base.py                 # Base class with logging utilities
-│   │   └── graph.py                # Graph data structure
+│   │   ├── graph.py                # Graph data structure
+│   │   └── vector.py               # Vector operations for 3D calculations
 │   ├── topology/                   # Topology creation module
 │   │   ├── __init__.py
 │   │   └── topology_creator.py     # TopologyCreator class
 │   ├── properties/                 # Property extraction module
 │   │   ├── __init__.py
-│   │   └── prop_calculator.py      # PropCalculator class
+│   │   ├── pipe.py                 # Pipe property extraction
+│   │   ├── fitting.py              # Fitting property extraction
+│   │   └── valve.py                # Valve property extraction
 │   ├── hydraulics/                 # Hydraulic calculations module
 │   │   ├── __init__.py
 │   │   └── hydro_calculator.py     # HydroCalculator class
