@@ -61,11 +61,15 @@ class Vector:
         magnitude = Vector.magnitude(vector)
         if magnitude == 0:
             return (0.0, 0.0, 0.0)
-        return (
-            round(vector[0]/magnitude, 0),
-            round(vector[1]/magnitude, 0),
-            round(vector[2]/magnitude, 0)
-        )
+
+        # Round each component to nearest integer (-1, 0, or 1)
+        x = round(vector[0]/magnitude, 0)
+        y = round(vector[1]/magnitude, 0)
+        z = round(vector[2]/magnitude, 0)
+
+        # Convert -0.0 to 0.0 by adding 0.0
+        # This preserves -1.0 and 1.0 as they represent actual direction
+        return (x + 0.0, y + 0.0, z + 0.0)
 
     @staticmethod
     def dot_product(vector1: tuple, vector2: tuple) -> float:
