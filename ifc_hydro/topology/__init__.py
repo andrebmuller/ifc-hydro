@@ -2,6 +2,6 @@
 Topology module for hydraulic system topology creation.
 """
 
-from .topology_creator import TopologyCreator
+from .topology import Topology
 
-__all__ = ["TopologyCreator"]
+__all__ = ["Topology"]

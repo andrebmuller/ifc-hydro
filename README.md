@@ -31,7 +31,7 @@ pip install -e .
 
 ```python
 import ifcopenshell as ifc
-from ifc_hydro import Base, TopologyCreator, HydroCalculator
+from ifc_hydro import Base, Topology, Pressure
 
 # Configure logging
 Base.configure_log(Base, log_dir="", log_name="my-analysis")
@@ -40,15 +40,15 @@ Base.configure_log(Base, log_dir="", log_name="my-analysis")
 model = ifc.open('your_model.ifc')
 
 # Create topology from the model
-topology = TopologyCreator(model)
+topology = Topology(model)
 all_paths = topology.all_paths_finder()
 
-# Initialize hydraulic calculator
-hydro_calc = HydroCalculator()
+# Initialize pressure calculator
+pressure_calc = Pressure()
 
 # Calculate available pressure at a terminal
 terminal = model.by_id(5423)  # Replace with actual terminal ID
-available_pressure = hydro_calc.available_pressure(terminal, all_paths)
+available_pressure = pressure_calc.available(terminal, all_paths)
 print(f"Available pressure: {available_pressure:.2f} m")
 ```
 
@@ -80,18 +80,31 @@ for path in all_paths:
 #### Hydraulic Calculations
 
 ```python
+from ifc_hydro import DesignFlow, PressureDrop, Pressure
+
+# Calculate design flow for all components
+flow_calc = DesignFlow()
+flows = flow_calc.calculate(all_paths)
+
 # Calculate linear pressure drop in a pipe
+pressure_drop_calc = PressureDrop()
 pipe = model.by_id(5399)
-pipe_pressure_drop = hydro_calc.linear_pressure_drop(pipe, all_paths)
+pipe_pressure_drop = pressure_drop_calc.linear(pipe, all_paths)
 print(f"Pipe pressure drop: {pipe_pressure_drop:.3f} m")
 
 # Calculate local pressure drop in fittings/valves (requires path context)
 fitting = model.by_id(7020)
 for path in all_paths:
     if fitting in path:
-        fitting_pressure_drop = hydro_calc.local_pressure_drop(fitting, path, all_paths)
+        fitting_pressure_drop = pressure_drop_calc.local(fitting, path, all_paths)
         print(f"Fitting pressure drop: {fitting_pressure_drop:.3f} m")
         break
+
+# Calculate available pressure at a terminal
+pressure_calc = Pressure()
+terminal = model.by_id(5423)
+available_pressure = pressure_calc.available(terminal, all_paths)
+print(f"Available pressure: {available_pressure:.2f} m")
 ```
 
 ## Classes
@@ -103,10 +116,10 @@ Base class providing logging functionality and common utilities.
 - `append_log(text)`: Append timestamped message to log
 - `resource_path(relative_path)`: Get absolute path to resources
 
-### `TopologyCreator`
+### `Topology`
 Creates hydraulic system topology from IFC models.
 
-**Constructor**: `TopologyCreator(model)` - Requires an opened IFC model
+**Constructor**: `Topology(model)` - Requires an opened IFC model
 
 - `graph_creator()`: Creates a graph representation of the system
 - `path_finder(term_guid, tank_guid)`: Finds path between specific terminal and tank
@@ -136,13 +149,21 @@ Extracts properties from IFC valves.
 
 - `properties(valv, path)`: Extracts dimensions and type from valves (requires the path)
 
-### `HydroCalculator`
-Performs hydraulic calculations.
+### `DesignFlow`
+Calculates design flow rates for hydraulic system components.
 
-- `flow(all_paths)`: Calculates design flow for all components
-- `linear_pressure_drop(pipe, all_paths)`: Calculates linear pressure drop in pipes
-- `local_pressure_drop(conn, path, all_paths)`: Calculates local pressure drop in connections
-- `available_pressure(term, all_paths)`: Calculates available pressure at terminals
+- `calculate(all_paths)`: Calculates design flow for all components based on terminal types
+
+### `PressureDrop`
+Calculates pressure drops in hydraulic system components.
+
+- `linear(pipe, all_paths)`: Calculates linear pressure drop in pipes using Fair Whipple-Hsiao equation
+- `local(conn, path, all_paths)`: Calculates local pressure drop in fittings and valves using equivalent length method
+
+### `Pressure`
+Calculates available pressure at sanitary terminals.
+
+- `available(term, all_paths)`: Calculates available pressure at terminals accounting for gravity potential and all losses
 
 ### `Graph`
 Graph data structure for representing system topology.
@@ -178,7 +199,7 @@ ifc-hydro/
 │   │   └── vector.py               # Vector operations for 3D calculations
 │   ├── topology/                   # Topology creation module
 │   │   ├── __init__.py
-│   │   └── topology_creator.py     # TopologyCreator class
+│   │   └── topology.py             # Topology class
 │   ├── properties/                 # Property extraction module
 │   │   ├── __init__.py
 │   │   ├── pipe.py                 # Pipe property extraction
@@ -186,7 +207,9 @@ ifc-hydro/
 │   │   └── valve.py                # Valve property extraction
 │   ├── hydraulics/                 # Hydraulic calculations module
 │   │   ├── __init__.py
-│   │   └── hydro_calculator.py     # HydroCalculator class
+│   │   ├── design_flow.py          # DesignFlow class
+│   │   ├── pressure_drop.py        # PressureDrop class
+│   │   └── pressure.py             # Pressure class
 │   └── examples/                   # Example scripts
 │       └── basic_usage.py          # Interactive example
 ├── ifc-hydro-main.py               # Legacy monolithic script (deprecated)
@@ -230,6 +253,11 @@ This project is licensed under the MIT License.
   - Updated `TopologyCreator` to accept IFC model as parameter (no longer hardcoded)
   - Created example scripts demonstrating library usage
   - Improved documentation with updated usage examples
+  - Refactored `TopologyCreator` to `Topology` for cleaner naming
+  - Split `HydroCalculator` into specialized classes:
+    - `DesignFlow`: Flow calculations
+    - `PressureDrop`: Linear and local pressure drop calculations
+    - `Pressure`: Available pressure calculations
 
 ## Support
 
