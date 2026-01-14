@@ -77,12 +77,9 @@ class PressureDrop:
             float: Local pressure drop in meters of water column
         """
         # Equivalent length factors for different connection types
-        # JUNCTION supports angle-based coefficients: 0.0° uses 0.9, other angles use default 2.4
+        # JUNCTION uses tuple: (0.9 for 0° angle, 2.4 for other angles)
         local_pressure_drop_table = {
-            'JUNCTION': {
-                0.0: 0.9,        # Straight flow through junction
-                'default': 2.4   # Flow with direction change (90° or other)
-            },
+            'JUNCTION': (0.9, 2.4),  # (straight flow, flow with direction change)
             'BEND': 1.2,
             'EXIT': 1.2,
             'ISOLATING': 0.2,
@@ -112,19 +109,19 @@ class PressureDrop:
         # Get the coefficient from the table
         table_value = local_pressure_drop_table.get(conn_prop.get('type'))
 
-        # Handle angle-based coefficients (JUNCTION uses dictionary structure)
-        if isinstance(table_value, dict):
+        # Handle angle-based coefficients (JUNCTION uses tuple structure)
+        if isinstance(table_value, tuple):
             # Get direction change angle for angle-based coefficient lookup
             direction_info = conn_prop.get('dir', {})
             direction_angle = direction_info.get('direction_change_angle', None)
 
-            # Look up coefficient based on angle, fallback to 'default' if not found
-            if direction_angle is not None and direction_angle in table_value:
-                coefficient = table_value[direction_angle]
+            # Select coefficient based on angle: index 0 for 0.0°, index 1 for others
+            if direction_angle == 0.0:
+                coefficient = table_value[0]
                 Base.append_log(self, f"> JUNCTION with {direction_angle}° angle: using coefficient {coefficient}")
             else:
-                coefficient = table_value.get('default', 2.4)
-                Base.append_log(self, f"> JUNCTION with {direction_angle}° angle: using default coefficient {coefficient}")
+                coefficient = table_value[1]
+                Base.append_log(self, f"> JUNCTION with {direction_angle}° angle: using coefficient {coefficient}")
         else:
             # Simple numeric coefficient
             coefficient = table_value
