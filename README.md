@@ -144,10 +144,10 @@ Uses standardized design flow rates:
 ## File Structure
 
 ifc-hydro/\
-├── ifc-hydro-main.py        # Main module with all classes (rename to import as module)\
 ├── README.md                # This file\
-├── ifc-hydro.log            # Log file (generated during execution) \
-└── projeto-demonstracao.ifc # Sample IFC model
+├── projeto-demonstracao.ifc # Sample IFC model as input
+├── ifc-hydro-main.py        # Main module with all classes (rename to import as module)\
+└── ifc-hydro.log            # Output file (generated during execution) \
 
 ## Requirements
 
