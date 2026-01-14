@@ -105,9 +105,26 @@ class PressureDrop:
         else:
             return 0
 
+        # Get the base coefficient from the table
+        coefficient = local_pressure_drop_table.get(conn_prop.get('type'))
+
+        # Adjust coefficient for JUNCTION based on direction change angle
+        if conn_prop.get('type') == 'JUNCTION':
+            direction_info = conn_prop.get('dir', {})
+            direction_angle = direction_info.get('direction_change_angle', None)
+
+            if direction_angle is not None:
+                if direction_angle == 0.0:
+                    # Straight flow through junction: use reduced coefficient
+                    coefficient = 0.9
+                    Base.append_log(self, f"> JUNCTION with 0° angle: using coefficient 0.9")
+                else:
+                    # Flow with direction change (90° or other): use standard coefficient
+                    Base.append_log(self, f"> JUNCTION with {direction_angle}° angle: using coefficient 2.4")
+
         # Fair Whipple-Hsiao equation for PVC pipes
         # Recommended for pipes with d between 12.5 mm and 100 mm
-        pressure_drop = local_pressure_drop_table.get(conn_prop.get('type')) * (0.000859 * ((design_flow * 0.001) ** 1.75) *  (0.0278 ** -4.75))
+        pressure_drop = coefficient * (0.000859 * ((design_flow * 0.001) ** 1.75) *  (0.0278 ** -4.75))
 
         # Hazen-Williams equation with equivalent length for PVC (C = 140)
         # Using standard reference diameter of 25mm for equivalent length calculations
