@@ -38,6 +38,7 @@ class Pipe:
         # Extract pipe diameter (radius * 2) from IFC geometry
         pipe_dim = pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
 
+        # Map nominal pipe diameter to real internal diameter (in meters)
         if round(pipe_dim, 3) == 0.015:
             real_dim = 0.0170
         if round(pipe_dim, 3) == 0.020:
