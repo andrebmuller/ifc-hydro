@@ -10,6 +10,7 @@ from ..properties.pipe import Pipe
 from ..properties.fitting import Fitting
 from ..properties.valve import Valve
 from .design_flow import DesignFlow
+from .input_tables import local_pressure_drop_table
 
 
 class PressureDrop:
@@ -76,16 +77,6 @@ class PressureDrop:
         Returns:
             float: Local pressure drop in meters of water column
         """
-        # Equivalent length factors for different connection types
-        # JUNCTION uses tuple: (0.9 for 0° angle, 2.4 for other angles)
-        local_pressure_drop_table = {
-            'JUNCTION': (0.9, 2.4),  # (straight flow, flow with direction change)
-            'BEND': 1.2,
-            'EXIT': 1.2,
-            'ISOLATING': 0.2,
-            'REGULATING': 11.4
-        }
-
         # Initialize calculation components
         flow = self.design_flow.calculate(all_paths)
         design_flow = 0
