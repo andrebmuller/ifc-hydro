@@ -55,12 +55,19 @@ class Pressure:
                     selected_path = path
                     # Get elevation coordinates with error handling
                     try:
-                        terminal_pipe_location = path[0][6][2][0][3][0][1][0][0]
-                        tank_pipe_location = path[len(path)-2][6][2][0][3][0][1][0][0]
+                        if path[0][6][2][0][2] == 'SweptSolid':
+                            terminal_pipe_location = path[0][6][2][0][3][0][1][0][0]
+                            tank_pipe_location = path[len(path)-2][6][2][0][3][0][1][0][0]
+                        
+
+                        elif path[0][6][2][0][2] == 'MappedRepresentation':
+                            terminal_pipe_location = path[0][6][2][0][3][0][0][1][3][0][1][0][0]
+                            tank_pipe_location = path[len(path)-2][6][2][0][3][0][0][1][3][0][1][0][0]
+
                     except (IndexError, TypeError) as e:
-                        error_msg = f"ERROR: Failed to extract location data from IFC elements. The IFC model structure may be invalid or incomplete. Details: {str(e)}"
+                        error_msg = f"ERROR: Representation type not yet implemented: {path[0][6][2][0][2]}. Details: {str(e)}"
                         Base.append_log(self, error_msg)
-                        raise IndexError(error_msg)
+                        raise NotImplementedError(error_msg)
                     break
             except (AttributeError, RuntimeError) as e:
                 # Skip invalid paths

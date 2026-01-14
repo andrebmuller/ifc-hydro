@@ -63,6 +63,7 @@ class Base:
 
         cls._log = os.path.join(log_dir, log_name+".log")
 
+        Base.append_log(Base, f"{'-'*100}")
         Base.append_log(Base, f">>> Project {log_name}:")
         Base.append_log(Base, f">>> New run started at {time.now().strftime('%d/%m/%Y %H:%M:%S')}.")
         Base.append_log(Base, f"{'-'*100}")

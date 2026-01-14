@@ -1,9 +1,21 @@
-14.08.31 >>> Project eval:
-14.08.31 >>> New run started at 14/01/2026 14:08:31.
-14.08.31 ----------------------------------------------------------------------------------------------------
-14.08.52 >>> Project eval:
-14.08.52 >>> New run started at 14/01/2026 14:08:52.
-14.08.52 ----------------------------------------------------------------------------------------------------
-14.09.03 > Creating topology...
-14.09.03 > Topology created with 0 paths...
-14.09.03 ----------------------------------------------------------------------------------------------------
+17.09.44 ----------------------------------------------------------------------------------------------------
+17.09.44 >>> Project eval:
+17.09.44 >>> New run started at 14/01/2026 17:09:44.
+17.09.44 ----------------------------------------------------------------------------------------------------
+17.09.45 > Successfully loaded IFC model from: .\ifc_hydro\examples\eval\eval-project.ifc
+17.10.00 > Creating topology...
+17.10.00 > Found 6 sanitary terminal(s) and 1 tank(s)...
+17.10.00 > Topology created with 6 paths...
+17.10.00 ----------------------------------------------------------------------------------------------------
+17.10.09 ERROR: Representation type not yet implemented: MappedRepresentation. Details: string index out of range
+17.10.09 ERROR: Failed to calculate pressure for terminal 769: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+17.10.09 ERROR: Representation type not yet implemented: MappedRepresentation. Details: string index out of range
+17.10.09 ERROR: Failed to calculate pressure for terminal 782: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+17.10.09 ERROR: Representation type not yet implemented: MappedRepresentation. Details: string index out of range
+17.10.09 ERROR: Failed to calculate pressure for terminal 793: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+17.10.09 ERROR: Representation type not yet implemented: MappedRepresentation. Details: string index out of range
+17.10.09 ERROR: Failed to calculate pressure for terminal 2672: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+17.10.09 ERROR: Representation type not yet implemented: MappedRepresentation. Details: string index out of range
+17.10.09 ERROR: Failed to calculate pressure for terminal 2701: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+17.10.09 ERROR: Representation type not yet implemented: MappedRepresentation. Details: string index out of range
+17.10.09 ERROR: Failed to calculate pressure for terminal 3657: cannot access local variable 'tank_pipe_location' where it is not associated with a value

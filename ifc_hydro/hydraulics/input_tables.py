@@ -17,7 +17,15 @@ local_pressure_drop_table = {
 
 # Design flow rates by sanitary terminal type (L/s)
 design_flow_table = {
+    'BATH': 0.3,
+    'BIDET': 0.1,
+    'CISTERN': 0.15,
+    'SANITARYFOUNTAIN': 0.25,
     'SHOWER': 0.2,
+    'SINK': 0.25,
+    'TOILETPAN': 1.70,
+    'URINAL': 0.5,
     'WASHHANDBASIN': 0.15,
-    'WCSEAT': 0.15
+    'WCSEAT': 1.70,          # Deprecated, use TOILETPAN instead
+    'USERDEFINED': 0.3
 }
