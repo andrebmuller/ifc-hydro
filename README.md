@@ -179,7 +179,7 @@ This project is licensed under the MIT License.
 
 ## Support
 
-For questions and support, please open an issue on the GitHub repository or send an e-mail to andrebuchmannmuller@gmail.com
+For questions and support, please open an issue on the GitHub repository or send an e-mail to andre@abm.eng.br
 
 ## Acknowledgments
 
