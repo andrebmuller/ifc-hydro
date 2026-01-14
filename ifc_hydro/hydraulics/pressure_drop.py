@@ -118,10 +118,8 @@ class PressureDrop:
             # Select coefficient based on angle: index 0 for 0.0°, index 1 for others
             if direction_angle == 0.0:
                 coefficient = table_value[0]
-                Base.append_log(self, f"> JUNCTION with {direction_angle}° angle: using coefficient {coefficient}")
             else:
                 coefficient = table_value[1]
-                Base.append_log(self, f"> JUNCTION with {direction_angle}° angle: using coefficient {coefficient}")
         else:
             # Simple numeric coefficient
             coefficient = table_value
