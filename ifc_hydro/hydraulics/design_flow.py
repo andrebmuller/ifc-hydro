@@ -6,6 +6,8 @@ determining design flow rates for each component based on
 standardized terminal flow rates.
 """
 
+from .input_tables import design_flow_table
+
 
 class DesignFlow:
     """
@@ -33,11 +35,6 @@ class DesignFlow:
         Returns:
             list: Flow rates for each component in each path
         """
-        # Design flow rates by sanitary terminal type (L/s)
-        design_flow_table = {'SHOWER': 0.2,
-                             'WASHHANDBASIN': 0.15,
-                             'WCSEAT': 0.15}
-
         # Calculate cumulative flow for each component in each path
         flow_list = []
         n = 0
