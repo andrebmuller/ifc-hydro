@@ -77,8 +77,12 @@ class PressureDrop:
             float: Local pressure drop in meters of water column
         """
         # Equivalent length factors for different connection types
+        # JUNCTION supports angle-based coefficients: 0.0° uses 0.9, other angles use default 2.4
         local_pressure_drop_table = {
-            'JUNCTION': 2.4,
+            'JUNCTION': {
+                0.0: 0.9,        # Straight flow through junction
+                'default': 2.4   # Flow with direction change (90° or other)
+            },
             'BEND': 1.2,
             'EXIT': 1.2,
             'ISOLATING': 0.2,
@@ -105,22 +109,25 @@ class PressureDrop:
         else:
             return 0
 
-        # Get the base coefficient from the table
-        coefficient = local_pressure_drop_table.get(conn_prop.get('type'))
+        # Get the coefficient from the table
+        table_value = local_pressure_drop_table.get(conn_prop.get('type'))
 
-        # Adjust coefficient for JUNCTION based on direction change angle
-        if conn_prop.get('type') == 'JUNCTION':
+        # Handle angle-based coefficients (JUNCTION uses dictionary structure)
+        if isinstance(table_value, dict):
+            # Get direction change angle for angle-based coefficient lookup
             direction_info = conn_prop.get('dir', {})
             direction_angle = direction_info.get('direction_change_angle', None)
 
-            if direction_angle is not None:
-                if direction_angle == 0.0:
-                    # Straight flow through junction: use reduced coefficient
-                    coefficient = 0.9
-                    Base.append_log(self, f"> JUNCTION with 0° angle: using coefficient 0.9")
-                else:
-                    # Flow with direction change (90° or other): use standard coefficient
-                    Base.append_log(self, f"> JUNCTION with {direction_angle}° angle: using coefficient 2.4")
+            # Look up coefficient based on angle, fallback to 'default' if not found
+            if direction_angle is not None and direction_angle in table_value:
+                coefficient = table_value[direction_angle]
+                Base.append_log(self, f"> JUNCTION with {direction_angle}° angle: using coefficient {coefficient}")
+            else:
+                coefficient = table_value.get('default', 2.4)
+                Base.append_log(self, f"> JUNCTION with {direction_angle}° angle: using default coefficient {coefficient}")
+        else:
+            # Simple numeric coefficient
+            coefficient = table_value
 
         # Fair Whipple-Hsiao equation for PVC pipes
         # Recommended for pipes with d between 12.5 mm and 100 mm
