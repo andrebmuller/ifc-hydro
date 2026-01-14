@@ -106,11 +106,11 @@ class TopologyCreator:
         Base.append_log(Base, f"> Creating topology...")
 
         # Calculate paths between all terminal-tank combinations
-        for term in term_list:
-            for tank in tank_list:
+        for tank in tank_list:
+            for term in term_list:
                 all_paths.append(graph.find_path(term, tank))
 
         Base.append_log(Base, f"> Topology created with {len(all_paths)} paths...")
-        Base.append_log(Base, f"!!!")
+        Base.append_log(Base, f"{'-'*100}")
 
         return all_paths

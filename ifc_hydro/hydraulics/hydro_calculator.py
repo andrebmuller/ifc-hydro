@@ -89,7 +89,7 @@ class HydroCalculator:
         # Recommended for pipes with d between 12.5 mm and 100 mm
         pressure_drop = pipe_prop.get('len') * (0.000859 * ((design_flow * 0.001) ** 1.75) *  (pipe_prop.get('dim') ** -4.75))
 
-        # Legacy Hazen-Williams equation (commented out)
+        # Legacy Hazen-Williams equation
         # pressure_drop = (10.67 * pipe_prop.get('len') * (design_flow * 0.001) ** 1.852) / ((140 ** 1.852) * (pipe_prop.get('dim') ** 4.87))
 
         Base.append_log(self, f"> Linear pressure drop: {round(pressure_drop, 3)} m")

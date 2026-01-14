@@ -65,7 +65,7 @@ class Base:
 
         Base.append_log(Base, f">>> Project {log_name}:")
         Base.append_log(Base, f">>> New run started at {time.now().strftime('%d/%m/%Y %H:%M:%S')}.")
-        Base.append_log(Base, f"!!!")
+        Base.append_log(Base, f"{'-'*100}")
 
         return cls._log
 
