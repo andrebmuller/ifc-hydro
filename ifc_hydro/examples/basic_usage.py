@@ -36,20 +36,26 @@ def main():
 
     # Example: Calculate available pressure at a specific terminal
     # Get terminal ID from user or use default
-    terminal_id_input = input("Enter terminal ID (leave blank for 6986 - Wash and Basin): ").strip()
+    terminal_id_input = input("Enter terminal ID (leave blank to calculate all terminals): ").strip()
     if terminal_id_input:
-        term_test = model.by_id(int(terminal_id_input))
-    else:
-        # Default terminal IDs from the model:
+
+        # Default terminal IDs from the 'projeto-demonstracao.ifc' model:
         # Shower         --> 5423
         # Wash and Basin --> 6986
         # WC Seat        --> 7061
-        term_test = model.by_id(6986)
+        term_test = model.by_id(int(terminal_id_input))
 
-    press_test = hydro_calc.available_pressure(term_test, test_path)
+    else:
+        
+        terminals = model.by_type("IfcSanitaryTerminal")
+        
+        for terminal in terminals:
+            # Get step numerical identifier for the terminal
+            terminal_id = terminal.id()
 
-    print(f"\nFinal result: Available pressure at terminal {term_test.id()}: {round(press_test, 3)} m")
-
+            # Calculate available pressure at the terminal
+            term_test = model.by_id(terminal_id)
+            press_test = hydro_calc.available_pressure(term_test, test_path)
 
 if __name__ == '__main__':
     main()

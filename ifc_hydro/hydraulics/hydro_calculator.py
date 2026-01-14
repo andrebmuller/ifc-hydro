@@ -180,7 +180,7 @@ class HydroCalculator:
         Base.append_log(self, f"> Tank height: {round((tank_pipe_location[2] + selected_path[len(selected_path)-2][5][0][1][0][0][2]), 3)} m")
         Base.append_log(self, f"> Terminal height: {round(terminal_pipe_location[2], 3)} m")
         Base.append_log(self, f"> Initial pressure from gravity potential: {round(pressure, 3)} m")
-        Base.append_log(self, f"!!!")
+        Base.append_log(self, f"{'-'*100}")
 
         # Subtract pressure losses from each component along the path
         for component in selected_path:
@@ -188,25 +188,23 @@ class HydroCalculator:
                 # Linear pressure drop in pipes
                 pressure_drop = self.linear_pressure_drop(component, all_paths)
                 pressure -= pressure_drop
-                Base.append_log(self, f"> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
-                Base.append_log(self, f"!!!")
+                Base.append_log(self, f"==> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
             elif component.is_a() == "IfcPipeFitting":
                 # Local pressure drop in fittings
                 pressure_drop = self.local_pressure_drop(component, selected_path, all_paths)
                 pressure -= pressure_drop
-                Base.append_log(self, f"> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
-                Base.append_log(self, f"!!!")
+                Base.append_log(self, f"==> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
             elif component.is_a() == "IfcValve":
                 # Local pressure drop in valves
                 pressure_drop = self.local_pressure_drop(component, selected_path, all_paths)
                 pressure -= pressure_drop
-                Base.append_log(self, f"> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
-                Base.append_log(self, f"!!!")
+                Base.append_log(self, f"==> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
             else:
                 # Skip other component types (terminals, tanks)
                 pass
 
-        Base.append_log(self, f"> Available pressure at the sanitary terminal:")
+        Base.append_log(self, f"{'='*100}")
+        Base.append_log(self, f"> Available pressure at the sanitary terminal {selected_path[0].id()} - Type: {selected_path[0][8]}:")
         Base.append_log(self, f"> {round(pressure, 3)} m")
-        Base.append_log(self, f"!!!")
+        Base.append_log(self, f"{'='*100}")
         return pressure
