@@ -10,15 +10,21 @@ Version: 3.0.0
 
 from .core.base import Base
 from .core.graph import Graph
+from .core.vector import Vector
 from .topology.topology_creator import TopologyCreator
-from .properties.prop_calculator import PropCalculator
+from .properties.pipe import Pipe
+from .properties.fitting import Fitting
+from .properties.valve import Valve
 from .hydraulics.hydro_calculator import HydroCalculator
 
 __version__ = "3.0.0"
 __all__ = [
     "Base",
     "Graph",
+    "Vector",
     "TopologyCreator",
-    "PropCalculator",
+    "Pipe",
+    "Fitting",
+    "Valve",
     "HydroCalculator",
 ]

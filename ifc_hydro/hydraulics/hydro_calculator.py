@@ -7,7 +7,9 @@ standard equations and coefficients.
 """
 
 from ..core.base import Base
-from ..properties.prop_calculator import PropCalculator
+from ..properties.pipe import Pipe
+from ..properties.fitting import Fitting
+from ..properties.valve import Valve
 
 
 class HydroCalculator:
@@ -72,8 +74,7 @@ class HydroCalculator:
             float: Linear pressure drop in meters of water column
         """
         # Initialize calculation components
-        prop_calc = PropCalculator()
-        pipe_prop = prop_calc.pipe_properties(pipe)
+        pipe_prop = Pipe.properties(pipe)
         flow = self.flow(all_paths)
         design_flow = 0
 
@@ -120,7 +121,6 @@ class HydroCalculator:
         }
 
         # Initialize calculation components
-        prop_calc = PropCalculator()
         flow = self.flow(all_paths)
         design_flow = 0
 
@@ -134,9 +134,9 @@ class HydroCalculator:
 
         # Get connection properties based on type (pass the specific path)
         if conn.is_a() == 'IfcValve':
-            conn_prop = prop_calc.valv_properties(conn, path)
+            conn_prop = Valve.properties(conn, path)
         elif conn.is_a() == 'IfcPipeFitting':
-            conn_prop = prop_calc.fitt_properties(conn, path)
+            conn_prop = Fitting.properties(conn, path)
         else:
             return 0
 
