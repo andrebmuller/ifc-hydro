@@ -184,10 +184,3 @@ For questions and support, please open an issue on the GitHub repository or send
 ## Acknowledgments
 
 - Built for my Master's degree at the Polytechnic School of Universidade de São Paulo
-
-## Notes and Warnings
-
-- IFC access in `ifc-hydro-main.py` is implemented using positional numeric indexes into the IfcOpenShell entity representation. Those index-based accesses are brittle and depend on the exact IFC structure and IfcOpenShell version. If you update IfcOpenShell or use a different IFC file, verify the indices or replace positional access with robust property extraction.
-
-- Importing the module:
-  - The distributed file is named `ifc-hydro-main.py`. Python module names cannot contain hyphens. To import the code as a module, rename the file to a valid module name (for example `ifc_hydro_main.py`) or run the script directly:
