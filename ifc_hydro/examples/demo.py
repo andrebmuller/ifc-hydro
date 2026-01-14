@@ -1,8 +1,7 @@
 """
 Basic usage example for ifc-hydro library.
 
-This example demonstrates how to use the ifc-hydro library to analyze
-hydraulic systems from IFC models.
+This example demonstrates how to use the ifc-hydro library to analyze hydraulic systems from a synthetic IFC modes.
 """
 
 import ifcopenshell as ifc
@@ -11,7 +10,7 @@ from ifc_hydro import Base, Topology, Pressure
 
 def main():
     """
-    Main function demonstrating basic usage of ifc-hydro library.
+    Main function demonstrating usage of ifc-hydro library.
     """
 
     # Configure log file for this run
@@ -20,9 +19,9 @@ def main():
     Base.configure_log(Base, log_dir=log_dir_input, log_name=log_name_input)
 
     # Load IFC model
-    ifc_file_path = input("Enter IFC file path (leave blank for 'projeto-demonstracao.ifc'): ").strip()
+    ifc_file_path = input("Enter IFC file path (leave blank for 'demo-project.ifc'): ").strip()
     if not ifc_file_path:
-        ifc_file_path = 'projeto-demonstracao.ifc'
+        ifc_file_path = '.\ifc_hydro\examples\demo-project.ifc'
 
     model = ifc.open(ifc_file_path)
 
