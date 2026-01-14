@@ -9,7 +9,7 @@ from ..core.base import Base
 from ..core.graph import Graph
 
 
-class TopologyCreator:
+class Topology:
     """
     Creates hydraulic system topology from IFC models.
 
@@ -22,7 +22,7 @@ class TopologyCreator:
 
     def __init__(self, model):
         """
-        Initialize the TopologyCreator with an IFC model.
+        Initialize the Topology with an IFC model.
 
         Args:
             model: An opened IFC model object (from ifcopenshell)

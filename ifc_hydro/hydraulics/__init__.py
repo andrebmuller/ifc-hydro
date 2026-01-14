@@ -2,6 +2,8 @@
 Hydraulics module for hydraulic calculations.
 """
 
-from .hydro_calculator import HydroCalculator
+from .design_flow import DesignFlow
+from .pressure_drop import PressureDrop
+from .pressure import Pressure
 
-__all__ = ["HydroCalculator"]
+__all__ = ["DesignFlow", "PressureDrop", "Pressure"]

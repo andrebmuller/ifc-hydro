@@ -6,7 +6,7 @@ hydraulic systems from IFC models.
 """
 
 import ifcopenshell as ifc
-from ifc_hydro import Base, TopologyCreator, HydroCalculator
+from ifc_hydro import Base, Topology, Pressure
 
 
 def main():
@@ -27,11 +27,11 @@ def main():
     model = ifc.open(ifc_file_path)
 
     # Initialize topology creator with the model and calculate all paths
-    topology = TopologyCreator(model)
+    topology = Topology(model)
     test_path = topology.all_paths_finder()
 
-    # Initialize hydraulic calculator
-    hydro_calc = HydroCalculator()
+    # Initialize pressure calculator
+    pressure_calc = Pressure()
 
     # Example: Calculate available pressure at a specific terminal
     # Get terminal ID from user or use default
@@ -54,7 +54,7 @@ def main():
 
             # Calculate available pressure at the terminal
             term_test = model.by_id(terminal_id)
-            press_test = hydro_calc.available_pressure(term_test, test_path)
+            press_test = pressure_calc.available(term_test, test_path)
 
 if __name__ == '__main__':
     main()
