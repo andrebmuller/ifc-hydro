@@ -12,94 +12,100 @@ A Python library for hydraulic system analysis of IFC (Industry Foundation Class
 
 ## Installation
 
+### From source
+
+```bash
+git clone https://github.com/andrebmuller/ifc-hydro.git
+cd ifc-hydro
+pip install -e .
+```
+
 ### Prerequisites
 
-- Python 3.6 or higher
-- IfcOpenShell library
+- Python 3.7 or higher
+- IfcOpenShell library (installed automatically with setup)
 
 ## Usage
 
 ### Basic Example
 
-```
-from ifc-hydro-main import TopologyCreator, PropCalculator, HydroCalculator import ifcopenshell as ifc
-```
+```python
+import ifcopenshell as ifc
+from ifc_hydro import Base, TopologyCreator, PropCalculator, HydroCalculator
 
-- **Initialize topology creator**:
+# Configure logging
+Base.configure_log(Base, log_dir="", log_name="my-analysis")
 
-```
-topology = TopologyCreator()
-```
-
-- **Create system topology graph**:
-
-```
-graph = topology.graph_creator()
-```
-
-- **Find all paths from terminals to tanks**:
-
-```
-all_paths = topology.all_paths_finder()
-```
-
-- **Initialize calculators**:
-
-```
-prop_calc = PropCalculator() hydro_calc = HydroCalculator()
-```
-
-- **Load IFC model**:
-
-```
+# Load IFC model
 model = ifc.open('your_model.ifc')
+
+# Create topology from the model
+topology = TopologyCreator(model)
+all_paths = topology.all_paths_finder()
+
+# Initialize calculators
+prop_calc = PropCalculator()
+hydro_calc = HydroCalculator()
+
+# Calculate available pressure at a terminal
+terminal = model.by_id(5423)  # Replace with actual terminal ID
+available_pressure = hydro_calc.available_pressure(terminal, all_paths)
+print(f"Available pressure: {available_pressure:.2f} m")
 ```
 
-- **Calculate available pressure at a terminal**:
-
-```
-terminal = model.by_id(5423)  # Replace with actual terminal ID available_pressure = hydro_calc.available_pressure(terminal, all_paths) print(f"Available pressure: {available_pressure:.2f} m")
-```
+For a complete working example, see `example.py` in the repository root.
 
 ### Advanced Usage
 
 #### Property Extraction
 
-- **Extract pipe properties**:
-
-```
-pipe = model.by_id(5399)  # Replace with actual pipe ID 
+```python
+# Extract pipe properties
+pipe = model.by_id(5399)  # Replace with actual pipe ID
 pipe_props = prop_calc.pipe_properties(pipe)
 print(f"Pipe length: {pipe_props['len']} m")
 print(f"Pipe diameter: {pipe_props['dim']} m")
-```
 
-- **Extract fitting properties**:
-
-```
+# Extract fitting properties (requires path context)
 fitting = model.by_id(7020)  # Replace with actual fitting ID
-fitting_props = prop_calc.fitt_properties(fitting)
-print(f"Fitting type: {fitting_props['type']}")
+# Find the path containing this fitting
+for path in all_paths:
+    if fitting in path:
+        fitting_props = prop_calc.fitt_properties(fitting, path)
+        print(f"Fitting type: {fitting_props['type']}")
+        break
 ```
 
 #### Hydraulic Calculations
 
-- **Calculate flow rates throughout the system**:
-
-```
+```python
+# Calculate linear pressure drop in a pipe
+pipe = model.by_id(5399)
 pipe_pressure_drop = hydro_calc.linear_pressure_drop(pipe, all_paths)
-```
+print(f"Pipe pressure drop: {pipe_pressure_drop:.3f} m")
 
-- **Calculate local pressure drop in fittings/valves**:
-
-```
-fitting_pressure_drop = hydro_calc.local_pressure_drop(fitting, all_paths)
+# Calculate local pressure drop in fittings/valves (requires path context)
+fitting = model.by_id(7020)
+for path in all_paths:
+    if fitting in path:
+        fitting_pressure_drop = hydro_calc.local_pressure_drop(fitting, path, all_paths)
+        print(f"Fitting pressure drop: {fitting_pressure_drop:.3f} m")
+        break
 ```
 
 ## Classes
 
+### `Base`
+Base class providing logging functionality and common utilities.
+
+- `configure_log(log_dir, log_name)`: Configure log file location and name
+- `append_log(text)`: Append timestamped message to log
+- `resource_path(relative_path)`: Get absolute path to resources
+
 ### `TopologyCreator`
 Creates hydraulic system topology from IFC models.
+
+**Constructor**: `TopologyCreator(model)` - Requires an opened IFC model
 
 - `graph_creator()`: Creates a graph representation of the system
 - `path_finder(term_guid, tank_guid)`: Finds path between specific terminal and tank
@@ -143,16 +149,37 @@ Uses standardized design flow rates:
 
 ## File Structure
 
-ifc-hydro/\
-├── ifc-hydro-main.py        # Main module with all classes (rename to import as module)\
-├── README.md                # This file\
-├── ifc-hydro.log            # Log file (generated during execution) \
-└── projeto-demonstracao.ifc # Sample IFC model
+```
+ifc-hydro/
+├── ifc_hydro/                      # Main library package
+│   ├── __init__.py                 # Package initialization and exports
+│   ├── core/                       # Core classes and data structures
+│   │   ├── __init__.py
+│   │   ├── base.py                 # Base class with logging utilities
+│   │   └── graph.py                # Graph data structure
+│   ├── topology/                   # Topology creation module
+│   │   ├── __init__.py
+│   │   └── topology_creator.py     # TopologyCreator class
+│   ├── properties/                 # Property extraction module
+│   │   ├── __init__.py
+│   │   └── prop_calculator.py      # PropCalculator class
+│   ├── hydraulics/                 # Hydraulic calculations module
+│   │   ├── __init__.py
+│   │   └── hydro_calculator.py     # HydroCalculator class
+│   └── examples/                   # Example scripts
+│       └── basic_usage.py          # Interactive example
+├── ifc-hydro-main.py               # Legacy monolithic script (deprecated)
+├── example.py                      # Simple usage example
+├── setup.py                        # Package setup configuration
+├── requirements.txt                # Python dependencies
+├── README.md                       # This file
+└── projeto-demonstracao.ifc        # Sample IFC model
+```
 
 ## Requirements
 
-- Python 3.6+  
-- IfcOpenShell  
+- Python 3.7+
+- IfcOpenShell >= 0.7.0
 - Standard library modules: `datetime`, `collections`, `sys`, `os`
 
 ## Contributing
@@ -173,9 +200,15 @@ This project is licensed under the MIT License.
 
 ## Version History
 
-- **1.0.0** - First version with Hazen-Williams formula implementation.  
-- **2.0.0** - Version with improved hydraulic calculations (Fair Whipple-Hsiao).  
-- **3.0.0** - Current version with improved logging, updated comments, and stability fixes.
+- **1.0.0** - First version with Hazen-Williams formula implementation.
+- **2.0.0** - Version with improved hydraulic calculations (Fair Whipple-Hsiao).
+- **3.0.0** - Major refactoring into a library structure:
+  - Separated implementation into modular package (`ifc_hydro`)
+  - Organized code into logical modules: `core`, `topology`, `properties`, `hydraulics`
+  - Added `setup.py` for proper package installation
+  - Updated `TopologyCreator` to accept IFC model as parameter (no longer hardcoded)
+  - Created example scripts demonstrating library usage
+  - Improved documentation with updated usage examples
 
 ## Support
 
