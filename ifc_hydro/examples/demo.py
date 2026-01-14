@@ -15,6 +15,9 @@ def main():
 
     # Configure log file for this run
     log_dir_input = input("Enter log directory (leave blank for current directory): ").strip()
+    if not log_dir_input:
+        log_dir_input = '.\ifc_hydro\examples'
+
     log_name_input = input("Enter log file name (leave blank for ifc-hydro.log): ").strip()
     Base.configure_log(Base, log_dir=log_dir_input, log_name=log_name_input)
 
