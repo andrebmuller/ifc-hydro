@@ -118,7 +118,6 @@ design_flow_table = {
     'USERDEFINED': 0.3
 }
 
-
 def get_fitting_coefficient(fitting_type: str, nominal_diameter_mm: int, angle: float = None) -> float:
     """
     Get the equivalent length coefficient for a fitting based on diameter.

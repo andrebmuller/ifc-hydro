@@ -1,228 +1,260 @@
-15.51.59 ----------------------------------------------------------------------------------------------------
-15.51.59 >>> Project demo:
-15.51.59 >>> New run started at 14/01/2026 15:51:59.
-15.51.59 ----------------------------------------------------------------------------------------------------
-15.52.00 > Successfully loaded IFC model from: .\ifc_hydro\examples\demo\demo-project.ifc
-15.52.00 > Creating topology...
-15.52.00 > Found 3 sanitary terminal(s) and 1 tank(s)...
-15.52.00 > Topology created with 3 paths...
-15.52.00 ----------------------------------------------------------------------------------------------------
-15.52.01 > Getting available pressure at sanitary terminal with ID 5423...
-15.52.01 > Tank height: 3.895 m
-15.52.01 > Terminal height: 2.092 m
-15.52.01 > Initial pressure from gravity potential: 1.803 m
-15.52.01 ----------------------------------------------------------------------------------------------------
-15.52.01 > Getting local pressure drop for connection with ID 6141...
-15.52.01 > Getting fitting properties for fitting with ID 6141...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 1.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, -1.0), 'direction_change_angle': 90.0}, 'type': 'EXIT'}
-15.52.01 > Local pressure drop: 0.009 m
-15.52.01 ==> Pressure after component ID 6141: 1.795 m
-15.52.01 > Getting pipe properties for pipe with ID 5399...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.959, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 5399...
-15.52.01 > Linear pressure drop: 0.007 m
-15.52.01 ==> Pressure after component ID 5399: 1.788 m
-15.52.01 > Getting local pressure drop for connection with ID 8356...
-15.52.01 > Getting valve properties for valve with ID 8356...
-15.52.01 > Valve properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, -1.0), 'outgoing_unit_vector': (0.0, 0.0, -1.0), 'direction_change_angle': 0.0}, 'type': 'REGULATING'}
-15.52.01 > Local pressure drop: 0.081 m
-15.52.01 ==> Pressure after component ID 8356: 1.707 m
-15.52.01 > Getting pipe properties for pipe with ID 8375...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.168, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 8375...
-15.52.01 > Linear pressure drop: 0.001 m
-15.52.01 ==> Pressure after component ID 8375: 1.706 m
-15.52.01 > Getting local pressure drop for connection with ID 5434...
-15.52.01 > Getting fitting properties for fitting with ID 5434...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, -1.0), 'outgoing_unit_vector': (-1.0, 0.0, 0.0), 'direction_change_angle': 90.0}, 'type': 'BEND'}
-15.52.01 > Local pressure drop: 0.009 m
-15.52.01 ==> Pressure after component ID 5434: 1.697 m
-15.52.01 > Getting pipe properties for pipe with ID 5376...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.696, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 5376...
-15.52.01 > Linear pressure drop: 0.005 m
-15.52.01 ==> Pressure after component ID 5376: 1.692 m
-15.52.01 > Getting local pressure drop for connection with ID 6943...
-15.52.01 > Getting fitting properties for fitting with ID 6943...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (-1.0, 0.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 90.0}, 'type': 'JUNCTION'}
-15.52.01 > Local pressure drop: 1.001 m
-15.52.01 ==> Pressure after component ID 6943: 0.691 m
-15.52.01 > Getting pipe properties for pipe with ID 4574...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.87, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 4574...
-15.52.01 > Linear pressure drop: 0.363 m
-15.52.01 ==> Pressure after component ID 4574: 0.328 m
-15.52.01 > Getting local pressure drop for connection with ID 8087...
-15.52.01 > Getting valve properties for valve with ID 8087...
-15.52.01 > Valve properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 0.0}, 'type': 'ISOLATING'}
-15.52.01 > Local pressure drop: 0.083 m
-15.52.01 ==> Pressure after component ID 8087: 0.245 m
-15.52.01 > Getting pipe properties for pipe with ID 8107...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 1.664, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 8107...
-15.52.01 > Linear pressure drop: 0.694 m
-15.52.01 ==> Pressure after component ID 8107: -0.45 m
-15.52.01 > Getting local pressure drop for connection with ID 5357...
-15.52.01 > Getting fitting properties for fitting with ID 5357...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, -1.0, 0.0), 'direction_change_angle': 90.0}, 'type': 'BEND'}
-15.52.01 > Local pressure drop: 0.501 m
-15.52.01 ==> Pressure after component ID 5357: -0.95 m
-15.52.01 > Getting pipe properties for pipe with ID 8398...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.549, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 8398...
-15.52.01 > Linear pressure drop: 0.229 m
-15.52.01 ==> Pressure after component ID 8398: -1.179 m
-15.52.01 ====================================================================================================
-15.52.01 > Available pressure at the sanitary terminal 5423 - Type: SHOWER:
-15.52.01 > -1.179 m
-15.52.01 ====================================================================================================
-15.52.01 > Getting available pressure at sanitary terminal with ID 6986...
-15.52.01 > Tank height: 3.895 m
-15.52.01 > Terminal height: 0.9 m
-15.52.01 > Initial pressure from gravity potential: 2.995 m
-15.52.01 ----------------------------------------------------------------------------------------------------
-15.52.01 > Getting local pressure drop for connection with ID 17772...
-15.52.01 > Getting fitting properties for fitting with ID 17772...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 1.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, -1.0), 'direction_change_angle': 90.0}, 'type': 'EXIT'}
-15.52.01 > Local pressure drop: 0.005 m
-15.52.01 ==> Pressure after component ID 17772: 2.99 m
-15.52.01 > Getting pipe properties for pipe with ID 7037...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.419, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 7037...
-15.52.01 > Linear pressure drop: 0.002 m
-15.52.01 ==> Pressure after component ID 7037: 2.988 m
-15.52.01 > Getting local pressure drop for connection with ID 7020...
-15.52.01 > Getting fitting properties for fitting with ID 7020...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (1.0, 0.0, 0.0), 'outgoing_unit_vector': (1.0, 0.0, 0.0), 'direction_change_angle': 0.0}, 'type': 'JUNCTION'}
-15.52.01 > Local pressure drop: 0.314 m
-15.52.01 ==> Pressure after component ID 7020: 2.674 m
-15.52.01 > Getting pipe properties for pipe with ID 6962...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.118, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 6962...
-15.52.01 > Linear pressure drop: 0.041 m
-15.52.01 ==> Pressure after component ID 6962: 2.633 m
-15.52.01 > Getting local pressure drop for connection with ID 6943...
-15.52.01 > Getting fitting properties for fitting with ID 6943...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (1.0, 0.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 90.0}, 'type': 'JUNCTION'}
-15.52.01 > Local pressure drop: 1.001 m
-15.52.01 ==> Pressure after component ID 6943: 1.632 m
-15.52.01 > Getting pipe properties for pipe with ID 4574...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.87, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 4574...
-15.52.01 > Linear pressure drop: 0.363 m
-15.52.01 ==> Pressure after component ID 4574: 1.269 m
-15.52.01 > Getting local pressure drop for connection with ID 8087...
-15.52.01 > Getting valve properties for valve with ID 8087...
-15.52.01 > Valve properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 0.0}, 'type': 'ISOLATING'}
-15.52.01 > Local pressure drop: 0.083 m
-15.52.01 ==> Pressure after component ID 8087: 1.185 m
-15.52.01 > Getting pipe properties for pipe with ID 8107...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 1.664, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 8107...
-15.52.01 > Linear pressure drop: 0.694 m
-15.52.01 ==> Pressure after component ID 8107: 0.491 m
-15.52.01 > Getting local pressure drop for connection with ID 5357...
-15.52.01 > Getting fitting properties for fitting with ID 5357...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, -1.0, 0.0), 'direction_change_angle': 90.0}, 'type': 'BEND'}
-15.52.01 > Local pressure drop: 0.501 m
-15.52.01 ==> Pressure after component ID 5357: -0.009 m
-15.52.01 > Getting pipe properties for pipe with ID 8398...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.549, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 8398...
-15.52.01 > Linear pressure drop: 0.229 m
-15.52.01 ==> Pressure after component ID 8398: -0.238 m
-15.52.01 ====================================================================================================
-15.52.01 > Available pressure at the sanitary terminal 6986 - Type: WASHHANDBASIN:
-15.52.01 > -0.238 m
-15.52.01 ====================================================================================================
-15.52.01 > Getting available pressure at sanitary terminal with ID 7061...
-15.52.01 > Tank height: 3.895 m
-15.52.01 > Terminal height: 0.2 m
-15.52.01 > Initial pressure from gravity potential: 3.695 m
-15.52.01 ----------------------------------------------------------------------------------------------------
-15.52.01 > Getting local pressure drop for connection with ID 7848...
-15.52.01 > Getting fitting properties for fitting with ID 7848...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 1.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, -1.0), 'direction_change_angle': 90.0}, 'type': 'EXIT'}
-15.52.01 > Local pressure drop: 0.361 m
-15.52.01 ==> Pressure after component ID 7848: 3.334 m
-15.52.01 > Getting pipe properties for pipe with ID 7003...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.67, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 7003...
-15.52.01 > Linear pressure drop: 0.201 m
-15.52.01 ==> Pressure after component ID 7003: 3.133 m
-15.52.01 > Getting local pressure drop for connection with ID 7020...
-15.52.01 > Getting fitting properties for fitting with ID 7020...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (1.0, 0.0, 0.0), 'direction_change_angle': 90.0}, 'type': 'JUNCTION'}
-15.52.01 > Local pressure drop: 0.837 m
-15.52.01 ==> Pressure after component ID 7020: 2.296 m
-15.52.01 > Getting pipe properties for pipe with ID 6962...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.118, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 6962...
-15.52.01 > Linear pressure drop: 0.041 m
-15.52.01 ==> Pressure after component ID 6962: 2.255 m
-15.52.01 > Getting local pressure drop for connection with ID 6943...
-15.52.01 > Getting fitting properties for fitting with ID 6943...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (1.0, 0.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 90.0}, 'type': 'JUNCTION'}
-15.52.01 > Local pressure drop: 1.001 m
-15.52.01 ==> Pressure after component ID 6943: 1.254 m
-15.52.01 > Getting pipe properties for pipe with ID 4574...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.87, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 4574...
-15.52.01 > Linear pressure drop: 0.363 m
-15.52.01 ==> Pressure after component ID 4574: 0.891 m
-15.52.01 > Getting local pressure drop for connection with ID 8087...
-15.52.01 > Getting valve properties for valve with ID 8087...
-15.52.01 > Valve properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 0.0}, 'type': 'ISOLATING'}
-15.52.01 > Local pressure drop: 0.083 m
-15.52.01 ==> Pressure after component ID 8087: 0.807 m
-15.52.01 > Getting pipe properties for pipe with ID 8107...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 1.664, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 8107...
-15.52.01 > Linear pressure drop: 0.694 m
-15.52.01 ==> Pressure after component ID 8107: 0.113 m
-15.52.01 > Getting local pressure drop for connection with ID 5357...
-15.52.01 > Getting fitting properties for fitting with ID 5357...
-15.52.01 > Fitting properties:
-15.52.01 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, -1.0, 0.0), 'direction_change_angle': 90.0}, 'type': 'BEND'}
-15.52.01 > Local pressure drop: 0.501 m
-15.52.01 ==> Pressure after component ID 5357: -0.388 m
-15.52.01 > Getting pipe properties for pipe with ID 8398...
-15.52.01 > Pipe properties:
-15.52.01 > {'len': 0.549, 'dim': 0.0278}
-15.52.01 > Getting linear pressure drop for pipe with ID 8398...
-15.52.01 > Linear pressure drop: 0.229 m
-15.52.01 ==> Pressure after component ID 8398: -0.617 m
-15.52.01 ====================================================================================================
-15.52.01 > Available pressure at the sanitary terminal 7061 - Type: WCSEAT:
-15.52.01 > -0.617 m
-15.52.01 ====================================================================================================
+18.46.42 ----------------------------------------------------------------------------------------------------
+18.46.42 >>> Project demo:
+18.46.42 >>> New run started at 26/01/2026 18:46:42.
+18.46.42 ----------------------------------------------------------------------------------------------------
+18.46.45 > Successfully loaded IFC model from: .\ifc_hydro\examples\demo\demo-project.ifc
+18.46.45 > Creating topology...
+18.46.46 > Found 3 sanitary terminal(s) and 1 tank(s)...
+18.46.46 > Topology created with 3 paths...
+18.46.46 ----------------------------------------------------------------------------------------------------
+18.46.47 > Getting available pressure at sanitary terminal with ID 5423...
+18.46.47 > Tank height: 3.895 m
+18.46.47 > Terminal height: 2.092 m
+18.46.47 > Initial pressure from gravity potential: 1.803 m
+18.46.47 ----------------------------------------------------------------------------------------------------
+18.46.47 > Getting local pressure drop for connection with ID 6141...
+18.46.47 > Getting fitting properties for fitting with ID 6141...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 1.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, -1.0), 'direction_change_angle': 90.0}, 'type': 'EXIT'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 0.4 for EXIT at 25mm
+18.46.47 > Local pressure drop: 0.003 m
+18.46.47 ==> Pressure after component ID 6141: 1.801 m
+18.46.47 > Getting pipe properties for pipe with ID 5399...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.959, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 5399...
+18.46.47 > Linear pressure drop: 0.007 m
+18.46.47 ==> Pressure after component ID 5399: 1.794 m
+18.46.47 > Getting local pressure drop for connection with ID 8356...
+18.46.47 > Getting valve properties for valve with ID 8356...
+18.46.47 > Valve properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, -1.0), 'outgoing_unit_vector': (0.0, 0.0, -1.0), 'direction_change_angle': 0.0}, 'type': 'REGULATING'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 8.2 for REGULATING at 25mm
+18.46.47 > Local pressure drop: 0.058 m
+18.46.47 ==> Pressure after component ID 8356: 1.735 m
+18.46.47 > Getting pipe properties for pipe with ID 8375...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.168, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 8375...
+18.46.47 > Linear pressure drop: 0.001 m
+18.46.47 ==> Pressure after component ID 8375: 1.734 m
+18.46.47 > Getting local pressure drop for connection with ID 5434...
+18.46.47 > Getting fitting properties for fitting with ID 5434...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, -1.0), 'outgoing_unit_vector': (-1.0, 0.0, 0.0), 'direction_change_angle': 90.0}, 'type': 'BEND'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 1.2 for BEND at 25mm
+18.46.47 > Local pressure drop: 0.009 m
+18.46.47 ==> Pressure after component ID 5434: 1.726 m
+18.46.47 > Getting pipe properties for pipe with ID 5376...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.696, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 5376...
+18.46.47 > Linear pressure drop: 0.005 m
+18.46.47 ==> Pressure after component ID 5376: 1.721 m
+18.46.47 > Getting local pressure drop for connection with ID 6943...
+18.46.47 > Getting fitting properties for fitting with ID 6943...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (-1.0, 0.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 90.0}, 'type': 'JUNCTION'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 2.4 for JUNCTION at 25mm
+18.46.47 > Local pressure drop: 1.001 m
+18.46.47 ==> Pressure after component ID 6943: 0.72 m
+18.46.47 > Getting pipe properties for pipe with ID 4574...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.87, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 4574...
+18.46.47 > Linear pressure drop: 0.363 m
+18.46.47 ==> Pressure after component ID 4574: 0.357 m
+18.46.47 > Getting local pressure drop for connection with ID 8087...
+18.46.47 > Getting valve properties for valve with ID 8087...
+18.46.47 > Valve properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 0.0}, 'type': 'ISOLATING'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 0.2 for ISOLATING at 25mm
+18.46.47 > Local pressure drop: 0.083 m
+18.46.47 ==> Pressure after component ID 8087: 0.273 m
+18.46.47 > Getting pipe properties for pipe with ID 8107...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 1.664, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 8107...
+18.46.47 > Linear pressure drop: 0.694 m
+18.46.47 ==> Pressure after component ID 8107: -0.421 m
+18.46.47 > Getting local pressure drop for connection with ID 5357...
+18.46.47 > Getting fitting properties for fitting with ID 5357...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, -1.0, 0.0), 'direction_change_angle': 90.0}, 'type': 'BEND'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 1.2 for BEND at 25mm
+18.46.47 > Local pressure drop: 0.501 m
+18.46.47 ==> Pressure after component ID 5357: -0.922 m
+18.46.47 > Getting pipe properties for pipe with ID 8398...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.549, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 8398...
+18.46.47 > Linear pressure drop: 0.229 m
+18.46.47 ==> Pressure after component ID 8398: -1.151 m
+18.46.47 ====================================================================================================
+18.46.47 > Available pressure at the sanitary terminal 5423 - Type: SHOWER:
+18.46.47 > -1.151 m
+18.46.47 ====================================================================================================
+18.46.47 > Getting available pressure at sanitary terminal with ID 6986...
+18.46.47 > Tank height: 3.895 m
+18.46.47 > Terminal height: 0.9 m
+18.46.47 > Initial pressure from gravity potential: 2.995 m
+18.46.47 ----------------------------------------------------------------------------------------------------
+18.46.47 > Getting local pressure drop for connection with ID 17772...
+18.46.47 > Getting fitting properties for fitting with ID 17772...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 1.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, -1.0), 'direction_change_angle': 90.0}, 'type': 'EXIT'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 0.4 for EXIT at 25mm
+18.46.47 > Local pressure drop: 0.002 m
+18.46.47 ==> Pressure after component ID 17772: 2.993 m
+18.46.47 > Getting pipe properties for pipe with ID 7037...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.419, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 7037...
+18.46.47 > Linear pressure drop: 0.002 m
+18.46.47 ==> Pressure after component ID 7037: 2.991 m
+18.46.47 > Getting local pressure drop for connection with ID 7020...
+18.46.47 > Getting fitting properties for fitting with ID 7020...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (1.0, 0.0, 0.0), 'outgoing_unit_vector': (1.0, 0.0, 0.0), 'direction_change_angle': 0.0}, 'type': 'JUNCTION'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 0.9 for JUNCTION at 25mm
+18.46.47 > Local pressure drop: 0.314 m
+18.46.47 ==> Pressure after component ID 7020: 2.678 m
+18.46.47 > Getting pipe properties for pipe with ID 6962...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.118, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 6962...
+18.46.47 > Linear pressure drop: 0.041 m
+18.46.47 ==> Pressure after component ID 6962: 2.637 m
+18.46.47 > Getting local pressure drop for connection with ID 6943...
+18.46.47 > Getting fitting properties for fitting with ID 6943...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (1.0, 0.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 90.0}, 'type': 'JUNCTION'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 2.4 for JUNCTION at 25mm
+18.46.47 > Local pressure drop: 1.001 m
+18.46.47 ==> Pressure after component ID 6943: 1.635 m
+18.46.47 > Getting pipe properties for pipe with ID 4574...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.87, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 4574...
+18.46.47 > Linear pressure drop: 0.363 m
+18.46.47 ==> Pressure after component ID 4574: 1.272 m
+18.46.47 > Getting local pressure drop for connection with ID 8087...
+18.46.47 > Getting valve properties for valve with ID 8087...
+18.46.47 > Valve properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 0.0}, 'type': 'ISOLATING'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 0.2 for ISOLATING at 25mm
+18.46.47 > Local pressure drop: 0.083 m
+18.46.47 ==> Pressure after component ID 8087: 1.189 m
+18.46.47 > Getting pipe properties for pipe with ID 8107...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 1.664, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 8107...
+18.46.47 > Linear pressure drop: 0.694 m
+18.46.47 ==> Pressure after component ID 8107: 0.495 m
+18.46.47 > Getting local pressure drop for connection with ID 5357...
+18.46.47 > Getting fitting properties for fitting with ID 5357...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, -1.0, 0.0), 'direction_change_angle': 90.0}, 'type': 'BEND'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 1.2 for BEND at 25mm
+18.46.47 > Local pressure drop: 0.501 m
+18.46.47 ==> Pressure after component ID 5357: -0.006 m
+18.46.47 > Getting pipe properties for pipe with ID 8398...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.549, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 8398...
+18.46.47 > Linear pressure drop: 0.229 m
+18.46.47 ==> Pressure after component ID 8398: -0.235 m
+18.46.47 ====================================================================================================
+18.46.47 > Available pressure at the sanitary terminal 6986 - Type: WASHHANDBASIN:
+18.46.47 > -0.235 m
+18.46.47 ====================================================================================================
+18.46.47 > Getting available pressure at sanitary terminal with ID 7061...
+18.46.47 > Tank height: 3.895 m
+18.46.47 > Terminal height: 0.2 m
+18.46.47 > Initial pressure from gravity potential: 3.695 m
+18.46.47 ----------------------------------------------------------------------------------------------------
+18.46.47 > Getting local pressure drop for connection with ID 7848...
+18.46.47 > Getting fitting properties for fitting with ID 7848...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 1.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, -1.0), 'direction_change_angle': 90.0}, 'type': 'EXIT'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 0.4 for EXIT at 25mm
+18.46.47 > Local pressure drop: 0.12 m
+18.46.47 ==> Pressure after component ID 7848: 3.575 m
+18.46.47 > Getting pipe properties for pipe with ID 7003...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.67, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 7003...
+18.46.47 > Linear pressure drop: 0.201 m
+18.46.47 ==> Pressure after component ID 7003: 3.373 m
+18.46.47 > Getting local pressure drop for connection with ID 7020...
+18.46.47 > Getting fitting properties for fitting with ID 7020...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (1.0, 0.0, 0.0), 'direction_change_angle': 90.0}, 'type': 'JUNCTION'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 2.4 for JUNCTION at 25mm
+18.46.47 > Local pressure drop: 0.837 m
+18.46.47 ==> Pressure after component ID 7020: 2.537 m
+18.46.47 > Getting pipe properties for pipe with ID 6962...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.118, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 6962...
+18.46.47 > Linear pressure drop: 0.041 m
+18.46.47 ==> Pressure after component ID 6962: 2.496 m
+18.46.47 > Getting local pressure drop for connection with ID 6943...
+18.46.47 > Getting fitting properties for fitting with ID 6943...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (1.0, 0.0, 0.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 90.0}, 'type': 'JUNCTION'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 2.4 for JUNCTION at 25mm
+18.46.47 > Local pressure drop: 1.001 m
+18.46.47 ==> Pressure after component ID 6943: 1.494 m
+18.46.47 > Getting pipe properties for pipe with ID 4574...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.87, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 4574...
+18.46.47 > Linear pressure drop: 0.363 m
+18.46.47 ==> Pressure after component ID 4574: 1.131 m
+18.46.47 > Getting local pressure drop for connection with ID 8087...
+18.46.47 > Getting valve properties for valve with ID 8087...
+18.46.47 > Valve properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, 0.0, 1.0), 'direction_change_angle': 0.0}, 'type': 'ISOLATING'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 0.2 for ISOLATING at 25mm
+18.46.47 > Local pressure drop: 0.083 m
+18.46.47 ==> Pressure after component ID 8087: 1.048 m
+18.46.47 > Getting pipe properties for pipe with ID 8107...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 1.664, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 8107...
+18.46.47 > Linear pressure drop: 0.694 m
+18.46.47 ==> Pressure after component ID 8107: 0.354 m
+18.46.47 > Getting local pressure drop for connection with ID 5357...
+18.46.47 > Getting fitting properties for fitting with ID 5357...
+18.46.47 > Fitting properties:
+18.46.47 > {'dim': (0.025, 0.025), 'dir': {'incoming_unit_vector': (0.0, 0.0, 1.0), 'outgoing_unit_vector': (0.0, -1.0, 0.0), 'direction_change_angle': 90.0}, 'type': 'BEND'}
+18.46.47 > Connection nominal diameter: 25 mm, internal: 0.0278 m
+18.46.47 > Using coefficient: 1.2 for BEND at 25mm
+18.46.47 > Local pressure drop: 0.501 m
+18.46.47 ==> Pressure after component ID 5357: -0.147 m
+18.46.47 > Getting pipe properties for pipe with ID 8398...
+18.46.47 > Pipe properties:
+18.46.47 > {'len': 0.549, 'dim': 0.0278, 'nominal_dim': 25}
+18.46.47 > Getting linear pressure drop for pipe with ID 8398...
+18.46.47 > Linear pressure drop: 0.229 m
+18.46.47 ==> Pressure after component ID 8398: -0.376 m
+18.46.47 ====================================================================================================
+18.46.47 > Available pressure at the sanitary terminal 7061 - Type: WCSEAT:
+18.46.47 > -0.376 m
+18.46.47 ====================================================================================================
