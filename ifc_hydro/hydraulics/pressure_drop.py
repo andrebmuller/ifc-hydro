@@ -100,17 +100,25 @@ class PressureDrop:
         # Get the coefficient from the table
         table_value = local_pressure_drop_table.get(conn_prop.get('type'))
 
-        # Handle angle-based coefficients (JUNCTION uses tuple structure)
-        if isinstance(table_value, tuple):
-            # Get direction change angle for angle-based coefficient lookup
-            direction_info = conn_prop.get('dir', {})
-            direction_angle = direction_info.get('direction_change_angle', None)
+        # Get direction change angle for angle-based coefficient lookup
+        direction_info = conn_prop.get('dir', {})
+        direction_angle = direction_info.get('direction_change_angle', None)
 
+        # Handle angle-based coefficients based on table value type
+        if isinstance(table_value, tuple):
+            # JUNCTION: tuple structure (straight flow, flow with direction change)
             # Select coefficient based on angle: index 0 for 0.0°, index 1 for others
             if direction_angle == 0.0:
                 coefficient = table_value[0]
             else:
                 coefficient = table_value[1]
+        elif isinstance(table_value, dict):
+            # BEND: dict structure {angle: coefficient} for angle-based selection
+            # Use threshold of 67.5° (midpoint between 45° and 90°) to select coefficient
+            if direction_angle is not None and direction_angle < 67.5:
+                coefficient = table_value.get(45, 0.7)
+            else:
+                coefficient = table_value.get(90, 1.2)
         else:
             # Simple numeric coefficient
             coefficient = table_value

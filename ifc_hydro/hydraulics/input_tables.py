@@ -7,9 +7,10 @@ including pressure drop coefficients and design flow rates.
 
 # Equivalent length factors for different connection types
 # JUNCTION uses tuple: (0.9 for 0° angle, 2.4 for other angles)
+# BEND uses dict: {angle_threshold: coefficient} for angle-based selection
 local_pressure_drop_table = {
     'JUNCTION': (0.9, 2.4),  # (straight flow, flow with direction change)
-    'BEND': 1.2,
+    'BEND': {45: 0.7, 90: 1.2},  # angle-based: 45° bends = 0.7, 90° bends = 1.2
     'EXIT': 1.2,
     'ISOLATING': 0.2,
     'REGULATING': 11.4
