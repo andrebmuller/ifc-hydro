@@ -132,7 +132,7 @@ class PressureDrop:
         else:
             coefficient = get_fitting_coefficient(conn_type, nominal_diameter, direction_angle)
 
-        Base.append_log(self, f"> Using coefficient: {coefficient} for {conn_type} at {nominal_diameter}mm")
+        Base.append_log(self, f"> Using equivalent lenght: {coefficient} for {conn_type} at {nominal_diameter}mm")
 
         # Fair Whipple-Hsiao equation for PVC pipes
         # Uses actual internal diameter for accurate calculation

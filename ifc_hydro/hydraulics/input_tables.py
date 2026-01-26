@@ -13,7 +13,7 @@ Multi-diameter support: Coefficient tables are organized by nominal diameter
 SUPPORTED_DIAMETERS = [15, 20, 25, 32, 40, 50, 60, 75, 85, 100, 110]
 
 # Nominal diameter to real internal diameter mapping (in meters)
-# Based on PVC pipe specifications
+# Based on PVC pipe specifications (ABNT NBR 5648-1:2020)
 NOMINAL_TO_INTERNAL_DIAMETER = {
     15: 0.0170,
     20: 0.0216,
