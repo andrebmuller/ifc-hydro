@@ -18,7 +18,7 @@ from ..core.constants import (
 # Equivalent length factors for fittings by nominal diameter (in mm)
 # Structure: {diameter: {fitting_type: coefficient}}
 # For BEND: {diameter: {angle: coefficient}} where angle is 45 or 90
-# For JUNCTION: {diameter: (junction_0, junction_90)}
+# For JUNCTION: {diameter: (straight_flow, direction_change)} - straight_flow for 0°/180°, direction_change for 90°
 fitting_coefficients = {
     15: {
         'BEND': {45: 0.40, 90: 1.00},
@@ -144,8 +144,10 @@ def get_fitting_coefficient(fitting_type: str, nominal_diameter_mm: int, angle: 
 
     elif fitting_type == 'JUNCTION':
         junction_coeffs = coefficients.get('JUNCTION', (0.9, 2.4))
-        # Select coefficient based on angle: index 0 for 0.0°, index 1 for others
-        if angle == 0.0:
+        # Use threshold of 45° and 135° (midpoints between 0°/90° and 90°/180°) to select coefficient
+        # Angles near 0° or 180° → index 0 (straight flow)
+        # Angles near 90° → index 1 (direction change)
+        if angle is not None and (angle < 45.0 or angle > 135.0):
             return junction_coeffs[0]
         else:
             return junction_coeffs[1]
