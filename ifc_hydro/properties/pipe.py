@@ -6,7 +6,7 @@ from pipe segments in the IFC model.
 """
 
 from ..core.base import Base
-from ..core.constants import get_nominal_diameter, get_internal_diameter
+from ..hydraulics.input_tables import get_nominal_diameter, get_internal_diameter
 
 
 class Pipe:
