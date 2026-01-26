@@ -7,6 +7,7 @@ A Python library for hydraulic system analysis of IFC (Industry Foundation Class
 - **Topology Analysis**: Create graph representations of hydraulic system connections from IFC models
 - **Property Extraction**: Extract geometric and type properties from pipes, fittings, and valves
 - **Hydraulic Calculations**: Perform flow analysis, pressure drop calculations, and available pressure determination
+- **Multi-Diameter Support**: Diameter-specific equivalent length coefficients for accurate pressure drop calculations across pipe sizes from 15mm to 110mm
 - **Angle-Aware Analysis**: Direction change detection in junctions for accurate pressure drop calculations
 - **Comprehensive Error Handling**: Validates IFC elements and provides meaningful error messages
 - **IFC Integration**: Direct integration with IFC models using IfcOpenShell
@@ -162,7 +163,8 @@ Provides 3D vector operations for geometric calculations.
 ### `Pipe`
 Extracts properties from IFC pipe segments.
 
-- `properties(pipe)`: Extracts length and diameter from pipe segments
+- `properties(pipe)`: Extracts length, internal diameter, and nominal diameter from pipe segments
+  - Returns `len` (length in meters), `dim` (internal diameter in meters), and `nominal_dim` (nominal diameter in mm)
 
 ### `Fitting`
 Extracts properties from IFC pipe fittings.
@@ -187,10 +189,9 @@ Calculates pressure drops in hydraulic system components.
 
 - `linear(pipe, all_paths)`: Calculates linear pressure drop in pipes using Fair Whipple-Hsiao equation
 - `local(conn, path, all_paths)`: Calculates local pressure drop in fittings and valves using equivalent length method
+  - **Multi-diameter support**: Uses diameter-specific equivalent length coefficients for accurate calculations
   - **Angle-aware junctions**: Automatically detects direction changes and applies appropriate coefficients
-    - 0° direction change (straight): coefficient 0.9
-    - Other angles: coefficient 2.4
-  - Uses standardized reference diameter (25mm) for equivalent length calculations
+  - Supports nominal diameters: 15, 20, 25, 32, 40, 50, 60, 75, 85, 100, 110 mm
 
 ### `Pressure`
 Calculates available pressure at sanitary terminals.
@@ -220,14 +221,18 @@ Uses standardized design flow rates from lookup tables (`input_tables.py`):
 ### Pressure Drop Calculations
 - **Linear losses**: Fair Whipple-Hsiao empirical equation for PVC pipes
   - Formula: `pressure_drop = pipe_len × (0.000859 × (flow^1.75) × (diameter^-4.75))`
-  - Recommended for PVC pipes, diameter range 12.5-100mm
-- **Local losses**: Equivalent length method with tabulated coefficients
-  - Junction (straight): 0.9
-  - Junction (with angle): 2.4
-  - Bend: 1.2
-  - Exit: 1.2
-  - Isolating valve: 0.2
-  - Regulating valve: 11.4
+  - Recommended for PVC pipes, diameter range 12.5-110mm
+- **Local losses**: Equivalent length method with diameter-specific tabulated coefficients
+  - Supports nominal diameters: 15, 20, 25, 32, 40, 50, 60, 75, 85, 100, 110 mm
+  - **Fittings** (equivalent lengths vary by diameter):
+    - Bend 90°: 1.00 (15mm) to 4.30 (110mm)
+    - Bend 45°: 0.40 (15mm) to 2.00 (110mm)
+    - Exit: 0.20 (15mm) to 2.50 (110mm)
+    - Junction (0°): 0.70 (15mm) to 2.70 (110mm)
+    - Junction (90°): 1.00 (15mm) to 8.40 (110mm)
+  - **Valves** (equivalent lengths vary by diameter):
+    - Isolating: 0.10 (15mm) to 0.90 (110mm)
+    - Regulating: 4.90 (15mm) to 43.00 (110mm)
 - **Angle detection**: Automatically calculates direction change in junctions using 3D vector analysis
 - **Available pressure**: Gravity potential minus total pressure losses
 
@@ -305,6 +310,18 @@ This project is licensed under the MIT License.
 - **2.0.0** (2024) - Improved hydraulic calculations
   - Switched to Fair Whipple-Hsiao equation for PVC pipes
   - Enhanced accuracy for pressure drop calculations
+
+- **3.1.0** (2025) - Multi-diameter support
+  - **New features**:
+    - Diameter-specific equivalent length coefficients for fittings and valves
+    - Support for 11 nominal diameters: 15, 20, 25, 32, 40, 50, 60, 75, 85, 100, 110 mm
+    - Centralized nominal-to-internal diameter mapping
+    - Helper functions: `get_nominal_diameter()`, `get_internal_diameter()`, `get_fitting_coefficient()`, `get_valve_coefficient()`
+  - **Improvements**:
+    - `PressureDrop.local()` now uses actual fitting/valve diameter instead of hardcoded reference
+    - `Pipe.properties()` now returns nominal diameter in addition to internal diameter
+    - More accurate pressure drop calculations for different pipe sizes
+  - **Documentation**: Updated with multi-diameter coefficient tables
 
 - **3.0.0** (2025) - Major refactoring and feature additions
   - **Modular library structure**: Separated into `core`, `topology`, `properties`, `hydraulics` modules
