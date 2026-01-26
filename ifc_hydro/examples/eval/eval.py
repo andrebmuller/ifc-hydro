@@ -1,13 +1,17 @@
 """
 Basic usage example for ifc-hydro library.
 
-This example demonstrates how to use the ifc-hydro library to analyze hydraulic systems from a synthetic IFC modes.
+This example demonstrates how to use the ifc-hydro library to analyze hydraulic systems from IFC models.
 """
 
 import ifcopenshell as ifc
 from ifc_hydro import Base, Topology, Pressure
 import sys
 import os
+
+
+# Get the directory where this script is located for portable paths
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def main():
@@ -18,15 +22,17 @@ def main():
     # Configure log file for this run
     log_dir_input = input("Enter log directory (leave blank for current directory): ").strip()
     if not log_dir_input:
-        log_dir_input = '.\ifc_hydro\examples\eval'
+        log_dir_input = SCRIPT_DIR
 
-    log_name_input = input("Enter log file name (leave blank for ifc-hydro.log): ").strip()
+    log_name_input = input("Enter log file name (leave blank for eval.log): ").strip()
+    if not log_name_input:
+        log_name_input = "eval"
     Base.configure_log(Base, log_dir=log_dir_input, log_name=log_name_input)
 
     # Load IFC model
     ifc_file_path = input("Enter IFC file path (leave blank for 'eval-project.ifc'): ").strip()
     if not ifc_file_path:
-        ifc_file_path = '.\ifc_hydro\examples\eval\eval-project.ifc'
+        ifc_file_path = os.path.join(SCRIPT_DIR, "eval-project.ifc")
 
     # Validate IFC file exists
     if not os.path.exists(ifc_file_path):
@@ -48,7 +54,7 @@ def main():
     # Initialize topology creator with the model and calculate all paths
     try:
         topology = Topology(model)
-        test_path = topology.all_paths_finder()
+        all_paths = topology.all_paths_finder()
     except ValueError as e:
         error_msg = f"ERROR: Topology creation failed: {str(e)}"
         Base.append_log(Base, error_msg)
@@ -62,7 +68,7 @@ def main():
         sys.exit(1)
 
     # Validate that paths were created
-    if not test_path or len(test_path) == 0:
+    if not all_paths or len(all_paths) == 0:
         error_msg = "ERROR: No paths were created. Cannot proceed with pressure calculations."
         Base.append_log(Base, error_msg)
         print(error_msg)
@@ -71,18 +77,14 @@ def main():
     # Initialize pressure calculator
     pressure_calc = Pressure()
 
-    # Example: Calculate available pressure at a specific terminal
-    # Get terminal ID from user or use default
+    # Get terminal ID from user or calculate for all terminals
     terminal_id_input = input("Enter terminal ID (leave blank to calculate all terminals): ").strip()
-    if terminal_id_input:
 
-        # Default terminal IDs from the 'projeto-demonstracao.ifc' model:
-        # Shower         --> 5423
-        # Wash and Basin --> 6986
-        # WC Seat        --> 7061
+    if terminal_id_input:
+        # Calculate pressure for a specific terminal
         try:
-            term_test = model.by_id(int(terminal_id_input))
-            press_test = pressure_calc.available(term_test, test_path)
+            terminal = model.by_id(int(terminal_id_input))
+            pressure_calc.available(terminal, all_paths)
         except RuntimeError:
             error_msg = f"ERROR: Terminal with ID {terminal_id_input} not found in the IFC model."
             Base.append_log(Base, error_msg)
@@ -93,9 +95,8 @@ def main():
             Base.append_log(Base, error_msg)
             print(error_msg)
             sys.exit(1)
-
     else:
-
+        # Calculate pressure for all sanitary terminals
         terminals = model.by_type("IfcSanitaryTerminal")
 
         if not terminals:
@@ -106,18 +107,13 @@ def main():
 
         for terminal in terminals:
             try:
-                # Get step numerical identifier for the terminal
-                terminal_id = terminal.id()
-
-                # Calculate available pressure at the terminal
-                term_test = model.by_id(terminal_id)
-                press_test = pressure_calc.available(term_test, test_path)
+                pressure_calc.available(terminal, all_paths)
             except Exception as e:
-                error_msg = f"ERROR: Failed to calculate pressure for terminal {terminal_id}: {str(e)}"
+                error_msg = f"ERROR: Failed to calculate pressure for terminal {terminal.id()}: {str(e)}"
                 Base.append_log(Base, error_msg)
                 print(error_msg)
-                # Continue with next terminal instead of exiting
                 continue
+
 
 if __name__ == '__main__':
     main()
