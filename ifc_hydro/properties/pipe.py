@@ -39,7 +39,7 @@ class Pipe:
             pipe_len = pipe[6][2][0][3][0][3]
             pipe_prop['len'] = round(pipe_len, 3)
         except (IndexError, TypeError, KeyError) as e:
-            error_msg = f""> ERROR: Failed to extract length from pipe ID {pipe.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
+            error_msg = f"> ERROR: Failed to extract length from pipe ID {pipe.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
             Base.append_log(None, error_msg)
             raise ValueError(error_msg)
 
