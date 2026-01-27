@@ -46,13 +46,13 @@ class Valve:
                 break
 
         if valv_index is None:
-            error_msg = f"ERROR: Valve with ID {valv.id()} not found in the provided path"
+            error_msg = f"> ERROR: Valve with ID {valv.id()} not found in the provided path"
             Base.append_log(None, error_msg)
             raise ValueError(error_msg)
 
         # Validate that valve has adjacent components
         if valv_index == 0 or valv_index >= len(path) - 1:
-            error_msg = f"ERROR: Valve with ID {valv.id()} does not have both incoming and outgoing pipes in the path"
+            error_msg = f"> ERROR: Valve with ID {valv.id()} does not have both incoming and outgoing pipes in the path"
             Base.append_log(None, error_msg)
             raise ValueError(error_msg)
 
@@ -66,7 +66,7 @@ class Valve:
             pipe_dim_2 = outgoing_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
             valv_prop['dim'] = (round(pipe_dim_1, 3), round(pipe_dim_2, 3))
         except (IndexError, TypeError, KeyError) as e:
-            error_msg = f"ERROR: Failed to extract diameter from adjacent pipes for valve ID {valv.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
+            error_msg = f"> ERROR: Failed to extract diameter from adjacent pipes for valve ID {valv.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
             Base.append_log(None, error_msg)
             raise ValueError(error_msg)
 
@@ -77,7 +77,7 @@ class Valve:
             valve_center = valv[5][1][0][0]
             outgoing_pipe_center = outgoing_pipe[6][2][0][3][0][1][0][0]
         except (IndexError, TypeError, KeyError) as e:
-            error_msg = f"ERROR: Failed to extract center points for valve ID {valv.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
+            error_msg = f"> ERROR: Failed to extract center points for valve ID {valv.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
             Base.append_log(None, error_msg)
             raise ValueError(error_msg)
 
@@ -106,7 +106,7 @@ class Valve:
             valv_type = valv[8]
             valv_prop['type'] = valv_type
         except (IndexError, TypeError, KeyError) as e:
-            error_msg = f"WARNING: Failed to extract type for valve ID {valv.id()}. Using 'Unknown' as type. Details: {str(e)}"
+            error_msg = f"> WARNING: Failed to extract type for valve ID {valv.id()}. Using 'Unknown' as type. Details: {str(e)}"
             Base.append_log(None, error_msg)
             valv_prop['type'] = 'Unknown'
 

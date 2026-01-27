@@ -41,7 +41,7 @@ class Pressure:
         """
         # Validate input
         if not all_paths:
-            error_msg = "ERROR: No paths provided for pressure calculation. Cannot proceed."
+            error_msg = "> ERROR: No paths provided for pressure calculation. Cannot proceed."
             Base.append_log(self, error_msg)
             raise ValueError(error_msg)
 
@@ -55,19 +55,26 @@ class Pressure:
                     selected_path = path
                     # Get elevation coordinates with error handling
                     try:
-                        terminal_pipe_location = path[0][6][2][0][3][0][1][0][0]
-                        tank_pipe_location = path[len(path)-2][6][2][0][3][0][1][0][0]
+                        if path[0][6][2][0][2] == 'SweptSolid':
+                            terminal_pipe_location = path[0][6][2][0][3][0][1][0][0]
+                            tank_pipe_location = path[len(path)-2][6][2][0][3][0][1][0][0]
+                        
+
+                        elif path[0][6][2][0][2] == 'MappedRepresentation':
+                            terminal_pipe_location = path[0][6][2][0][3][0][0][1][3][0][1][0][0]
+                            tank_pipe_location = path[len(path)-2][6][2][0][3][0][0][1][3][0][1][0][0]
+
                     except (IndexError, TypeError) as e:
-                        error_msg = f"ERROR: Failed to extract location data from IFC elements. The IFC model structure may be invalid or incomplete. Details: {str(e)}"
+                        error_msg = f"> ERROR: Representation type not yet implemented: {path[0][6][2][0][2]}. Details: {str(e)}"
                         Base.append_log(self, error_msg)
-                        raise IndexError(error_msg)
+                        raise NotImplementedError(error_msg)
                     break
             except (AttributeError, RuntimeError) as e:
                 # Skip invalid paths
                 continue
 
         if selected_path is None:
-            error_msg = f"ERROR: No path found for terminal with ID {term.id()}. The terminal may not be connected to any tank in the topology."
+            error_msg = f"> ERROR: No path found for terminal with ID {term.id()}. The terminal may not be connected to any tank in the topology."
             Base.append_log(self, error_msg)
             raise ValueError(error_msg)
 
@@ -78,7 +85,7 @@ class Pressure:
             terminal_height = terminal_pipe_location[2]
             pressure = total_tank_height - terminal_height
         except (IndexError, TypeError, KeyError) as e:
-            error_msg = f"ERROR: Failed to calculate pressure from elevation data. IFC element structure may be invalid. Details: {str(e)}"
+            error_msg = f"> ERROR: Failed to calculate pressure from elevation data. IFC element structure may be invalid. Details: {str(e)}"
             Base.append_log(self, error_msg)
             raise IndexError(error_msg)
 
@@ -99,7 +106,7 @@ class Pressure:
                         pressure -= pressure_loss
                         Base.append_log(self, f"==> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
                     except Exception as e:
-                        error_msg = f"WARNING: Failed to calculate pressure loss for pipe component ID {component.id()}: {str(e)}"
+                        error_msg = f"> WARNING: Failed to calculate pressure loss for pipe component ID {component.id()}: {str(e)}"
                         Base.append_log(self, error_msg)
                         # Continue with next component
                         continue
@@ -110,7 +117,7 @@ class Pressure:
                         pressure -= pressure_loss
                         Base.append_log(self, f"==> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
                     except Exception as e:
-                        error_msg = f"WARNING: Failed to calculate pressure loss for fitting component ID {component.id()}: {str(e)}"
+                        error_msg = f"> WARNING: Failed to calculate pressure loss for fitting component ID {component.id()}: {str(e)}"
                         Base.append_log(self, error_msg)
                         # Continue with next component
                         continue
@@ -121,7 +128,7 @@ class Pressure:
                         pressure -= pressure_loss
                         Base.append_log(self, f"==> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
                     except Exception as e:
-                        error_msg = f"WARNING: Failed to calculate pressure loss for valve component ID {component.id()}: {str(e)}"
+                        error_msg = f"> WARNING: Failed to calculate pressure loss for valve component ID {component.id()}: {str(e)}"
                         Base.append_log(self, error_msg)
                         # Continue with next component
                         continue
@@ -129,7 +136,7 @@ class Pressure:
                     # Skip other component types (terminals, tanks)
                     pass
             except (AttributeError, RuntimeError) as e:
-                error_msg = f"WARNING: Failed to process component in path: {str(e)}"
+                error_msg = f"> WARNING: Failed to process component in path: {str(e)}"
                 Base.append_log(self, error_msg)
                 continue
 

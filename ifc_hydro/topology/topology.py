@@ -52,12 +52,12 @@ class Topology:
 
         # Validate required IFC relationships exist
         if not nest_list:
-            error_msg = "ERROR: No IfcRelNests relationships found in the IFC model. The model must contain nesting relationships for topology creation."
+            error_msg = "> ERROR: No IfcRelNests relationships found in the IFC model. The model must contain nesting relationships for topology creation."
             Base.append_log(Base, error_msg)
             raise ValueError(error_msg)
 
         if not conn_list:
-            error_msg = "ERROR: No IfcRelConnectsPorts relationships found in the IFC model. The model must contain port connections for topology creation."
+            error_msg = "> ERROR: No IfcRelConnectsPorts relationships found in the IFC model. The model must contain port connections for topology creation."
             Base.append_log(Base, error_msg)
             raise ValueError(error_msg)
 
@@ -100,14 +100,14 @@ class Topology:
         try:
             term = model.by_guid(term_guid)
         except RuntimeError:
-            error_msg = f"ERROR: Sanitary terminal with GUID '{term_guid}' not found in the IFC model."
+            error_msg = f"> ERROR: Sanitary terminal with GUID '{term_guid}' not found in the IFC model."
             Base.append_log(Base, error_msg)
             raise ValueError(error_msg)
 
         try:
             tank = model.by_guid(tank_guid)
         except RuntimeError:
-            error_msg = f"ERROR: Tank with GUID '{tank_guid}' not found in the IFC model."
+            error_msg = f"> ERROR: Tank with GUID '{tank_guid}' not found in the IFC model."
             Base.append_log(Base, error_msg)
             raise ValueError(error_msg)
 
@@ -136,12 +136,12 @@ class Topology:
 
         # Validate required IFC elements exist
         if not term_list:
-            error_msg = "ERROR: No IfcSanitaryTerminal elements found in the IFC model. The model must contain at least one sanitary terminal for hydraulic analysis."
+            error_msg = "> ERROR: No IfcSanitaryTerminal elements found in the IFC model. The model must contain at least one sanitary terminal for hydraulic analysis."
             Base.append_log(Base, error_msg)
             raise ValueError(error_msg)
 
         if not tank_list:
-            error_msg = "ERROR: No IfcTank elements found in the IFC model. The model must contain at least one tank for hydraulic analysis."
+            error_msg = "> ERROR: No IfcTank elements found in the IFC model. The model must contain at least one tank for hydraulic analysis."
             Base.append_log(Base, error_msg)
             raise ValueError(error_msg)
 
