@@ -1,21 +1,9 @@
-15.34.29 ----------------------------------------------------------------------------------------------------
-15.34.29 >>> Project eval:
-15.34.29 >>> New run started at 15/01/2026 15:34:29.
-15.34.29 ----------------------------------------------------------------------------------------------------
-15.34.30 > Successfully loaded IFC model from: .\ifc_hydro\examples\eval\eval-project.ifc
-15.34.40 > Creating topology...
-15.34.40 > Found 6 sanitary terminal(s) and 1 tank(s)...
-15.34.40 > Topology created with 6 paths...
-15.34.40 ----------------------------------------------------------------------------------------------------
-15.34.42 ERROR: Representation type not yet implemented: MappedRepresentation. Details: 'NoneType' object is not subscriptable
-15.34.42 ERROR: Failed to calculate pressure for terminal 720: cannot access local variable 'tank_pipe_location' where it is not associated with a value
-15.34.42 ERROR: Representation type not yet implemented: MappedRepresentation. Details: 'NoneType' object is not subscriptable
-15.34.42 ERROR: Failed to calculate pressure for terminal 733: cannot access local variable 'tank_pipe_location' where it is not associated with a value
-15.34.42 ERROR: Representation type not yet implemented: MappedRepresentation. Details: 'NoneType' object is not subscriptable
-15.34.42 ERROR: Failed to calculate pressure for terminal 744: cannot access local variable 'tank_pipe_location' where it is not associated with a value
-15.34.42 ERROR: Representation type not yet implemented: MappedRepresentation. Details: 'NoneType' object is not subscriptable
-15.34.42 ERROR: Failed to calculate pressure for terminal 2340: cannot access local variable 'tank_pipe_location' where it is not associated with a value
-15.34.42 ERROR: Representation type not yet implemented: MappedRepresentation. Details: 'NoneType' object is not subscriptable
-15.34.42 ERROR: Failed to calculate pressure for terminal 2370: cannot access local variable 'tank_pipe_location' where it is not associated with a value
-15.34.42 ERROR: Representation type not yet implemented: MappedRepresentation. Details: 'NoneType' object is not subscriptable
-15.34.42 ERROR: Failed to calculate pressure for terminal 3048: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+14.08.31 >>> Project eval:
+14.08.31 >>> New run started at 14/01/2026 14:08:31.
+14.08.31 ----------------------------------------------------------------------------------------------------
+14.08.52 >>> Project eval:
+14.08.52 >>> New run started at 14/01/2026 14:08:52.
+14.08.52 ----------------------------------------------------------------------------------------------------
+14.09.03 > Creating topology...
+14.09.03 > Topology created with 0 paths...
+14.09.03 ----------------------------------------------------------------------------------------------------

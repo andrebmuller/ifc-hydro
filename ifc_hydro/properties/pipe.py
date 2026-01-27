@@ -6,7 +6,6 @@ from pipe segments in the IFC model.
 """
 
 from ..core.base import Base
-from ..hydraulics.input_tables import get_nominal_diameter, get_internal_diameter
 
 
 class Pipe:
@@ -26,14 +25,14 @@ class Pipe:
             pipe: IFC pipe segment object
 
         Returns:
-            dict: Dictionary containing pipe length ('len'), diameter ('dim'),
-                  and nominal diameter in mm ('nominal_dim')
+            dict: Dictionary containing pipe length ('len') and diameter ('dim')
 
         Raises:
             ValueError: If pipe properties cannot be extracted from the IFC element
         """
         Base.append_log(None, f"> Getting pipe properties for pipe with ID {pipe.id()}...")
         pipe_prop = {}
+        real_dim = 0
 
         # Extract pipe length from IFC geometry representation with error handling
         try:
@@ -52,17 +51,29 @@ class Pipe:
             Base.append_log(None, error_msg)
             raise ValueError(error_msg)
 
-        # Map nominal pipe diameter to real internal diameter using centralized table
-        nominal_diameter = get_nominal_diameter(pipe_dim)
-        internal_diameter = get_internal_diameter(nominal_diameter)
+        # Map nominal pipe diameter to real internal diameter (in meters)
+        if round(pipe_dim, 3) == 0.015:
+            real_dim = 0.0170
+        if round(pipe_dim, 3) == 0.020:
+            real_dim = 0.0216
+        elif round(pipe_dim, 3) == 0.025:
+            real_dim = 0.0278
+        elif round(pipe_dim, 3) == 0.032:
+            real_dim = 0.0352
+        elif round(pipe_dim, 3) == 0.040:
+            real_dim = 0.0440
+        elif round(pipe_dim, 3) == 0.050:
+            real_dim = 0.0534
+        elif round(pipe_dim, 3) == 0.065:
+            real_dim = 0.0666
+        elif round(pipe_dim, 3) == 0.075:
+            real_dim = 0.0756
+        elif round(pipe_dim, 3) == 0.100:
+            real_dim = 0.0978
+        else:
+            real_dim = 0.000
 
-        # Fallback if diameter not in table
-        if internal_diameter == 0.0:
-            Base.append_log(None, f"> WARNING: Nominal diameter {nominal_diameter}mm not found in table, using measured value")
-            internal_diameter = pipe_dim
-
-        pipe_prop['dim'] = internal_diameter
-        pipe_prop['nominal_dim'] = nominal_diameter
+        pipe_prop['dim'] = real_dim
 
         Base.append_log(None, f"> Pipe properties:")
         Base.append_log(None, f"> {pipe_prop}")

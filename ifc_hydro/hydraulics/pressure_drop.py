@@ -3,9 +3,6 @@ Pressure drop calculation module for water supply systems.
 
 This module implements pressure drop analysis for pipes, fittings, and valves
 using industry standard equations such as Fair Whipple-Hsiao.
-
-Multi-diameter support: Uses diameter-specific equivalent length coefficients
-from input_tables.py for accurate calculations across different pipe sizes.
 """
 
 from ..core.base import Base
@@ -13,12 +10,7 @@ from ..properties.pipe import Pipe
 from ..properties.fitting import Fitting
 from ..properties.valve import Valve
 from .design_flow import DesignFlow
-from .input_tables import (
-    get_nominal_diameter,
-    get_internal_diameter,
-    get_fitting_coefficient,
-    get_valve_coefficient,
-)
+from .input_tables import local_pressure_drop_table
 
 
 class PressureDrop:
@@ -27,7 +19,6 @@ class PressureDrop:
 
     This class implements pressure drop calculations for pipes (linear losses)
     and fittings/valves (local losses) using industry standard equations.
-    Supports multiple diameters with diameter-specific coefficients.
     """
 
     def __init__(self) -> None:
@@ -75,8 +66,8 @@ class PressureDrop:
         """
         Calculate local pressure drop in fittings and valves using equivalent length method.
 
-        Uses diameter-specific tabulated equivalent length values for different
-        connection types and applies the Fair Whipple-Hsiao equation.
+        Uses tabulated equivalent length values for different connection types
+        and applies the Hazen-Williams equation.
 
         Args:
             conn: IFC connection object (fitting or valve)
@@ -106,40 +97,31 @@ class PressureDrop:
         else:
             return 0
 
-        # Extract diameter from connection properties
-        # conn_prop['dim'] is a tuple: (incoming_diameter, outgoing_diameter)
-        dim_tuple = conn_prop.get('dim', (0.025, 0.025))
-        # Use the average of incoming and outgoing diameters for coefficient lookup
-        avg_diameter_m = (dim_tuple[0] + dim_tuple[1]) / 2
-        nominal_diameter = get_nominal_diameter(avg_diameter_m)
-        internal_diameter = get_internal_diameter(nominal_diameter)
+        # Get the coefficient from the table
+        table_value = local_pressure_drop_table.get(conn_prop.get('type'))
 
-        # Use the actual internal diameter if available, otherwise fallback
-        if internal_diameter == 0.0:
-            internal_diameter = avg_diameter_m
+        # Handle angle-based coefficients (JUNCTION uses tuple structure)
+        if isinstance(table_value, tuple):
+            # Get direction change angle for angle-based coefficient lookup
+            direction_info = conn_prop.get('dir', {})
+            direction_angle = direction_info.get('direction_change_angle', None)
 
-        Base.append_log(self, f"> Connection nominal diameter: {nominal_diameter} mm, internal: {internal_diameter} m")
-
-        # Get direction change angle for angle-based coefficient lookup
-        direction_info = conn_prop.get('dir', {})
-        direction_angle = direction_info.get('direction_change_angle', None)
-
-        # Get coefficient based on connection type and diameter
-        conn_type = conn_prop.get('type')
-
-        if conn.is_a() == 'IfcValve':
-            coefficient = get_valve_coefficient(conn_type, nominal_diameter)
+            # Select coefficient based on angle: index 0 for 0.0°, index 1 for others
+            if direction_angle == 0.0:
+                coefficient = table_value[0]
+            else:
+                coefficient = table_value[1]
         else:
-            coefficient = get_fitting_coefficient(conn_type, nominal_diameter, direction_angle)
-
-        Base.append_log(self, f"> Using equivalent lenght: {coefficient} for {conn_type} at {nominal_diameter}mm")
+            # Simple numeric coefficient
+            coefficient = table_value
 
         # Fair Whipple-Hsiao equation for PVC pipes
-        # Uses actual internal diameter for accurate calculation
-        pressure_drop = coefficient * (0.000859 * ((design_flow * 0.001) ** 1.75) * (internal_diameter ** -4.75))
+        # Recommended for pipes with d between 12.5 mm and 100 mm
+        pressure_drop = coefficient * (0.000859 * ((design_flow * 0.001) ** 1.75) *  (0.0278 ** -4.75))
 
-        # Legacy Hazen-Williams equation with equivalent length for PVC (C = 140)
-        # pressure_drop = (10.67 * coefficient * (design_flow * 0.001) ** 1.852) / ((140 ** 1.852) * (internal_diameter ** 4.87))
+        # Hazen-Williams equation with equivalent length for PVC (C = 140)
+        # Using standard reference diameter of 25mm for equivalent length calculations
+        # pressure_drop = (10.67 * local_pressure_drop_table.get(conn_prop.get('type')) * (design_flow * 0.001) ** 1.852) / ((140 ** 1.852) * (0.025 ** 4.87))
 
         Base.append_log(self, f"> Local pressure drop: {round(pressure_drop, 3)} m")
         return pressure_drop
