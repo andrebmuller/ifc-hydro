@@ -6,6 +6,9 @@ accounting for gravity potential and all pressure losses along the flow path.
 """
 
 import ifcopenshell as ifc
+from ifcopenshell import geom
+from ifcopenshell import util
+from ifcopenshell.util import shape
 from ..core.base import Base
 from .pressure_drop import PressureDrop
 
