@@ -5,9 +5,12 @@ This module implements available pressure calculations at sanitary terminals,
 accounting for gravity potential and all pressure losses along the flow path.
 """
 
+import ifcopenshell as ifc
+from ifcopenshell import geom
+from ifcopenshell import util
+from ifcopenshell.util import shape
 from ..core.base import Base
 from .pressure_drop import PressureDrop
-
 
 class Pressure:
     """
@@ -61,9 +64,26 @@ class Pressure:
                         
 
                         elif path[0][6][2][0][2] == 'MappedRepresentation':
-                            terminal_pipe_location = path[0][6][2][0][3][0][0][1][3][0][1][0][0]
-                            tank_pipe_location = path[len(path)-2][6][2][0][3][0][0][1][3][0][1][0][0]
+                            #terminal_pipe_location = path[0][6][2][0][3][0][0][1][3][0][1][0][0]
+                            #tank_pipe_location = path[len(path)-2][6][2][0][3][0][1][0][0]
 
+                            model = ifc.open('.\ifc_hydro\examples\eval\eval-project.ifc')
+
+                            settings = ifc.geom.settings()
+                            settings.set(settings.USE_WORLD_COORDS, True)
+
+                            terminal_guid = path[0][0]
+                            terminal = model.by_guid(terminal_guid)
+                            terminal_shape = ifc.geom.create_shape(settings, terminal)
+                            terminal_pipe_location = round(ifc.util.shape.get_top_elevation(terminal_shape.geometry),3)
+                            print(terminal_pipe_location)
+
+                            tank_guid = path[len(path)][0]
+                            tank = model.by_guid(tank_guid)
+                            tank_shape = ifc.geom.create_shape(settings, tank)
+                            tank_pipe_location = round(ifc.util.shape.get_bottom_elevation(tank_shape.geometry),3)
+                            print(tank_pipe_location)
+                                                                                                              
                     except (IndexError, TypeError) as e:
                         error_msg = f"> ERROR: Representation type not yet implemented: {path[0][6][2][0][2]}. Details: {str(e)}"
                         Base.append_log(self, error_msg)

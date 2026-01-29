@@ -1,0 +1,116 @@
+10.34.53 >>> Project ifc-hydro:
+10.34.53 >>> New run started at 29/01/2026 10:34:53.
+10.34.53 ----------------------------------------------------------------------------------------------------
+10.34.54 > Successfully loaded IFC model from: .\ifc_hydro\examples\eval\eval-project.ifc
+10.35.05 > Creating topology...
+10.35.05 > Found 6 sanitary terminal(s) and 1 tank(s)...
+10.35.05 > Topology created with 6 paths...
+10.35.05 ----------------------------------------------------------------------------------------------------
+10.35.05 > ERROR: Failed to calculate pressure for terminal 769: Unable to open file for reading
+10.35.05 > ERROR: Failed to calculate pressure for terminal 782: Unable to open file for reading
+10.35.05 > ERROR: Failed to calculate pressure for terminal 793: Unable to open file for reading
+10.35.05 > ERROR: Failed to calculate pressure for terminal 2672: Unable to open file for reading
+10.35.05 > ERROR: Failed to calculate pressure for terminal 2701: Unable to open file for reading
+10.35.05 > ERROR: Failed to calculate pressure for terminal 3657: Unable to open file for reading
+10.35.44 >>> Project ifc-hydro:
+10.35.44 >>> New run started at 29/01/2026 10:35:44.
+10.35.44 ----------------------------------------------------------------------------------------------------
+10.35.45 > Successfully loaded IFC model from: .\ifc_hydro\examples\eval\eval-project.ifc
+10.35.55 > Creating topology...
+10.35.55 > Found 6 sanitary terminal(s) and 1 tank(s)...
+10.35.55 > Topology created with 6 paths...
+10.35.55 ----------------------------------------------------------------------------------------------------
+10.35.57 > ERROR: Failed to calculate pressure for terminal 769: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.35.57 > ERROR: Failed to calculate pressure for terminal 782: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.35.57 > ERROR: Failed to calculate pressure for terminal 793: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.35.57 > ERROR: Failed to calculate pressure for terminal 2672: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.35.57 > ERROR: Failed to calculate pressure for terminal 2701: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.35.57 > ERROR: Failed to calculate pressure for terminal 3657: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.36.42 >>> Project ifc-hydro:
+10.36.42 >>> New run started at 29/01/2026 10:36:42.
+10.36.42 ----------------------------------------------------------------------------------------------------
+10.36.42 > Successfully loaded IFC model from: .\ifc_hydro\examples\eval\eval-project.ifc
+10.36.53 > Creating topology...
+10.36.53 > Found 6 sanitary terminal(s) and 1 tank(s)...
+10.36.53 > Topology created with 6 paths...
+10.36.53 ----------------------------------------------------------------------------------------------------
+10.37.07 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.37.07 > ERROR: Failed to calculate pressure for terminal 769: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.37.07 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.37.07 > ERROR: Failed to calculate pressure for terminal 782: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.37.07 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.37.07 > ERROR: Failed to calculate pressure for terminal 793: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.37.07 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.37.07 > ERROR: Failed to calculate pressure for terminal 2672: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.37.07 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.37.07 > ERROR: Failed to calculate pressure for terminal 2701: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.37.07 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.37.07 > ERROR: Failed to calculate pressure for terminal 3657: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.37.48 >>> Project ifc-hydro:
+10.37.48 >>> New run started at 29/01/2026 10:37:48.
+10.37.48 ----------------------------------------------------------------------------------------------------
+10.37.49 > Successfully loaded IFC model from: .\ifc_hydro\examples\eval\eval-project.ifc
+10.38.04 > Creating topology...
+10.38.04 > Found 6 sanitary terminal(s) and 1 tank(s)...
+10.38.04 > Topology created with 6 paths...
+10.38.04 ----------------------------------------------------------------------------------------------------
+10.38.39 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.38.39 > ERROR: Failed to calculate pressure for terminal 769: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.38.39 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.38.39 > ERROR: Failed to calculate pressure for terminal 782: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.38.39 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.38.39 > ERROR: Failed to calculate pressure for terminal 793: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.38.39 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.38.39 > ERROR: Failed to calculate pressure for terminal 2672: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.38.39 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.38.39 > ERROR: Failed to calculate pressure for terminal 2701: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.38.39 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.38.39 > ERROR: Failed to calculate pressure for terminal 3657: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.39.22 >>> Project ifc-hydro:
+10.39.22 >>> New run started at 29/01/2026 10:39:22.
+10.39.22 ----------------------------------------------------------------------------------------------------
+10.39.22 > Successfully loaded IFC model from: .\ifc_hydro\examples\eval\eval-project.ifc
+10.39.35 > Creating topology...
+10.39.35 > Found 6 sanitary terminal(s) and 1 tank(s)...
+10.39.35 > Topology created with 6 paths...
+10.39.35 ----------------------------------------------------------------------------------------------------
+10.39.36 > ERROR: Failed to calculate pressure for terminal 769: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.39.36 > ERROR: Failed to calculate pressure for terminal 782: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.39.36 > ERROR: Failed to calculate pressure for terminal 793: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.39.36 > ERROR: Failed to calculate pressure for terminal 2672: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.39.36 > ERROR: Failed to calculate pressure for terminal 2701: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.39.36 > ERROR: Failed to calculate pressure for terminal 3657: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.40.30 >>> Project ifc-hydro:
+10.40.30 >>> New run started at 29/01/2026 10:40:30.
+10.40.30 ----------------------------------------------------------------------------------------------------
+10.40.30 > Successfully loaded IFC model from: .\ifc_hydro\examples\eval\eval-project.ifc
+10.40.44 > Creating topology...
+10.40.44 > Found 6 sanitary terminal(s) and 1 tank(s)...
+10.40.44 > Topology created with 6 paths...
+10.40.44 ----------------------------------------------------------------------------------------------------
+10.40.45 > ERROR: Failed to calculate pressure for terminal 769: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.40.45 > ERROR: Failed to calculate pressure for terminal 782: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.40.45 > ERROR: Failed to calculate pressure for terminal 793: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.40.45 > ERROR: Failed to calculate pressure for terminal 2672: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.40.45 > ERROR: Failed to calculate pressure for terminal 2701: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.40.45 > ERROR: Failed to calculate pressure for terminal 3657: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.41.22 >>> Project ifc-hydro:
+10.41.22 >>> New run started at 29/01/2026 10:41:22.
+10.41.22 ----------------------------------------------------------------------------------------------------
+10.41.23 > Successfully loaded IFC model from: .\ifc_hydro\examples\eval\eval-project.ifc
+10.41.37 > Creating topology...
+10.41.37 > Found 6 sanitary terminal(s) and 1 tank(s)...
+10.41.37 > Topology created with 6 paths...
+10.41.37 ----------------------------------------------------------------------------------------------------
+10.41.38 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.41.38 > ERROR: Failed to calculate pressure for terminal 769: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.41.38 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.41.38 > ERROR: Failed to calculate pressure for terminal 782: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.41.38 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.41.38 > ERROR: Failed to calculate pressure for terminal 793: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.41.38 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.41.38 > ERROR: Failed to calculate pressure for terminal 2672: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.41.38 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.41.38 > ERROR: Failed to calculate pressure for terminal 2701: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+10.41.38 > ERROR: Representation type not yet implemented: MappedRepresentation. Details: list index out of range
+10.41.38 > ERROR: Failed to calculate pressure for terminal 3657: cannot access local variable 'tank_pipe_location' where it is not associated with a value

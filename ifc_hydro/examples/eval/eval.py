@@ -30,7 +30,7 @@ def main():
 
     # Validate IFC file exists
     if not os.path.exists(ifc_file_path):
-        error_msg = f"ERROR: IFC file not found at path: {ifc_file_path}"
+        error_msg = f"> ERROR: IFC file not found at path: {ifc_file_path}"
         Base.append_log(Base, error_msg)
         print(error_msg)
         sys.exit(1)
@@ -40,7 +40,7 @@ def main():
         model = ifc.open(ifc_file_path)
         Base.append_log(Base, f"> Successfully loaded IFC model from: {ifc_file_path}")
     except Exception as e:
-        error_msg = f"ERROR: Failed to open IFC file: {str(e)}"
+        error_msg = f"> ERROR: Failed to open IFC file: {str(e)}"
         Base.append_log(Base, error_msg)
         print(error_msg)
         sys.exit(1)
@@ -50,20 +50,20 @@ def main():
         topology = Topology(model)
         test_path = topology.all_paths_finder()
     except ValueError as e:
-        error_msg = f"ERROR: Topology creation failed: {str(e)}"
+        error_msg = f"> ERROR: Topology creation failed: {str(e)}"
         Base.append_log(Base, error_msg)
         print(error_msg)
         Base.append_log(Base, "Program halted due to topology errors.")
         sys.exit(1)
     except Exception as e:
-        error_msg = f"ERROR: Unexpected error during topology creation: {str(e)}"
+        error_msg = f"> ERROR: Unexpected error during topology creation: {str(e)}"
         Base.append_log(Base, error_msg)
         print(error_msg)
         sys.exit(1)
 
     # Validate that paths were created
     if not test_path or len(test_path) == 0:
-        error_msg = "ERROR: No paths were created. Cannot proceed with pressure calculations."
+        error_msg = "> ERROR: No paths were created. Cannot proceed with pressure calculations."
         Base.append_log(Base, error_msg)
         print(error_msg)
         sys.exit(1)
@@ -84,12 +84,12 @@ def main():
             term_test = model.by_id(int(terminal_id_input))
             press_test = pressure_calc.available(term_test, test_path)
         except RuntimeError:
-            error_msg = f"ERROR: Terminal with ID {terminal_id_input} not found in the IFC model."
+            error_msg = f"> ERROR: Terminal with ID {terminal_id_input} not found in the IFC model."
             Base.append_log(Base, error_msg)
             print(error_msg)
             sys.exit(1)
         except Exception as e:
-            error_msg = f"ERROR: Failed to calculate pressure: {str(e)}"
+            error_msg = f"> ERROR: Failed to calculate pressure: {str(e)}"
             Base.append_log(Base, error_msg)
             print(error_msg)
             sys.exit(1)
@@ -99,7 +99,7 @@ def main():
         terminals = model.by_type("IfcSanitaryTerminal")
 
         if not terminals:
-            error_msg = "ERROR: No IfcSanitaryTerminal elements found in the IFC model."
+            error_msg = "> ERROR: No IfcSanitaryTerminal elements found in the IFC model."
             Base.append_log(Base, error_msg)
             print(error_msg)
             sys.exit(1)
@@ -113,7 +113,7 @@ def main():
                 term_test = model.by_id(terminal_id)
                 press_test = pressure_calc.available(term_test, test_path)
             except Exception as e:
-                error_msg = f"ERROR: Failed to calculate pressure for terminal {terminal_id}: {str(e)}"
+                error_msg = f"> ERROR: Failed to calculate pressure for terminal {terminal_id}: {str(e)}"
                 Base.append_log(Base, error_msg)
                 print(error_msg)
                 # Continue with next terminal instead of exiting
