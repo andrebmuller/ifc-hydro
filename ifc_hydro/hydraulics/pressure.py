@@ -64,24 +64,24 @@ class Pressure:
                     selected_path = path
                     # Get elevation coordinates with error handling
                     try:
-                        if path[0][6][2][0][2] == 'SweptSolid':
-                            terminal_pipe_location = path[0][6][2][0][3][0][1][0][0]
-                            tank_pipe_location = path[len(path)-2][6][2][0][3][0][1][0][0]
+                        #if path[0][6][2][0][2] == 'SweptSolid':
+                            #terminal_pipe_location = path[0][6][2][0][3][0][1][0][0]
+                            #tank_pipe_location = path[len(path)-2][6][2][0][3][0][1][0][0]
                         
 
-                        elif path[0][6][2][0][2] == 'MappedRepresentation':
-                            settings = ifc.geom.settings()
-                            settings.set(settings.USE_WORLD_COORDS, True)
+                        #elif path[0][6][2][0][2] == 'MappedRepresentation':
+                        settings = ifc.geom.settings()
+                        settings.set(settings.USE_WORLD_COORDS, True)
 
-                            terminal_guid = path[0][0]
-                            terminal = self.model.by_guid(terminal_guid)
-                            terminal_shape = ifc.geom.create_shape(settings, terminal)
-                            terminal_pipe_location = round(ifc.util.shape.get_top_elevation(terminal_shape.geometry), 3)
+                        terminal_guid = path[0][0]
+                        terminal = self.model.by_guid(terminal_guid)
+                        terminal_shape = ifc.geom.create_shape(settings, terminal)
+                        terminal_pipe_location = round(ifc.util.shape.get_top_elevation(terminal_shape.geometry), 3)
 
-                            tank_guid = path[len(path)-1][0]
-                            tank = self.model.by_guid(tank_guid)
-                            tank_shape = ifc.geom.create_shape(settings, tank)
-                            tank_pipe_location = round(ifc.util.shape.get_bottom_elevation(tank_shape.geometry), 3)
+                        tank_guid = path[len(path)-1][0]
+                        tank = self.model.by_guid(tank_guid)
+                        tank_shape = ifc.geom.create_shape(settings, tank)
+                        tank_pipe_location = round(ifc.util.shape.get_bottom_elevation(tank_shape.geometry), 3)
                                                                                                               
                     except (IndexError, TypeError) as e:
                         error_msg = f"> ERROR: Representation type not yet implemented: {path[0][6][2][0][2]}. Details: {str(e)}"
@@ -99,11 +99,11 @@ class Pressure:
 
         # Calculate initial pressure from elevation difference (gravity potential)
         try:
-            tank_height_adjustment = selected_path[len(selected_path)-2][5][0][1][0][0][2]
-            print(tank_height_adjustment)
+            #tank_height_adjustment = selected_path[len(selected_path)-2][5][0][1][0][0][2]
             #total_tank_height = tank_pipe_location[2] + tank_height_adjustment
-            total_tank_height = tank_pipe_location
             #terminal_height = terminal_pipe_location[2]
+            tank_height_adjustment = 0.5
+            total_tank_height = tank_pipe_location + tank_height_adjustment
             terminal_height = terminal_pipe_location
             pressure = total_tank_height - terminal_height
         except (IndexError, TypeError, KeyError) as e:
@@ -169,6 +169,6 @@ class Pressure:
 
         Base.append_log(self, f"{'='*100}")
         Base.append_log(self, f"> Available pressure at the sanitary terminal {selected_path[0].id()} - Type: {terminal_type}:")
-        Base.append_log(self, f"> {round(pressure, 3)} m")
+        Base.append_log(self, f"> {round(pressure, 2)} m")
         Base.append_log(self, f"{'='*100}")
         return pressure
