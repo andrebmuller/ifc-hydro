@@ -818,3 +818,339 @@
 10.59.20 > Available pressure at the sanitary terminal 3657 - Type: CISTERN:
 10.59.20 > 6.119 m
 10.59.20 ====================================================================================================
+11.14.08 >>> Project ifc-hydro:
+11.14.08 >>> New run started at 29/01/2026 11:14:08.
+11.14.08 ----------------------------------------------------------------------------------------------------
+11.14.09 > Successfully loaded IFC model from: .\ifc_hydro\examples\eval\eval-project.ifc
+11.14.20 > Creating topology...
+11.14.20 > Found 6 sanitary terminal(s) and 1 tank(s)...
+11.14.20 > Topology created with 6 paths...
+11.14.20 ----------------------------------------------------------------------------------------------------
+11.14.21 > ERROR: Failed to calculate pressure for terminal 769: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+11.14.21 > ERROR: Failed to calculate pressure for terminal 782: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+11.14.21 > ERROR: Failed to calculate pressure for terminal 793: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+11.14.21 > ERROR: Failed to calculate pressure for terminal 2672: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+11.14.21 > ERROR: Failed to calculate pressure for terminal 2701: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+11.14.21 > ERROR: Failed to calculate pressure for terminal 3657: cannot access local variable 'tank_pipe_location' where it is not associated with a value
+11.16.23 >>> Project ifc-hydro:
+11.16.23 >>> New run started at 29/01/2026 11:16:23.
+11.16.23 ----------------------------------------------------------------------------------------------------
+11.16.23 > Successfully loaded IFC model from: .\ifc_hydro\examples\eval\eval-project.ifc
+11.16.42 > Creating topology...
+11.16.42 > Found 6 sanitary terminal(s) and 1 tank(s)...
+11.16.42 > Topology created with 6 paths...
+11.16.42 ----------------------------------------------------------------------------------------------------
+11.17.05 > Getting available pressure at sanitary terminal with ID 769...
+11.17.05 > Tank height: 7.734 m
+11.17.05 > Terminal height: 3.965 m
+11.17.05 > Initial pressure from gravity potential: 3.769 m
+11.17.05 ----------------------------------------------------------------------------------------------------
+11.17.05 > WARNING: Failed to calculate pressure loss for fitting component ID 1532: 'TOILETPAN'
+11.17.05 > Getting pipe properties for pipe with ID 809...
+11.17.05 > ERROR: Failed to extract diameter from pipe ID 809. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for pipe component ID 809: > ERROR: Failed to extract diameter from pipe ID 809. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for fitting component ID 1046: 'TOILETPAN'
+11.17.05 > Getting pipe properties for pipe with ID 1064...
+11.17.05 > ERROR: Failed to extract diameter from pipe ID 1064. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for pipe component ID 1064: > ERROR: Failed to extract diameter from pipe ID 1064. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for fitting component ID 3600: 'TOILETPAN'
+11.17.05 > Getting pipe properties for pipe with ID 2387...
+11.17.05 > ERROR: Failed to extract diameter from pipe ID 2387. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for pipe component ID 2387: > ERROR: Failed to extract diameter from pipe ID 2387. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for fitting component ID 3611: 'TOILETPAN'
+11.17.05 > Getting pipe properties for pipe with ID 3627...
+11.17.05 > ERROR: Failed to extract diameter from pipe ID 3627. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for pipe component ID 3627: > ERROR: Failed to extract diameter from pipe ID 3627. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for fitting component ID 723: 'TOILETPAN'
+11.17.05 > Getting pipe properties for pipe with ID 695...
+11.17.05 > ERROR: Failed to extract diameter from pipe ID 695. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for pipe component ID 695: > ERROR: Failed to extract diameter from pipe ID 695. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for fitting component ID 712: 'TOILETPAN'
+11.17.05 > Getting pipe properties for pipe with ID 673...
+11.17.05 > ERROR: Failed to extract diameter from pipe ID 673. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for pipe component ID 673: > ERROR: Failed to extract diameter from pipe ID 673. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for fitting component ID 2569: 'TOILETPAN'
+11.17.05 > Getting pipe properties for pipe with ID 2585...
+11.17.05 > ERROR: Failed to extract diameter from pipe ID 2585. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for pipe component ID 2585: > ERROR: Failed to extract diameter from pipe ID 2585. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for fitting component ID 2536: 'TOILETPAN'
+11.17.05 > Getting pipe properties for pipe with ID 2552...
+11.17.05 > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for pipe component ID 2552: > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for fitting component ID 654: 'TOILETPAN'
+11.17.05 > Getting pipe properties for pipe with ID 68...
+11.17.05 > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for pipe component ID 68: > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for fitting component ID 13250: 'TOILETPAN'
+11.17.05 > Getting pipe properties for pipe with ID 13233...
+11.17.05 > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 > WARNING: Failed to calculate pressure loss for pipe component ID 13233: > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.05 ====================================================================================================
+11.17.05 > Available pressure at the sanitary terminal 769 - Type: TOILETPAN:
+11.17.05 > 3.769 m
+11.17.05 ====================================================================================================
+11.17.11 > Getting available pressure at sanitary terminal with ID 782...
+11.17.11 > Tank height: 7.734 m
+11.17.11 > Terminal height: 3.965 m
+11.17.11 > Initial pressure from gravity potential: 3.769 m
+11.17.11 ----------------------------------------------------------------------------------------------------
+11.17.11 > WARNING: Failed to calculate pressure loss for fitting component ID 2195: 'TOILETPAN'
+11.17.11 > Getting pipe properties for pipe with ID 2145...
+11.17.11 > ERROR: Failed to extract diameter from pipe ID 2145. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for pipe component ID 2145: > ERROR: Failed to extract diameter from pipe ID 2145. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for fitting component ID 2162: 'TOILETPAN'
+11.17.11 > Getting pipe properties for pipe with ID 2178...
+11.17.11 > ERROR: Failed to extract diameter from pipe ID 2178. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for pipe component ID 2178: > ERROR: Failed to extract diameter from pipe ID 2178. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for fitting component ID 2349: 'TOILETPAN'
+11.17.11 > Getting pipe properties for pipe with ID 2365...
+11.17.11 > ERROR: Failed to extract diameter from pipe ID 2365. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for pipe component ID 2365: > ERROR: Failed to extract diameter from pipe ID 2365. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for fitting component ID 2338: 'TOILETPAN'
+11.17.11 > Getting pipe properties for pipe with ID 2277...
+11.17.11 > ERROR: Failed to extract diameter from pipe ID 2277. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for pipe component ID 2277: > ERROR: Failed to extract diameter from pipe ID 2277. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for fitting component ID 2470: 'TOILETPAN'
+11.17.11 > Getting pipe properties for pipe with ID 2321...
+11.17.11 > ERROR: Failed to extract diameter from pipe ID 2321. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for pipe component ID 2321: > ERROR: Failed to extract diameter from pipe ID 2321. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for fitting component ID 2481: 'TOILETPAN'
+11.17.11 > Getting pipe properties for pipe with ID 2508...
+11.17.11 > ERROR: Failed to extract diameter from pipe ID 2508. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for pipe component ID 2508: > ERROR: Failed to extract diameter from pipe ID 2508. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for fitting component ID 2492: 'TOILETPAN'
+11.17.11 > Getting pipe properties for pipe with ID 2431...
+11.17.11 > ERROR: Failed to extract diameter from pipe ID 2431. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for pipe component ID 2431: > ERROR: Failed to extract diameter from pipe ID 2431. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for fitting component ID 2536: 'TOILETPAN'
+11.17.11 > Getting pipe properties for pipe with ID 2552...
+11.17.11 > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for pipe component ID 2552: > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for fitting component ID 654: 'TOILETPAN'
+11.17.11 > Getting pipe properties for pipe with ID 68...
+11.17.11 > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for pipe component ID 68: > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for fitting component ID 13250: 'TOILETPAN'
+11.17.11 > Getting pipe properties for pipe with ID 13233...
+11.17.11 > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 > WARNING: Failed to calculate pressure loss for pipe component ID 13233: > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.11 ====================================================================================================
+11.17.11 > Available pressure at the sanitary terminal 782 - Type: TOILETPAN:
+11.17.11 > 3.769 m
+11.17.11 ====================================================================================================
+11.17.18 > Getting available pressure at sanitary terminal with ID 793...
+11.17.18 > Tank height: 7.734 m
+11.17.18 > Terminal height: 3.965 m
+11.17.18 > Initial pressure from gravity potential: 3.769 m
+11.17.18 ----------------------------------------------------------------------------------------------------
+11.17.18 > WARNING: Failed to calculate pressure loss for fitting component ID 2081: 'TOILETPAN'
+11.17.18 > Getting pipe properties for pipe with ID 2031...
+11.17.18 > ERROR: Failed to extract diameter from pipe ID 2031. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for pipe component ID 2031: > ERROR: Failed to extract diameter from pipe ID 2031. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for fitting component ID 2048: 'TOILETPAN'
+11.17.18 > Getting pipe properties for pipe with ID 2064...
+11.17.18 > ERROR: Failed to extract diameter from pipe ID 2064. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for pipe component ID 2064: > ERROR: Failed to extract diameter from pipe ID 2064. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for fitting component ID 2206: 'TOILETPAN'
+11.17.18 > Getting pipe properties for pipe with ID 2222...
+11.17.18 > ERROR: Failed to extract diameter from pipe ID 2222. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for pipe component ID 2222: > ERROR: Failed to extract diameter from pipe ID 2222. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for fitting component ID 2239: 'TOILETPAN'
+11.17.18 > Getting pipe properties for pipe with ID 2255...
+11.17.18 > ERROR: Failed to extract diameter from pipe ID 2255. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for pipe component ID 2255: > ERROR: Failed to extract diameter from pipe ID 2255. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for fitting component ID 2525: 'TOILETPAN'
+11.17.18 > Getting pipe properties for pipe with ID 2299...
+11.17.18 > ERROR: Failed to extract diameter from pipe ID 2299. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for pipe component ID 2299: > ERROR: Failed to extract diameter from pipe ID 2299. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for fitting component ID 2492: 'TOILETPAN'
+11.17.18 > Getting pipe properties for pipe with ID 2431...
+11.17.18 > ERROR: Failed to extract diameter from pipe ID 2431. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for pipe component ID 2431: > ERROR: Failed to extract diameter from pipe ID 2431. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for fitting component ID 2536: 'TOILETPAN'
+11.17.18 > Getting pipe properties for pipe with ID 2552...
+11.17.18 > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for pipe component ID 2552: > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for fitting component ID 654: 'TOILETPAN'
+11.17.18 > Getting pipe properties for pipe with ID 68...
+11.17.18 > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for pipe component ID 68: > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for fitting component ID 13250: 'TOILETPAN'
+11.17.18 > Getting pipe properties for pipe with ID 13233...
+11.17.18 > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 > WARNING: Failed to calculate pressure loss for pipe component ID 13233: > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.18 ====================================================================================================
+11.17.18 > Available pressure at the sanitary terminal 793 - Type: TOILETPAN:
+11.17.18 > 3.769 m
+11.17.18 ====================================================================================================
+11.17.24 > Getting available pressure at sanitary terminal with ID 2672...
+11.17.24 > Tank height: 7.734 m
+11.17.24 > Terminal height: 1.265 m
+11.17.24 > Initial pressure from gravity potential: 6.469 m
+11.17.25 ----------------------------------------------------------------------------------------------------
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 2824: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 2807...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 2807. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 2807: > ERROR: Failed to extract diameter from pipe ID 2807. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 2835: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 2774...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 2774. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 2774: > ERROR: Failed to extract diameter from pipe ID 2774. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 2791: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 2719...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 2719. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 2719: > ERROR: Failed to extract diameter from pipe ID 2719. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 3523: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 2741...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 2741. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 2741: > ERROR: Failed to extract diameter from pipe ID 2741. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 2758: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 2642...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 2642. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 2642: > ERROR: Failed to extract diameter from pipe ID 2642. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 3498: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 2620...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 2620. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 2620: > ERROR: Failed to extract diameter from pipe ID 2620. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 3512: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 2453...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 2453. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 2453: > ERROR: Failed to extract diameter from pipe ID 2453. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 2602: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 2409...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 2409. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 2409: > ERROR: Failed to extract diameter from pipe ID 2409. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 2569: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 2585...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 2585. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 2585: > ERROR: Failed to extract diameter from pipe ID 2585. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 2536: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 2552...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 2552: > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 654: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 68...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 68: > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for fitting component ID 13250: 'TOILETPAN'
+11.17.25 > Getting pipe properties for pipe with ID 13233...
+11.17.25 > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 > WARNING: Failed to calculate pressure loss for pipe component ID 13233: > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.25 ====================================================================================================
+11.17.25 > Available pressure at the sanitary terminal 2672 - Type: USERDEFINED:
+11.17.25 > 6.469 m
+11.17.25 ====================================================================================================
+11.17.29 > Getting available pressure at sanitary terminal with ID 2701...
+11.17.29 > Tank height: 7.734 m
+11.17.29 > Terminal height: 1.115 m
+11.17.29 > Initial pressure from gravity potential: 6.619 m
+11.17.29 ----------------------------------------------------------------------------------------------------
+11.17.29 > WARNING: Failed to calculate pressure loss for fitting component ID 3589: 'TOILETPAN'
+11.17.29 > Getting pipe properties for pipe with ID 3561...
+11.17.29 > ERROR: Failed to extract diameter from pipe ID 3561. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for pipe component ID 3561: > ERROR: Failed to extract diameter from pipe ID 3561. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for fitting component ID 3578: 'TOILETPAN'
+11.17.29 > Getting pipe properties for pipe with ID 3539...
+11.17.29 > ERROR: Failed to extract diameter from pipe ID 3539. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for pipe component ID 3539: > ERROR: Failed to extract diameter from pipe ID 3539. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for fitting component ID 3523: 'TOILETPAN'
+11.17.29 > Getting pipe properties for pipe with ID 2741...
+11.17.29 > ERROR: Failed to extract diameter from pipe ID 2741. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for pipe component ID 2741: > ERROR: Failed to extract diameter from pipe ID 2741. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for fitting component ID 2758: 'TOILETPAN'
+11.17.29 > Getting pipe properties for pipe with ID 2642...
+11.17.29 > ERROR: Failed to extract diameter from pipe ID 2642. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for pipe component ID 2642: > ERROR: Failed to extract diameter from pipe ID 2642. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for fitting component ID 3498: 'TOILETPAN'
+11.17.29 > Getting pipe properties for pipe with ID 2620...
+11.17.29 > ERROR: Failed to extract diameter from pipe ID 2620. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for pipe component ID 2620: > ERROR: Failed to extract diameter from pipe ID 2620. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for fitting component ID 3512: 'TOILETPAN'
+11.17.29 > Getting pipe properties for pipe with ID 2453...
+11.17.29 > ERROR: Failed to extract diameter from pipe ID 2453. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for pipe component ID 2453: > ERROR: Failed to extract diameter from pipe ID 2453. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for fitting component ID 2602: 'TOILETPAN'
+11.17.29 > Getting pipe properties for pipe with ID 2409...
+11.17.29 > ERROR: Failed to extract diameter from pipe ID 2409. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for pipe component ID 2409: > ERROR: Failed to extract diameter from pipe ID 2409. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for fitting component ID 2569: 'TOILETPAN'
+11.17.29 > Getting pipe properties for pipe with ID 2585...
+11.17.29 > ERROR: Failed to extract diameter from pipe ID 2585. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for pipe component ID 2585: > ERROR: Failed to extract diameter from pipe ID 2585. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for fitting component ID 2536: 'TOILETPAN'
+11.17.29 > Getting pipe properties for pipe with ID 2552...
+11.17.29 > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for pipe component ID 2552: > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for fitting component ID 654: 'TOILETPAN'
+11.17.29 > Getting pipe properties for pipe with ID 68...
+11.17.29 > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for pipe component ID 68: > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for fitting component ID 13250: 'TOILETPAN'
+11.17.29 > Getting pipe properties for pipe with ID 13233...
+11.17.29 > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 > WARNING: Failed to calculate pressure loss for pipe component ID 13233: > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.29 ====================================================================================================
+11.17.29 > Available pressure at the sanitary terminal 2701 - Type: SINK:
+11.17.29 > 6.619 m
+11.17.29 ====================================================================================================
+11.17.32 > Getting available pressure at sanitary terminal with ID 3657...
+11.17.32 > Tank height: 7.734 m
+11.17.32 > Terminal height: 1.615 m
+11.17.32 > Initial pressure from gravity potential: 6.119 m
+11.17.32 ----------------------------------------------------------------------------------------------------
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 3704: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 3676...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 3676. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 3676: > ERROR: Failed to extract diameter from pipe ID 3676. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 3693: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 2851...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 2851. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 2851: > ERROR: Failed to extract diameter from pipe ID 2851. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 2835: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 2774...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 2774. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 2774: > ERROR: Failed to extract diameter from pipe ID 2774. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 2791: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 2719...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 2719. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 2719: > ERROR: Failed to extract diameter from pipe ID 2719. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 3523: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 2741...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 2741. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 2741: > ERROR: Failed to extract diameter from pipe ID 2741. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 2758: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 2642...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 2642. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 2642: > ERROR: Failed to extract diameter from pipe ID 2642. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 3498: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 2620...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 2620. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 2620: > ERROR: Failed to extract diameter from pipe ID 2620. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 3512: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 2453...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 2453. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 2453: > ERROR: Failed to extract diameter from pipe ID 2453. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 2602: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 2409...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 2409. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 2409: > ERROR: Failed to extract diameter from pipe ID 2409. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 2569: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 2585...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 2585. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 2585: > ERROR: Failed to extract diameter from pipe ID 2585. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 2536: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 2552...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 2552: > ERROR: Failed to extract diameter from pipe ID 2552. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 654: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 68...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 68: > ERROR: Failed to extract diameter from pipe ID 68. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for fitting component ID 13250: 'TOILETPAN'
+11.17.32 > Getting pipe properties for pipe with ID 13233...
+11.17.32 > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 > WARNING: Failed to calculate pressure loss for pipe component ID 13233: > ERROR: Failed to extract diameter from pipe ID 13233. IFC geometry structure may be invalid. Details: 'float' object is not subscriptable
+11.17.32 ====================================================================================================
+11.17.32 > Available pressure at the sanitary terminal 3657 - Type: CISTERN:
+11.17.32 > 6.119 m
+11.17.32 ====================================================================================================
