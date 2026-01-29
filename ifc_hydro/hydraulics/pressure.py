@@ -100,8 +100,11 @@ class Pressure:
         # Calculate initial pressure from elevation difference (gravity potential)
         try:
             tank_height_adjustment = selected_path[len(selected_path)-2][5][0][1][0][0][2]
-            total_tank_height = tank_pipe_location[2] + tank_height_adjustment
-            terminal_height = terminal_pipe_location[2]
+            print(tank_height_adjustment)
+            #total_tank_height = tank_pipe_location[2] + tank_height_adjustment
+            total_tank_height = tank_pipe_location
+            #terminal_height = terminal_pipe_location[2]
+            terminal_height = terminal_pipe_location
             pressure = total_tank_height - terminal_height
         except (IndexError, TypeError, KeyError) as e:
             error_msg = f"> ERROR: Failed to calculate pressure from elevation data. IFC element structure may be invalid. Details: {str(e)}"
