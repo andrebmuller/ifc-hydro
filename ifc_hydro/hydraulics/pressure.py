@@ -11,6 +11,7 @@ from ifcopenshell import util
 from ifcopenshell.util import shape
 from ..core.base import Base
 from .pressure_drop import PressureDrop
+from .input_tables import tank_height_adjustment
 
 class Pressure:
     """
@@ -98,11 +99,8 @@ class Pressure:
             raise ValueError(error_msg)
 
         # Calculate initial pressure from elevation difference (gravity potential)
+        # Total head = tank bottom elevation + water level above pipe connection
         try:
-            #tank_height_adjustment = selected_path[len(selected_path)-2][5][0][1][0][0][2]
-            #total_tank_height = tank_pipe_location[2] + tank_height_adjustment
-            #terminal_height = terminal_pipe_location[2]
-            tank_height_adjustment = 0.5
             total_tank_height = tank_pipe_location + tank_height_adjustment
             terminal_height = terminal_pipe_location
             pressure = total_tank_height - terminal_height

@@ -21,3 +21,9 @@ design_flow_table = {
     'WASHHANDBASIN': 0.15,
     'WCSEAT': 0.15
 }
+
+# Tank height adjustment (meters)
+# Accounts for water level above the pipe connection point at the tank bottom.
+# This value represents the static head contribution from the water column
+# inside the tank, measured from the outlet pipe connection to the water surface.
+tank_height_adjustment = 0.5
