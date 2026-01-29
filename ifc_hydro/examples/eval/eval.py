@@ -68,8 +68,8 @@ def main():
         print(error_msg)
         sys.exit(1)
 
-    # Initialize pressure calculator
-    pressure_calc = Pressure()
+    # Initialize pressure calculator with the model
+    pressure_calc = Pressure(model)
 
     # Example: Calculate available pressure at a specific terminal
     # Get terminal ID from user or use default
