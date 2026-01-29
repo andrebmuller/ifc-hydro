@@ -18,6 +18,7 @@ from .properties.valve import Valve
 from .hydraulics.design_flow import DesignFlow
 from .hydraulics.pressure_drop import PressureDrop
 from .hydraulics.pressure import Pressure
+from .visualization.graph_plotter import GraphPlotter
 
 __version__ = "3.0.0"
 __all__ = [
@@ -31,4 +32,5 @@ __all__ = [
     "DesignFlow",
     "PressureDrop",
     "Pressure",
+    "GraphPlotter",
 ]
