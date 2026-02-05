@@ -89,14 +89,8 @@ class Fitting:
         # Get center points from IFC geometry with error handling
         try:
 
-            incoming_pipe_guid = incoming_pipe[0]
-            incoming_pipe_element = fitt.by_guid(incoming_pipe_guid)
-            incoming_pipe_center = Geom.get_bbox_center(incoming_pipe_element)
-
-            outgoing_pipe_guid = outgoing_pipe[0]
-            outgoing_pipe_element = fitt.by_guid(outgoing_pipe_guid)
-            outgoing_pipe_center = Geom.get_bbox_center(outgoing_pipe_element)
-
+            incoming_pipe_center = Geom.get_bbox_center(incoming_pipe)
+            outgoing_pipe_center = Geom.get_bbox_center(outgoing_pipe)
             fitting_center = Geom.get_bbox_center(fitt)
 
             '''
