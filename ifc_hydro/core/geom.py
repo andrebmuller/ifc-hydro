@@ -89,6 +89,43 @@ class Geom:
         return round(ifcopenshell.util.shape.get_bottom_elevation(shape.geometry), 3)
 
     @staticmethod
+    def _get_bbox_from_geometry(geometry) -> tuple:
+        """
+        Extract bounding box from geometry, handling both standard shapes and Triangulation objects.
+
+        Args:
+            geometry: Geometry object from ifcopenshell shape (may be Triangulation or other type)
+
+        Returns:
+            tuple: Bounding box as ((min_x, min_y, min_z), (max_x, max_y, max_z))
+        """
+        # Check if geometry is a Triangulation object by looking for verts attribute
+        if hasattr(geometry, 'verts'):
+            # Triangulation object - compute bbox from vertices
+            verts = geometry.verts
+            if not verts:
+                raise ValueError("Triangulation has no vertices")
+
+            # Vertices are stored as flat list: [x1, y1, z1, x2, y2, z2, ...]
+            x_coords = verts[0::3]
+            y_coords = verts[1::3]
+            z_coords = verts[2::3]
+
+            return (
+                (min(x_coords), min(y_coords), min(z_coords)),
+                (max(x_coords), max(y_coords), max(z_coords))
+            )
+
+        # Try standard get_bbox utility
+        bbox = ifcopenshell.util.shape.get_bbox(geometry)
+
+        # Validate the result is in expected format
+        if not hasattr(bbox, '__iter__') or not hasattr(bbox, '__getitem__'):
+            raise ValueError(f"Unexpected bbox type: {type(bbox).__name__}")
+
+        return bbox
+
+    @staticmethod
     def get_bbox_center(element, settings: ifcopenshell.geom.settings = None) -> tuple:
         """
         Calculate the bounding box center of an IFC element.
@@ -108,8 +145,8 @@ class Geom:
             settings = Geom.create_settings()
         shape = ifcopenshell.geom.create_shape(settings, element)
 
-        # Get bounding box vertices (min x, min y, min z, max x, max y, max z)
-        bbox = ifcopenshell.util.shape.get_bbox(shape.geometry)
+        # Get bounding box, handling Triangulation objects
+        bbox = Geom._get_bbox_from_geometry(shape.geometry)
 
         # Calculate center from min and max corners
         center_x = round((bbox[0][0] + bbox[1][0]) / 2, 3)
@@ -136,9 +173,8 @@ class Geom:
             settings = Geom.create_settings()
         shape = ifcopenshell.geom.create_shape(settings, element)
 
-        # Get bounding box using ifcopenshell utility
-        # Returns ((min_x, min_y, min_z), (max_x, max_y, max_z))
-        bbox = ifcopenshell.util.shape.get_bbox(shape.geometry)
+        # Get bounding box, handling Triangulation objects
+        bbox = Geom._get_bbox_from_geometry(shape.geometry)
 
         return (
             round(bbox[0][0], 3),
