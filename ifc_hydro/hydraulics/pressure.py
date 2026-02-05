@@ -63,25 +63,21 @@ class Pressure:
             try:
                 if term.id() == path[0].id():
                     selected_path = path
-                    # Get elevation coordinates with error handling
-                    try:
-                        settings = ifc.geom.settings()
-                        settings.set(settings.USE_WORLD_COORDS, True)
+                    # Get elevation coordinates
+                    
+                    settings = ifc.geom.settings()
+                    settings.set(settings.USE_WORLD_COORDS, True)
 
-                        terminal_guid = path[0][0]
-                        terminal = self.model.by_guid(terminal_guid)
-                        terminal_shape = ifc.geom.create_shape(settings, terminal)
-                        terminal_pipe_location = round(ifc.util.shape.get_top_elevation(terminal_shape.geometry), 3)
+                    terminal_guid = path[0][0]
+                    terminal = self.model.by_guid(terminal_guid)
+                    terminal_shape = ifc.geom.create_shape(settings, terminal)
+                    terminal_pipe_location = round(ifc.util.shape.get_top_elevation(terminal_shape.geometry), 3)
 
-                        tank_guid = path[len(path)-1][0]
-                        tank = self.model.by_guid(tank_guid)
-                        tank_shape = ifc.geom.create_shape(settings, tank)
-                        tank_pipe_location = round(ifc.util.shape.get_bottom_elevation(tank_shape.geometry), 3)
-                                                                                                              
-                    except (IndexError, TypeError) as e:
-                        error_msg = f"> ERROR: Representation type not yet implemented: {path[0][6][2][0][2]}. Details: {str(e)}"
-                        Base.append_log(self, error_msg)
-                        raise NotImplementedError(error_msg)
+                    tank_guid = path[len(path)-1][0]
+                    tank = self.model.by_guid(tank_guid)
+                    tank_shape = ifc.geom.create_shape(settings, tank)
+                    tank_pipe_location = round(ifc.util.shape.get_bottom_elevation(tank_shape.geometry), 3)
+                   
                     break
             except (AttributeError, RuntimeError) as e:
                 # Skip invalid paths
@@ -95,11 +91,6 @@ class Pressure:
         # Calculate initial pressure from elevation difference (gravity potential)
         # Total head = tank bottom elevation + water level above pipe connection
         try:
-            tank_height_adjustment = 0.5
-            tank_height_adjustment = 0.5
-            tank_height_adjustment = 0.5
-            tank_height_adjustment = 0.5
-            tank_height_adjustment = 0.5
             total_tank_height = tank_pipe_location + tank_height_adjustment
             terminal_height = terminal_pipe_location
 
@@ -121,7 +112,7 @@ class Pressure:
                 component_type = component.is_a()
                 if component_type == "IfcPipeSegment":
                     # Linear pressure drop in pipes
-                    try:
+                    try:                                            
                         pressure_loss = self.pressure_drop.linear(component, all_paths)
                         pressure -= pressure_loss
                         Base.append_log(self, f"==> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
@@ -151,14 +142,14 @@ class Pressure:
                         error_msg = f"> WARNING: Failed to calculate pressure loss for valve component ID {component.id()}: {str(e)}"
                         Base.append_log(self, error_msg)
                         # Continue with next component
-                        continue
+                        continue             
                 else:
                     # Skip other component types (terminals, tanks)
                     pass
             except (AttributeError, RuntimeError) as e:
                 error_msg = f"> WARNING: Failed to process component in path: {str(e)}"
                 Base.append_log(self, error_msg)
-                continue
+                raise AttributeError (error_msg)
 
         try:
             terminal_type = selected_path[0][8]

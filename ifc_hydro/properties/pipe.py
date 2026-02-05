@@ -45,7 +45,19 @@ class Pipe:
 
         # Extract pipe diameter (radius * 2) from IFC geometry with error handling
         try:
-            pipe_dim = pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+            try:
+            
+                if pipe[6][2][0][3][0][0].is_a() == 'IfcArbitraryClosedProfileDef':
+                    pipe_dim = pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+                elif pipe[6][2][0][3][0][0].is_a() == 'IfcCircleProfileDef':
+                    pipe_dim = pipe[6][2][0][3][0][0][3] * 2
+
+            except (NotImplementedError, TypeError) as e:
+                error_msg = f"> ERROR: Representation type not yet implemented: {[6][2][0][3][0][0].is_a()}. Details: {str(e)}"
+                Base.append_log(None, error_msg)
+                raise NotImplementedError(error_msg)
+
+
         except (IndexError, TypeError, KeyError) as e:
             error_msg = f"> ERROR: Failed to extract diameter from pipe ID {pipe.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
             Base.append_log(None, error_msg)

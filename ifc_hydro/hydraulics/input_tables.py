@@ -6,7 +6,7 @@ including pressure drop coefficients and design flow rates.
 """
 
 # Equivalent length factors for different connection types
-# JUNCTION uses tuple: (0.9 for 0° angle, 2.4 for other angles)
+# JUNCTION uses tuple: (0.9 for 0° angle, 2.4 for 90º)
 local_pressure_drop_table = {
     'JUNCTION': (0.9, 2.4),  # (straight flow, flow with direction change)
     'BEND': 1.2,
@@ -17,13 +17,22 @@ local_pressure_drop_table = {
 
 # Design flow rates by sanitary terminal type (L/s)
 design_flow_table = {
+    'BATH': 0.3,
+    'BIDET': 0.1,
+    'CISTERN': 0.25,
+    'SANITARYFOUNTAIN': 0.2,
     'SHOWER': 0.2,
+    'SINK': 0.25,
+    'TOILETPAN': 0.15,
+    'URINAL': 0.5,
     'WASHHANDBASIN': 0.15,
-    'WCSEAT': 0.15
+    'WCSEAT': 0.15,
+    'USERDEFINED': 0.3,
+    'NOTDEFINED': 0.2
 }
 
 # Tank height adjustment (meters)
-# Accounts for water level above the pipe connection point at the tank bottom.
+# Accounts for water level above the pipe connection point at the tank bottom
 # This value represents the static head contribution from the water column
-# inside the tank, measured from the outlet pipe connection to the water surface.
+# Inside the tank, measured from the outlet pipe connection to the water surface
 tank_height_adjustment = 0.5

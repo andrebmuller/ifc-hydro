@@ -62,9 +62,23 @@ class Fitting:
 
         # Extract diameters from adjacent pipes with error handling
         try:
-            pipe_dim_1 = incoming_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
-            pipe_dim_2 = outgoing_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
-            fitt_prop['dim'] = (round(pipe_dim_1, 3), round(pipe_dim_2, 3))
+            try:
+
+                if incoming_pipe.is_a() == 'IfcArbitraryClosedProfileDef':
+                    pipe_dim_1 = incoming_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+                    pipe_dim_2 = outgoing_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+                    fitt_prop['dim'] = (round(pipe_dim_1, 3), round(pipe_dim_2, 3))
+
+                elif incoming_pipe.is_a() == 'IfcCircleProfileDef':
+                    pipe_dim_1 = incoming_pipe[6][2][0][3][0][0][3] * 2
+                    pipe_dim_2 = outgoing_pipe[6][2][0][3][0][0][3] * 2
+                    fitt_prop['dim'] = (round(pipe_dim_1, 3), round(pipe_dim_2, 3))
+
+            except (NotImplementedError, TypeError) as e:
+                error_msg = f"> ERROR: Representation type not yet implemented: {[6][2][0][3][0][0].is_a()}. Details: {str(e)}"
+                Base.append_log(None, error_msg)
+                raise NotImplementedError(error_msg)
+
         except (IndexError, TypeError, KeyError) as e:
             error_msg = f"> ERROR: Failed to extract diameter from adjacent pipes for fitting ID {fitt.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
             Base.append_log(None, error_msg)
