@@ -5,11 +5,8 @@ This module implements available pressure calculations at sanitary terminals,
 accounting for gravity potential and all pressure losses along the flow path.
 """
 
-import ifcopenshell as ifc
-from ifcopenshell import geom
-from ifcopenshell import util
-from ifcopenshell.util import shape
 from ..core.base import Base
+from ..core.geom import Geom
 from .pressure_drop import PressureDrop
 from .input_tables import tank_height_adjustment
 
@@ -63,21 +60,15 @@ class Pressure:
             try:
                 if term.id() == path[0].id():
                     selected_path = path
-                    # Get elevation coordinates
-                    
-                    settings = ifc.geom.settings()
-                    settings.set(settings.USE_WORLD_COORDS, True)
-
+                    # Get elevation coordinates using Geom utility functions
                     terminal_guid = path[0][0]
                     terminal = self.model.by_guid(terminal_guid)
-                    terminal_shape = ifc.geom.create_shape(settings, terminal)
-                    terminal_pipe_location = round(ifc.util.shape.get_top_elevation(terminal_shape.geometry), 3)
+                    terminal_pipe_location = Geom.get_top_elevation(terminal)
 
                     tank_guid = path[len(path)-1][0]
                     tank = self.model.by_guid(tank_guid)
-                    tank_shape = ifc.geom.create_shape(settings, tank)
-                    tank_pipe_location = round(ifc.util.shape.get_bottom_elevation(tank_shape.geometry), 3)
-                   
+                    tank_pipe_location = Geom.get_bottom_elevation(tank)
+
                     break
             except (AttributeError, RuntimeError) as e:
                 # Skip invalid paths
