@@ -109,12 +109,12 @@ class Geom:
         shape = ifcopenshell.geom.create_shape(settings, element)
 
         # Get bounding box vertices (min x, min y, min z, max x, max y, max z)
-        bbox = shape.geometry.bbox
+        bbox = ifcopenshell.util.shape.get_bbox(shape.geometry)
 
-        # Calculate center
-        center_x = round((bbox[0] + bbox[3]) / 2, 3)
-        center_y = round((bbox[1] + bbox[4]) / 2, 3)
-        center_z = round((bbox[2] + bbox[5]) / 2, 3)
+        # Calculate center from min and max corners
+        center_x = round((bbox[0][0] + bbox[1][0]) / 2, 3)
+        center_y = round((bbox[0][1] + bbox[1][1]) / 2, 3)
+        center_z = round((bbox[0][2] + bbox[1][2]) / 2, 3)
 
         return (center_x, center_y, center_z)
 
@@ -135,13 +135,16 @@ class Geom:
         if settings is None:
             settings = Geom.create_settings()
         shape = ifcopenshell.geom.create_shape(settings, element)
-        bbox = shape.geometry.bbox
+
+        # Get bounding box using ifcopenshell utility
+        # Returns ((min_x, min_y, min_z), (max_x, max_y, max_z))
+        bbox = ifcopenshell.util.shape.get_bbox(shape.geometry)
 
         return (
-            round(bbox[0], 3),
-            round(bbox[1], 3),
-            round(bbox[2], 3),
-            round(bbox[3], 3),
-            round(bbox[4], 3),
-            round(bbox[5], 3)
+            round(bbox[0][0], 3),
+            round(bbox[0][1], 3),
+            round(bbox[0][2], 3),
+            round(bbox[1][0], 3),
+            round(bbox[1][1], 3),
+            round(bbox[1][2], 3)
         )
