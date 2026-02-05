@@ -87,9 +87,21 @@ class Fitting:
         # Calculate unit vectors and angles for flow direction change
         # Get center points from IFC geometry with error handling
         try:
+
+            incoming_pipe_guid = incoming_pipe[0]
+            incoming_pipe_element = fitt.by_guid(incoming_pipe_guid)
+            incoming_pipe_center = Base.get_bbox_center(incoming_pipe_element)
+
+            outgoing_pipe_guid = outgoing_pipe[0]
+            outgoing_pipe_element = fitt.by_guid(outgoing_pipe_guid)
+            outgoing_pipe_center = Base.get_bbox_center(outgoing_pipe_element)
+
+            '''
+            # Legacy method using hardcoded IFC structure indices
             incoming_pipe_center = incoming_pipe[6][2][0][3][0][1][0][0]
             fitting_center = fitt[5][1][0][0]
             outgoing_pipe_center = outgoing_pipe[6][2][0][3][0][1][0][0]
+            '''
         except (IndexError, TypeError, KeyError) as e:
             error_msg = f"> ERROR: Failed to extract center points for fitting ID {fitt.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
             Base.append_log(None, error_msg)
