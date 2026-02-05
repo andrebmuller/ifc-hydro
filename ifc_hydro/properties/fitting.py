@@ -7,6 +7,7 @@ from pipe fittings in the IFC model.
 
 from ..core.base import Base
 from ..core.vector import Vector
+from ..core.geom import Geom
 
 
 class Fitting:
@@ -90,11 +91,13 @@ class Fitting:
 
             incoming_pipe_guid = incoming_pipe[0]
             incoming_pipe_element = fitt.by_guid(incoming_pipe_guid)
-            incoming_pipe_center = Base.get_bbox_center(incoming_pipe_element)
+            incoming_pipe_center = Geom.get_bbox_center(incoming_pipe_element)
 
             outgoing_pipe_guid = outgoing_pipe[0]
             outgoing_pipe_element = fitt.by_guid(outgoing_pipe_guid)
-            outgoing_pipe_center = Base.get_bbox_center(outgoing_pipe_element)
+            outgoing_pipe_center = Geom.get_bbox_center(outgoing_pipe_element)
+
+            fitting_center = Geom.get_bbox_center(fitt)
 
             '''
             # Legacy method using hardcoded IFC structure indices
