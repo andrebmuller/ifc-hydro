@@ -99,18 +99,27 @@ class Vector:
         """
         import math
 
-        # Normalize vectors
+        # Normalize vectors (snaps to cardinal directions)
         unit1 = Vector.normalize(vector1)
         unit2 = Vector.normalize(vector2)
 
-        # Calculate dot product
-        dot = Vector.dot_product(unit1, unit2)
+        # Calculate actual magnitudes of snapped vectors
+        # (may be > 1 when normalize rounds two components to 1)
+        mag1 = Vector.magnitude(unit1)
+        mag2 = Vector.magnitude(unit2)
 
-        # Clamp dot product to [-1, 1] to handle numerical errors
-        dot = max(-1.0, min(1.0, dot))
+        if mag1 == 0 or mag2 == 0:
+            return 0.0
+
+        # Calculate dot product and divide by magnitudes
+        dot = Vector.dot_product(unit1, unit2)
+        cos_angle = dot / (mag1 * mag2)
+
+        # Clamp to [-1, 1] to handle numerical errors
+        cos_angle = max(-1.0, min(1.0, cos_angle))
 
         # Calculate angle in radians then convert to degrees
-        angle_rad = math.acos(dot)
+        angle_rad = math.acos(cos_angle)
         angle_deg = math.degrees(angle_rad)
 
         return round(angle_deg, 2)
