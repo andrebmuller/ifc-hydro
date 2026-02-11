@@ -1,7 +1,7 @@
 """
 Basic usage example for ifc-hydro library.
 
-This example demonstrates how to use the ifc-hydro library to analyze hydraulic systems from a synthetic IFC modes.
+This example demonstrates how to use the ifc-hydro library to analyze hydraulic systems from a real project IFC model.
 """
 
 import ifcopenshell as ifc
