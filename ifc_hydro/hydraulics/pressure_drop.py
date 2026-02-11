@@ -106,10 +106,10 @@ class PressureDrop:
             direction_info = conn_prop.get('dir', {})
             direction_angle = direction_info.get('direction_change_angle', None)
 
-            # Select coefficient based on angle: index 0 for 0.0°, index 1 for others
+            # Select coefficient based on angle: index 0 for 0.0°, index 1 for 90.0º
             if direction_angle == 0.0:
                 coefficient = table_value[0]
-            else:
+            elif direction_angle == 90.0:
                 coefficient = table_value[1]
         else:
             # Simple numeric coefficient

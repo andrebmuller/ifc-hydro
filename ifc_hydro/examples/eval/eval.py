@@ -6,6 +6,7 @@ This example demonstrates how to use the ifc-hydro library to analyze hydraulic 
 
 import ifcopenshell as ifc
 from ifc_hydro import Base, Topology, Pressure
+from ifc_hydro.visualization import GraphPlotter
 import sys
 import os
 
@@ -30,7 +31,7 @@ def main():
 
     # Validate IFC file exists
     if not os.path.exists(ifc_file_path):
-        error_msg = f"ERROR: IFC file not found at path: {ifc_file_path}"
+        error_msg = f"> ERROR: IFC file not found at path: {ifc_file_path}"
         Base.append_log(Base, error_msg)
         print(error_msg)
         sys.exit(1)
@@ -40,7 +41,7 @@ def main():
         model = ifc.open(ifc_file_path)
         Base.append_log(Base, f"> Successfully loaded IFC model from: {ifc_file_path}")
     except Exception as e:
-        error_msg = f"ERROR: Failed to open IFC file: {str(e)}"
+        error_msg = f"> ERROR: Failed to open IFC file: {str(e)}"
         Base.append_log(Base, error_msg)
         print(error_msg)
         sys.exit(1)
@@ -50,26 +51,58 @@ def main():
         topology = Topology(model)
         test_path = topology.all_paths_finder()
     except ValueError as e:
-        error_msg = f"ERROR: Topology creation failed: {str(e)}"
+        error_msg = f"> ERROR: Topology creation failed: {str(e)}"
         Base.append_log(Base, error_msg)
         print(error_msg)
         Base.append_log(Base, "Program halted due to topology errors.")
         sys.exit(1)
     except Exception as e:
-        error_msg = f"ERROR: Unexpected error during topology creation: {str(e)}"
+        error_msg = f"> ERROR: Unexpected error during topology creation: {str(e)}"
         Base.append_log(Base, error_msg)
         print(error_msg)
         sys.exit(1)
 
     # Validate that paths were created
     if not test_path or len(test_path) == 0:
-        error_msg = "ERROR: No paths were created. Cannot proceed with pressure calculations."
+        error_msg = "> ERROR: No paths were created. Cannot proceed with pressure calculations."
         Base.append_log(Base, error_msg)
         print(error_msg)
         sys.exit(1)
 
-    # Initialize pressure calculator
-    pressure_calc = Pressure()
+    # Visualize the hydraulic system topology
+    visualize_input = input("Visualize hydraulic system topology? (y/n, leave blank for no): ").strip().lower()
+    if visualize_input == 'y':
+        try:
+            plotter = GraphPlotter()
+            plotter.from_topology_paths(test_path)
+            plotter.print_statistics()
+
+            # Ask for visualization save path
+            save_path_input = input("Enter path to save visualization (leave blank to display only): ").strip()
+            save_path = save_path_input if save_path_input else None
+
+            # Ask for layout preference
+            print("Available layouts: spring, kamada_kawai, circular, shell, spectral, hierarchical")
+            layout_input = input("Enter layout (leave blank for 'hierarchical'): ").strip()
+            layout = layout_input if layout_input else 'hierarchical'
+
+            # Plot the paths
+            plotter.plot_paths(
+                paths=test_path,
+                layout=layout,
+                title='Eval Project - Hydraulic System Paths',
+                save_path=save_path,
+                show=True
+            )
+            Base.append_log(Base, "> Successfully generated hydraulic system visualization")
+        except Exception as e:
+            error_msg = f"> WARNING: Failed to generate visualization: {str(e)}"
+            Base.append_log(Base, error_msg)
+            print(error_msg)
+            # Continue with pressure calculations despite visualization failure
+
+    # Initialize pressure calculator with the model
+    pressure_calc = Pressure(model)
 
     # Example: Calculate available pressure at a specific terminal
     # Get terminal ID from user or use default
@@ -84,12 +117,12 @@ def main():
             term_test = model.by_id(int(terminal_id_input))
             press_test = pressure_calc.available(term_test, test_path)
         except RuntimeError:
-            error_msg = f"ERROR: Terminal with ID {terminal_id_input} not found in the IFC model."
+            error_msg = f"> ERROR: Terminal with ID {terminal_id_input} not found in the IFC model."
             Base.append_log(Base, error_msg)
             print(error_msg)
             sys.exit(1)
         except Exception as e:
-            error_msg = f"ERROR: Failed to calculate pressure: {str(e)}"
+            error_msg = f"> ERROR: Failed to calculate pressure: {str(e)}"
             Base.append_log(Base, error_msg)
             print(error_msg)
             sys.exit(1)
@@ -99,7 +132,7 @@ def main():
         terminals = model.by_type("IfcSanitaryTerminal")
 
         if not terminals:
-            error_msg = "ERROR: No IfcSanitaryTerminal elements found in the IFC model."
+            error_msg = "> ERROR: No IfcSanitaryTerminal elements found in the IFC model."
             Base.append_log(Base, error_msg)
             print(error_msg)
             sys.exit(1)
@@ -113,7 +146,7 @@ def main():
                 term_test = model.by_id(terminal_id)
                 press_test = pressure_calc.available(term_test, test_path)
             except Exception as e:
-                error_msg = f"ERROR: Failed to calculate pressure for terminal {terminal_id}: {str(e)}"
+                error_msg = f"> ERROR: Failed to calculate pressure for terminal {terminal_id}: {str(e)}"
                 Base.append_log(Base, error_msg)
                 print(error_msg)
                 # Continue with next terminal instead of exiting

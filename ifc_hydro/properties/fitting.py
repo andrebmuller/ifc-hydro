@@ -7,6 +7,7 @@ from pipe fittings in the IFC model.
 
 from ..core.base import Base
 from ..core.vector import Vector
+from ..core.geom import Geom
 
 
 class Fitting:
@@ -62,9 +63,23 @@ class Fitting:
 
         # Extract diameters from adjacent pipes with error handling
         try:
-            pipe_dim_1 = incoming_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
-            pipe_dim_2 = outgoing_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
-            fitt_prop['dim'] = (round(pipe_dim_1, 3), round(pipe_dim_2, 3))
+            try:
+
+                if incoming_pipe.is_a() == 'IfcArbitraryClosedProfileDef':
+                    pipe_dim_1 = incoming_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+                    pipe_dim_2 = outgoing_pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
+                    fitt_prop['dim'] = (round(pipe_dim_1, 3), round(pipe_dim_2, 3))
+
+                elif incoming_pipe.is_a() == 'IfcCircleProfileDef':
+                    pipe_dim_1 = incoming_pipe[6][2][0][3][0][0][3] * 2
+                    pipe_dim_2 = outgoing_pipe[6][2][0][3][0][0][3] * 2
+                    fitt_prop['dim'] = (round(pipe_dim_1, 3), round(pipe_dim_2, 3))
+
+            except (NotImplementedError, TypeError) as e:
+                error_msg = f"> ERROR: Representation type not yet implemented: {[6][2][0][3][0][0].is_a()}. Details: {str(e)}"
+                Base.append_log(None, error_msg)
+                raise NotImplementedError(error_msg)
+
         except (IndexError, TypeError, KeyError) as e:
             error_msg = f"> ERROR: Failed to extract diameter from adjacent pipes for fitting ID {fitt.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
             Base.append_log(None, error_msg)
@@ -73,9 +88,17 @@ class Fitting:
         # Calculate unit vectors and angles for flow direction change
         # Get center points from IFC geometry with error handling
         try:
+
+            incoming_pipe_center = Geom.get_bbox_center(incoming_pipe)
+            outgoing_pipe_center = Geom.get_bbox_center(outgoing_pipe)
+            fitting_center = Geom.get_bbox_center(fitt)
+
+            '''
+            # Legacy method using hardcoded IFC structure indices
             incoming_pipe_center = incoming_pipe[6][2][0][3][0][1][0][0]
             fitting_center = fitt[5][1][0][0]
             outgoing_pipe_center = outgoing_pipe[6][2][0][3][0][1][0][0]
+            '''
         except (IndexError, TypeError, KeyError) as e:
             error_msg = f"> ERROR: Failed to extract center points for fitting ID {fitt.id()}. IFC geometry structure may be invalid. Details: {str(e)}"
             Base.append_log(None, error_msg)

@@ -6,8 +6,9 @@ accounting for gravity potential and all pressure losses along the flow path.
 """
 
 from ..core.base import Base
+from ..core.geom import Geom
 from .pressure_drop import PressureDrop
-
+from .input_tables import tank_height_adjustment
 
 class Pressure:
     """
@@ -17,8 +18,14 @@ class Pressure:
     potential and subtracting all pressure losses along the flow path.
     """
 
-    def __init__(self) -> None:
-        """Initialize the Pressure calculator."""
+    def __init__(self, model) -> None:
+        """
+        Initialize the Pressure calculator.
+
+        Args:
+            model: The IFC model object (from ifcopenshell.open())
+        """
+        self.model = model
         self.pressure_drop = PressureDrop()
 
     def available(self, term, all_paths: list) -> float:
@@ -53,21 +60,15 @@ class Pressure:
             try:
                 if term.id() == path[0].id():
                     selected_path = path
-                    # Get elevation coordinates with error handling
-                    try:
-                        if path[0][6][2][0][2] == 'SweptSolid':
-                            terminal_pipe_location = path[0][6][2][0][3][0][1][0][0]
-                            tank_pipe_location = path[len(path)-2][6][2][0][3][0][1][0][0]
-                        
+                    # Get elevation coordinates using Geom utility functions
+                    terminal_guid = path[0][0]
+                    terminal = self.model.by_guid(terminal_guid)
+                    terminal_pipe_location = Geom.get_top_elevation(terminal)
 
-                        elif path[0][6][2][0][2] == 'MappedRepresentation':
-                            terminal_pipe_location = path[0][6][2][0][3][0][0][1][3][0][1][0][0]
-                            tank_pipe_location = path[len(path)-2][6][2][0][3][0][0][1][3][0][1][0][0]
+                    tank_guid = path[len(path)-1][0]
+                    tank = self.model.by_guid(tank_guid)
+                    tank_pipe_location = Geom.get_bottom_elevation(tank)
 
-                    except (IndexError, TypeError) as e:
-                        error_msg = f"> ERROR: Representation type not yet implemented: {path[0][6][2][0][2]}. Details: {str(e)}"
-                        Base.append_log(self, error_msg)
-                        raise NotImplementedError(error_msg)
                     break
             except (AttributeError, RuntimeError) as e:
                 # Skip invalid paths
@@ -79,10 +80,11 @@ class Pressure:
             raise ValueError(error_msg)
 
         # Calculate initial pressure from elevation difference (gravity potential)
+        # Total head = tank bottom elevation + water level above pipe connection
         try:
-            tank_height_adjustment = selected_path[len(selected_path)-2][5][0][1][0][0][2]
-            total_tank_height = tank_pipe_location[2] + tank_height_adjustment
-            terminal_height = terminal_pipe_location[2]
+            total_tank_height = tank_pipe_location + tank_height_adjustment
+            terminal_height = terminal_pipe_location
+
             pressure = total_tank_height - terminal_height
         except (IndexError, TypeError, KeyError) as e:
             error_msg = f"> ERROR: Failed to calculate pressure from elevation data. IFC element structure may be invalid. Details: {str(e)}"
@@ -101,7 +103,7 @@ class Pressure:
                 component_type = component.is_a()
                 if component_type == "IfcPipeSegment":
                     # Linear pressure drop in pipes
-                    try:
+                    try:                                            
                         pressure_loss = self.pressure_drop.linear(component, all_paths)
                         pressure -= pressure_loss
                         Base.append_log(self, f"==> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
@@ -131,14 +133,14 @@ class Pressure:
                         error_msg = f"> WARNING: Failed to calculate pressure loss for valve component ID {component.id()}: {str(e)}"
                         Base.append_log(self, error_msg)
                         # Continue with next component
-                        continue
+                        continue             
                 else:
                     # Skip other component types (terminals, tanks)
                     pass
             except (AttributeError, RuntimeError) as e:
                 error_msg = f"> WARNING: Failed to process component in path: {str(e)}"
                 Base.append_log(self, error_msg)
-                continue
+                raise AttributeError (error_msg)
 
         try:
             terminal_type = selected_path[0][8]
@@ -147,6 +149,6 @@ class Pressure:
 
         Base.append_log(self, f"{'='*100}")
         Base.append_log(self, f"> Available pressure at the sanitary terminal {selected_path[0].id()} - Type: {terminal_type}:")
-        Base.append_log(self, f"> {round(pressure, 3)} m")
+        Base.append_log(self, f"> {round(pressure, 2)} m")
         Base.append_log(self, f"{'='*100}")
         return pressure
