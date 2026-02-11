@@ -70,9 +70,10 @@ class Pipe:
         if real_dim == 0.000:
             Base.append_log(None, f"> WARNING: Nominal diameter {nominal_dim * 1000:.1f} mm not found in internal diameter table. Using 0.000 m.")
         else:
-            Base.append_log(None, f"> Mapped nominal diameter {nominal_dim * 1000:.1f} mm to internal diameter {real_dim * 1000:.1f} mm")
+            Base.append_log(None, f"> Mapped nominal diameter {nominal_dim * 1000:.1f} mm to internal diameter...")
 
         pipe_prop['dim'] = real_dim
 
-        Base.append_log(None, f"> Pipe properties: length = {pipe_prop['len']} m, internal diameter = {real_dim * 1000:.1f} mm")
+        Base.append_log(None, f"> Pipe properties:")
+        Base.append_log(None, f"> {pipe_prop}")
         return pipe_prop

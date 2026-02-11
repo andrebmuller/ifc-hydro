@@ -6,9 +6,6 @@ using industry standard equations such as Fair Whipple-Hsiao.
 """
 
 from ..core.base import Base
-from ..properties.pipe import Pipe
-from ..properties.fitting import Fitting
-from ..properties.valve import Valve
 from .design_flow import DesignFlow
 from .input_tables import fitting_pressure_drop_table, valve_pressure_drop_table, internal_diameter_table
 
@@ -39,6 +36,8 @@ class PressureDrop:
         Returns:
             float: Linear pressure drop in meters of water column
         """
+        from ..properties.pipe import Pipe
+        
         # Initialize calculation components
         pipe_prop = Pipe.properties(pipe)
         flow = self.design_flow.calculate(all_paths)
@@ -86,6 +85,9 @@ class PressureDrop:
         Returns:
             float: Local pressure drop in meters of water column
         """
+        from ..properties.fitting import Fitting
+        from ..properties.valve import Valve
+        
         # Initialize calculation components
         flow = self.design_flow.calculate(all_paths)
         design_flow = 0
@@ -121,7 +123,6 @@ class PressureDrop:
             internal_diameter = nominal_diameter
 
         conn_type = conn_prop.get('type')
-        Base.append_log(self, f"> Connection type: {conn_type}, Nominal diameter: {nominal_diameter * 1000:.1f} mm, Internal diameter: {internal_diameter * 1000:.1f} mm")
         Base.append_log(self, f"> Design flow: {design_flow} L/s")
 
         # Look up equivalent length from the appropriate table
