@@ -55,7 +55,7 @@ class PressureDrop:
         internal_diameter = pipe_prop.get('dim')
 
         Base.append_log(self, f"> Pipe length: {pipe_length} m, Internal diameter: {internal_diameter * 1000:.1f} mm")
-        Base.append_log(self, f"> Design flow: {design_flow} L/s")
+        Base.append_log(self, f"> Design flow: {round(design_flow, 3)} L/s")
 
         # Fair Whipple-Hsiao equation for PVC pipes
         # J = 0.000859 * Q^1.75 * D^-4.75
@@ -123,7 +123,7 @@ class PressureDrop:
             internal_diameter = nominal_diameter
 
         conn_type = conn_prop.get('type')
-        Base.append_log(self, f"> Design flow: {design_flow} L/s")
+        Base.append_log(self, f"> Design flow: {round(design_flow, 3)} L/s")
 
         # Look up equivalent length from the appropriate table
         table_value = pressure_drop_table.get(conn_type)

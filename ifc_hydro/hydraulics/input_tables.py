@@ -84,14 +84,16 @@ design_flow_table = {
     'BATH': 0.3,
     'BIDET': 0.1,
     'CISTERN': 0.25,
-    'SANITARYFOUNTAIN': 0.2,
+    'SANITARYFOUNTAIN': 0.1,
     'SHOWER': 0.2,
     'SINK': 0.25,
     'TOILETPAN': 0.15,
     'URINAL': 0.5,
     'WASHHANDBASIN': 0.15,
-    'WCSEAT': 0.15,
+    'WCSEAT': 1.70,
+    # Use for washing machines, dishwashers, so on
     'USERDEFINED': 0.3,
+    # Use for any terminal types not explicitly listed above
     'NOTDEFINED': 0.2
 }
 
