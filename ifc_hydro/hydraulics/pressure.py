@@ -92,9 +92,12 @@ class Pressure:
             raise IndexError(error_msg)
 
         Base.append_log(self, f"> Getting available pressure at sanitary terminal with ID {selected_path[0].id()}...")
-        Base.append_log(self, f"> Tank height: {round(total_tank_height, 3)} m")
-        Base.append_log(self, f"> Terminal height: {round(terminal_height, 3)} m")
-        Base.append_log(self, f"> Initial pressure from gravity potential: {round(pressure, 3)} m")
+        Base.append_log(self, f"> Tank bottom elevation: {round(tank_pipe_location, 3)} m")
+        Base.append_log(self, f"> Water level adjustment: +{tank_height_adjustment} m")
+        Base.append_log(self, f"> Water column level: {round(total_tank_height, 3)} m")
+        Base.append_log(self, f"> Terminal elevation: {round(terminal_height, 3)} m")
+        Base.append_log(self, f"> Initial pressure from gravity potential: {round(total_tank_height, 3)} - {round(terminal_height, 3)} = {round(pressure, 3)} m")
+        Base.append_log(self, f"> Path components: {len(selected_path)} elements")
         Base.append_log(self, f"{'-'*100}")
 
         # Subtract pressure losses from each component along the path
@@ -103,10 +106,11 @@ class Pressure:
                 component_type = component.is_a()
                 if component_type == "IfcPipeSegment":
                     # Linear pressure drop in pipes
-                    try:                                            
+                    try:
+                        Base.append_log(self, f"> Processing pipe segment ID {component.id()}...")
                         pressure_loss = self.pressure_drop.linear(component, all_paths)
                         pressure -= pressure_loss
-                        Base.append_log(self, f"==> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
+                        Base.append_log(self, f"==> Remaining pressure: {round(pressure, 3)} m")
                     except Exception as e:
                         error_msg = f"> WARNING: Failed to calculate pressure loss for pipe component ID {component.id()}: {str(e)}"
                         Base.append_log(self, error_msg)
@@ -115,9 +119,10 @@ class Pressure:
                 elif component_type == "IfcPipeFitting":
                     # Local pressure drop in fittings
                     try:
+                        Base.append_log(self, f"> Processing pipe fitting ID {component.id()}...")
                         pressure_loss = self.pressure_drop.local(component, selected_path, all_paths)
                         pressure -= pressure_loss
-                        Base.append_log(self, f"==> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
+                        Base.append_log(self, f"==> Remaining pressure: {round(pressure, 3)} m")
                     except Exception as e:
                         error_msg = f"> WARNING: Failed to calculate pressure loss for fitting component ID {component.id()}: {str(e)}"
                         Base.append_log(self, error_msg)
@@ -126,9 +131,10 @@ class Pressure:
                 elif component_type == "IfcValve":
                     # Local pressure drop in valves
                     try:
+                        Base.append_log(self, f"> Processing valve ID {component.id()}...")
                         pressure_loss = self.pressure_drop.local(component, selected_path, all_paths)
                         pressure -= pressure_loss
-                        Base.append_log(self, f"==> Pressure after component ID {component.id()}: {round(pressure, 3)} m")
+                        Base.append_log(self, f"==> Remaining pressure: {round(pressure, 3)} m")
                     except Exception as e:
                         error_msg = f"> WARNING: Failed to calculate pressure loss for valve component ID {component.id()}: {str(e)}"
                         Base.append_log(self, error_msg)

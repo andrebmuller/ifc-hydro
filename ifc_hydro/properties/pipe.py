@@ -6,6 +6,7 @@ from pipe segments in the IFC model.
 """
 
 from ..core.base import Base
+from ..hydraulics.input_tables import internal_diameter_table
 
 
 class Pipe:
@@ -32,7 +33,6 @@ class Pipe:
         """
         Base.append_log(None, f"> Getting pipe properties for pipe with ID {pipe.id()}...")
         pipe_prop = {}
-        real_dim = 0
 
         # Extract pipe length from IFC geometry representation with error handling
         try:
@@ -46,7 +46,7 @@ class Pipe:
         # Extract pipe diameter (radius * 2) from IFC geometry with error handling
         try:
             try:
-            
+
                 if pipe[6][2][0][3][0][0].is_a() == 'IfcArbitraryClosedProfileDef':
                     pipe_dim = pipe[6][2][0][3][0][0][2][0][0][0][0] * 2
                 elif pipe[6][2][0][3][0][0].is_a() == 'IfcCircleProfileDef':
@@ -63,27 +63,14 @@ class Pipe:
             Base.append_log(None, error_msg)
             raise ValueError(error_msg)
 
-        # Map nominal pipe diameter to real internal diameter (in meters)
-        if round(pipe_dim, 3) == 0.015:
-            real_dim = 0.0170
-        if round(pipe_dim, 3) == 0.020:
-            real_dim = 0.0216
-        elif round(pipe_dim, 3) == 0.025:
-            real_dim = 0.0278
-        elif round(pipe_dim, 3) == 0.032:
-            real_dim = 0.0352
-        elif round(pipe_dim, 3) == 0.040:
-            real_dim = 0.0440
-        elif round(pipe_dim, 3) == 0.050:
-            real_dim = 0.0534
-        elif round(pipe_dim, 3) == 0.065:
-            real_dim = 0.0666
-        elif round(pipe_dim, 3) == 0.075:
-            real_dim = 0.0756
-        elif round(pipe_dim, 3) == 0.100:
-            real_dim = 0.0978
+        # Map nominal pipe diameter to real internal diameter using the input table
+        nominal_dim = round(pipe_dim, 3)
+        real_dim = internal_diameter_table.get(nominal_dim, 0.000)
+
+        if real_dim == 0.000:
+            Base.append_log(None, f"> WARNING: Nominal diameter {nominal_dim * 1000:.1f} mm not found in internal diameter table. Using 0.000 m.")
         else:
-            real_dim = 0.000
+            Base.append_log(None, f"> Mapped nominal diameter {nominal_dim * 1000:.1f} mm to internal diameter...")
 
         pipe_prop['dim'] = real_dim
 
