@@ -41,7 +41,7 @@ class PressureDrop:
         # Initialize calculation components
         pipe_prop = Pipe.properties(pipe)
         flow = self.design_flow.calculate(all_paths)
-        design_flow = 0
+        score_sum = 0
 
         Base.append_log(self, f"> Getting linear pressure drop for pipe with ID {pipe.id()}...")
 
@@ -49,18 +49,20 @@ class PressureDrop:
         for path in flow:
             for component in path:
                 if component[0] == pipe[0]:
-                    design_flow += component[1]
+                    score_sum += component[1]
 
         pipe_length = pipe_prop.get('len')
         internal_diameter = pipe_prop.get('dim')
 
         Base.append_log(self, f"> Pipe length: {pipe_length} m, Internal diameter: {internal_diameter * 1000:.1f} mm")
+
+        design_flow = 0.3 * (score_sum ** 0.5)
         Base.append_log(self, f"> Design flow: {round(design_flow, 3)} L/s")
 
         # Fair Whipple-Hsiao equation for PVC pipes
-        # J = 0.000859 * Q^1.75 * D^-4.75
+        # J = 0.000869 * Q^1.75 * D^-4.75
         # Recommended for pipes with d between 12.5 mm and 100 mm
-        unit_loss = 0.000859 * ((design_flow * 0.001) ** 1.75) * (internal_diameter ** -4.75)
+        unit_loss = 0.000869 * ((design_flow * 0.001) ** 1.75) * (internal_diameter ** -4.75)
         pressure_drop = pipe_length * unit_loss
 
         # Legacy Hazen-Williams equation
@@ -90,7 +92,7 @@ class PressureDrop:
         
         # Initialize calculation components
         flow = self.design_flow.calculate(all_paths)
-        design_flow = 0
+        score_sum = 0
 
         Base.append_log(self, f"> Getting local pressure drop for connection with ID {conn.id()}...")
 
@@ -98,7 +100,7 @@ class PressureDrop:
         for flow_path in flow:
             for component in flow_path:
                 if component[0] == conn[0]:
-                    design_flow += component[1]
+                    score_sum += component[1]
 
         # Get connection properties and select the appropriate table
         if conn.is_a() == 'IfcValve':
@@ -123,6 +125,8 @@ class PressureDrop:
             internal_diameter = nominal_diameter
 
         conn_type = conn_prop.get('type')
+
+        design_flow = 0.3 * (score_sum ** 0.5)
         Base.append_log(self, f"> Design flow: {round(design_flow, 3)} L/s")
 
         # Look up equivalent length from the appropriate table
@@ -158,9 +162,9 @@ class PressureDrop:
             return 0
 
         # Fair Whipple-Hsiao equation for PVC pipes
-        # J = 0.000859 * Q^1.75 * D^-4.75
+        # J = 0.000869 * Q^1.75 * D^-4.75
         # Recommended for pipes with d between 12.5 mm and 100 mm
-        unit_loss = 0.000859 * ((design_flow * 0.001) ** 1.75) * (internal_diameter ** -4.75)
+        unit_loss = 0.000869 * ((design_flow * 0.001) ** 1.75) * (internal_diameter ** -4.75)
         pressure_drop = coefficient * unit_loss
 
         # Hazen-Williams equation with equivalent length for PVC (C = 140)

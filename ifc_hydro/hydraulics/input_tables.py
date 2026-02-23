@@ -8,8 +8,25 @@ Equivalent length values are sourced from standard reference tables for
 PVC pipes (NBR 5626) and are indexed by nominal diameter in meters.
 """
 
+
 # Nominal pipe diameter to real internal diameter mapping (in meters)
 # Keys: nominal diameter (m), Values: actual internal diameter (m)
+# Source: Tigre PVC pipe specifications
+internal_diameter_table = {
+    0.020: 0.0170,
+    0.025: 0.0216,
+    0.032: 0.0278,
+    0.040: 0.0352,
+    0.050: 0.0440,
+    0.065: 0.0666,
+    0.075: 0.0756,
+    0.110: 0.0978,
+}
+
+"""
+# Nominal pipe diameter to real internal diameter mapping (in meters)
+# Keys: nominal diameter (m), Values: actual internal diameter (m)
+# Source: NBR 5648/2018 - Table 2
 internal_diameter_table = {
     0.015: 0.0170,
     0.020: 0.0216,
@@ -21,6 +38,7 @@ internal_diameter_table = {
     0.075: 0.0756,
     0.100: 0.0978,
 }
+"""
 
 # Equivalent length factors for fittings (in meters)
 # Structure: {fitting_type: {angle: {nominal_diameter: equivalent_length}}}
@@ -79,22 +97,22 @@ valve_pressure_drop_table = {
     },
 }
 
-# Design flow rates by sanitary terminal type (L/s)
-design_flow_table = {
-    'BATH': 0.3,
+# Score values by sanitary terminal type (used for design flow calculations)
+score_table = {
+    'BATH': 1.0,
     'BIDET': 0.1,
-    'CISTERN': 0.25,
+    'CISTERN': 0.7,
     'SANITARYFOUNTAIN': 0.1,
-    'SHOWER': 0.2,
-    'SINK': 0.25,
-    'TOILETPAN': 0.15,
-    'URINAL': 0.5,
-    'WASHHANDBASIN': 0.15,
-    'WCSEAT': 1.70,
+    'SHOWER': 0.1,
+    'SINK': 0.7,
+    'TOILETPAN': 0.3,
+    'URINAL': 2.8,
+    'WASHHANDBASIN': 0.3,
+    'WCSEAT': 32,
     # Use for washing machines, dishwashers, so on
-    'USERDEFINED': 0.3,
+    'USERDEFINED': 1.0,
     # Use for any terminal types not explicitly listed above
-    'NOTDEFINED': 0.2
+    'NOTDEFINED': 0.4
 }
 
 # Tank height adjustment (meters)
