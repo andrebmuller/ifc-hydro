@@ -89,7 +89,6 @@ class GraphPlotter:
             node_label = self._get_node_label(node)
 
             self.graph.add_node(node_id,
-                               ifc_object=node,
                                node_type=node_type,
                                label=node_label)
             self.node_labels[node_id] = node_label
@@ -120,12 +119,13 @@ class GraphPlotter:
                 continue
             for i, node in enumerate(path):
                 node_id = self._get_node_id(node)
-                node_type = self._get_node_type(node)
-                node_label = self._get_node_label(node)
 
-                if node_id not in self.graph:
+                # Use node_types as the check since add_edge implicitly
+                # adds nodes to the graph, bypassing our attribute setup
+                if node_id not in self.node_types:
+                    node_type = self._get_node_type(node)
+                    node_label = self._get_node_label(node)
                     self.graph.add_node(node_id,
-                                       ifc_object=node,
                                        node_type=node_type,
                                        label=node_label)
                     self.node_labels[node_id] = node_label
@@ -533,21 +533,12 @@ class GraphPlotter:
 
     def _get_layout(self, layout: str) -> Dict[str, Tuple[float, float]]:
         """Calculate node positions using specified layout algorithm."""
-        if layout == 'spring':
-            return nx.spring_layout(self.graph, k=2, iterations=50, seed=42)
-        elif layout == 'kamada_kawai':
-            return nx.kamada_kawai_layout(self.graph)
-        elif layout == 'circular':
-            return nx.circular_layout(self.graph)
-        elif layout == 'shell':
-            return nx.shell_layout(self.graph)
-        elif layout == 'spectral':
-            return nx.spectral_layout(self.graph)
-        elif layout == 'hierarchical':
-            # For tree-like structures (terminal to tank)
+        if layout == 'hierarchical':
             return self._hierarchical_layout()
+        elif layout == 'spring':
+            return nx.spring_layout(self.graph, k=2, iterations=50, seed=42)
         else:
-            return nx.spring_layout(self.graph, seed=42)
+            return self._hierarchical_layout()
 
     def _hierarchical_layout(self) -> Dict[str, Tuple[float, float]]:
         """
@@ -556,16 +547,19 @@ class GraphPlotter:
         Uses the tank as the root and builds a proper tree layout where
         each subtree gets proportional horizontal space, avoiding crossings.
         Terminals appear at leaf positions, tank at the root.
+        Falls back to using the node with highest degree if no tank is found.
         """
         tanks = [n for n, t in self.node_types.items()
                  if t == 'IfcTank']
-        terminals = [n for n, t in self.node_types.items()
-                     if t == 'IfcSanitaryTerminal']
 
-        if not tanks:
-            return nx.spring_layout(self.graph, seed=42)
-
-        root = tanks[0]
+        if tanks:
+            root = tanks[0]
+        elif self.graph.number_of_nodes() > 0:
+            # Use the node with the highest degree as root (likely a
+            # central junction in the network)
+            root = max(self.graph.nodes(), key=lambda n: self.graph.degree(n))
+        else:
+            return {}
 
         # Build a BFS tree from the tank (root)
         bfs_tree = nx.bfs_tree(self.graph, root)
