@@ -149,10 +149,32 @@ class GraphPlotter:
             return str(id(node))
 
     def _get_node_type(self, node) -> str:
-        """Extract IFC type from node object."""
+        """Extract IFC type from node object, mapping to known component types."""
         try:
             if hasattr(node, 'is_a'):
-                return node.is_a()
+                ifc_type = node.is_a()
+                # Direct match against known types
+                if ifc_type in COMPONENT_COLORS:
+                    return ifc_type
+                # Check parent IFC types for subtypes
+                parent_checks = [
+                    ('IfcSanitaryTerminal', 'IfcSanitaryTerminal'),
+                    ('IfcTank', 'IfcTank'),
+                    ('IfcValve', 'IfcValve'),
+                    ('IfcPipeSegment', 'IfcPipeSegment'),
+                    ('IfcPipeFitting', 'IfcPipeFitting'),
+                    ('IfcFlowController', 'IfcFlowController'),
+                    # Broader parent types as fallback
+                    ('IfcFlowTerminal', 'IfcSanitaryTerminal'),
+                    ('IfcFlowSegment', 'IfcPipeSegment'),
+                    ('IfcFlowFitting', 'IfcPipeFitting'),
+                    ('IfcFlowStorageDevice', 'IfcTank'),
+                    ('IfcFlowMovingDevice', 'IfcFlowController'),
+                ]
+                for check_type, mapped_type in parent_checks:
+                    if node.is_a(check_type):
+                        return mapped_type
+                return ifc_type
             return 'default'
         except Exception:
             return 'default'
@@ -161,16 +183,26 @@ class GraphPlotter:
         """Generate a short label for the node."""
         try:
             node_type = self._get_node_type(node)
-            # Try to get name from IFC object
-            if hasattr(node, 'Name') and node.Name:
-                return f"{node.Name}"
-            # Use short type name with id
-            short_type = node_type.replace('Ifc', '')
-            if hasattr(node, 'id'):
-                return f"{short_type}#{node.id()}"
-            return short_type
+            if node_type == 'IfcSanitaryTerminal':
+                # Show the predefined type (SHOWER, SINK, etc.)
+                if hasattr(node, 'PredefinedType') and node.PredefinedType:
+                    ptype = node.PredefinedType
+                    return ptype.replace('_', ' ').capitalize()
+                return 'Terminal'
+            elif node_type == 'IfcTank':
+                return 'Tank'
+            elif node_type == 'IfcValve':
+                if hasattr(node, 'PredefinedType') and node.PredefinedType:
+                    return node.PredefinedType.replace('_', ' ').capitalize()
+                return 'Valve'
+            elif node_type == 'IfcPipeFitting':
+                return 'Fitting'
+            elif node_type == 'IfcPipeSegment':
+                return 'Pipe'
+            else:
+                return node_type.replace('Ifc', '')
         except Exception:
-            return str(id(node))[-4:]
+            return ''
 
     def _get_node_color(self, node_type: str) -> str:
         """Get color for a node based on its type."""
@@ -235,17 +267,47 @@ class GraphPlotter:
                               width=edge_widths,
                               alpha=0.7)
 
-        # Draw nodes
-        nx.draw_networkx_nodes(self.graph, pos, ax=ax,
-                              node_color=node_colors,
-                              node_size=node_size,
-                              alpha=0.9)
+        # Draw nodes by type with distinct shapes
+        if color_by_type:
+            for comp_type, marker in COMPONENT_SHAPES.items():
+                type_nodes = [n for n in self.graph.nodes()
+                              if self.node_types.get(n, 'default') == comp_type]
+                if not type_nodes:
+                    continue
+                color = COMPONENT_COLORS.get(comp_type,
+                                             COMPONENT_COLORS['default'])
+                size = node_size * 1.5 if comp_type in (
+                    'IfcSanitaryTerminal', 'IfcTank') else node_size
+                nx.draw_networkx_nodes(self.graph, pos, ax=ax,
+                                       nodelist=type_nodes,
+                                       node_color=color,
+                                       node_shape=marker,
+                                       node_size=size,
+                                       alpha=0.9)
+            other_nodes = [n for n in self.graph.nodes()
+                           if self.node_types.get(n, 'default')
+                           not in COMPONENT_SHAPES]
+            if other_nodes:
+                nx.draw_networkx_nodes(self.graph, pos, ax=ax,
+                                       nodelist=other_nodes,
+                                       node_color=COMPONENT_COLORS['default'],
+                                       node_size=node_size,
+                                       alpha=0.9)
+        else:
+            nx.draw_networkx_nodes(self.graph, pos, ax=ax,
+                                   node_color=node_colors,
+                                   node_size=node_size,
+                                   alpha=0.9)
 
-        # Draw labels
+        # Draw labels only for key nodes (terminals and tanks)
         if show_labels:
-            nx.draw_networkx_labels(self.graph, pos, self.node_labels, ax=ax,
+            key_types = {'IfcSanitaryTerminal', 'IfcTank'}
+            key_labels = {n: self.node_labels[n] for n in self.graph.nodes()
+                          if self.node_types.get(n) in key_types}
+            nx.draw_networkx_labels(self.graph, pos, key_labels, ax=ax,
                                    font_size=font_size,
-                                   font_color='black')
+                                   font_color='black',
+                                   font_weight='bold')
 
         # Add legend for component types
         if color_by_type:
@@ -411,19 +473,43 @@ class GraphPlotter:
                 legend_handles.append(mpatches.Patch(color=color,
                                                      label=f'Path {idx+1}: {start_label}'))
 
-        # Draw nodes colored by type
-        node_colors = [self._get_node_color(self.node_types.get(n, 'default'))
-                      for n in self.graph.nodes()]
-        nx.draw_networkx_nodes(self.graph, pos, ax=ax,
-                              node_color=node_colors,
-                              node_size=node_size,
-                              alpha=0.9)
+        # Draw nodes by type with distinct shapes and sizes
+        for comp_type, marker in COMPONENT_SHAPES.items():
+            type_nodes = [n for n in self.graph.nodes()
+                          if self.node_types.get(n, 'default') == comp_type]
+            if not type_nodes:
+                continue
+            color = COMPONENT_COLORS.get(comp_type, COMPONENT_COLORS['default'])
+            # Terminals and tanks get larger nodes
+            size = node_size * 1.8 if comp_type in (
+                'IfcSanitaryTerminal', 'IfcTank') else node_size
+            nx.draw_networkx_nodes(self.graph, pos, ax=ax,
+                                   nodelist=type_nodes,
+                                   node_color=color,
+                                   node_shape=marker,
+                                   node_size=size,
+                                   alpha=0.9)
 
-        # Draw labels
+        # Draw remaining nodes not matching any known type
+        other_nodes = [n for n in self.graph.nodes()
+                       if self.node_types.get(n, 'default')
+                       not in COMPONENT_SHAPES]
+        if other_nodes:
+            nx.draw_networkx_nodes(self.graph, pos, ax=ax,
+                                   nodelist=other_nodes,
+                                   node_color=COMPONENT_COLORS['default'],
+                                   node_size=node_size,
+                                   alpha=0.9)
+
+        # Draw labels only for key nodes (terminals and tanks)
         if show_labels:
-            nx.draw_networkx_labels(self.graph, pos, self.node_labels, ax=ax,
-                                   font_size=font_size,
-                                   font_color='black')
+            key_types = {'IfcSanitaryTerminal', 'IfcTank'}
+            key_labels = {n: self.node_labels[n] for n in self.graph.nodes()
+                          if self.node_types.get(n) in key_types}
+            nx.draw_networkx_labels(self.graph, pos, key_labels, ax=ax,
+                                   font_size=font_size + 1,
+                                   font_color='black',
+                                   font_weight='bold')
 
         # Add path legend
         if legend_handles:
@@ -465,55 +551,72 @@ class GraphPlotter:
 
     def _hierarchical_layout(self) -> Dict[str, Tuple[float, float]]:
         """
-        Create a hierarchical layout suitable for flow networks.
+        Create a hierarchical tree layout suitable for flow networks.
 
-        Places tanks at top, terminals at bottom, with intermediate
-        components arranged by their distance from terminals.
+        Uses the tank as the root and builds a proper tree layout where
+        each subtree gets proportional horizontal space, avoiding crossings.
+        Terminals appear at leaf positions, tank at the root.
         """
-        pos = {}
-
-        # Identify terminals (IfcSanitaryTerminal) and tanks (IfcTank)
-        terminals = [n for n, t in self.node_types.items()
-                    if t == 'IfcSanitaryTerminal']
         tanks = [n for n, t in self.node_types.items()
-                if t == 'IfcTank']
+                 if t == 'IfcTank']
+        terminals = [n for n, t in self.node_types.items()
+                     if t == 'IfcSanitaryTerminal']
 
-        if not terminals or not tanks:
-            # Fallback to spring layout if structure not recognized
+        if not tanks:
             return nx.spring_layout(self.graph, seed=42)
 
-        # Calculate shortest paths from each terminal
-        levels = {}
-        for terminal in terminals:
-            for tank in tanks:
-                try:
-                    path = nx.shortest_path(self.graph, terminal, tank)
-                    for i, node in enumerate(path):
-                        if node not in levels or levels[node] > i:
-                            levels[node] = i
-                except nx.NetworkXNoPath:
-                    continue
+        root = tanks[0]
 
-        # Assign default level to unassigned nodes
-        max_level = max(levels.values()) if levels else 0
+        # Build a BFS tree from the tank (root)
+        bfs_tree = nx.bfs_tree(self.graph, root)
+
+        # Calculate the number of leaves in each subtree
+        leaf_counts = {}
+
+        def _count_leaves(node):
+            children = list(bfs_tree.successors(node))
+            if not children:
+                leaf_counts[node] = 1
+                return 1
+            total = sum(_count_leaves(c) for c in children)
+            leaf_counts[node] = total
+            return total
+
+        _count_leaves(root)
+
+        # Get the depth of each node
+        depths = nx.single_source_shortest_path_length(bfs_tree, root)
+        max_depth = max(depths.values()) if depths else 0
+
+        # Assign positions: each subtree gets horizontal space proportional
+        # to its leaf count, ensuring no edge crossings
+        pos = {}
+
+        def _assign_positions(node, x_min, x_max, depth):
+            x = (x_min + x_max) / 2.0
+            # Tank at top (y=1), terminals at bottom (y=0)
+            y = 1.0 - (depth / max(max_depth, 1))
+            pos[node] = (x, y)
+
+            children = list(bfs_tree.successors(node))
+            if not children:
+                return
+
+            total_child_leaves = sum(leaf_counts[c] for c in children)
+            current_x = x_min
+            for child in children:
+                child_width = ((x_max - x_min) *
+                               leaf_counts[child] / total_child_leaves)
+                _assign_positions(child, current_x,
+                                  current_x + child_width, depth + 1)
+                current_x += child_width
+
+        _assign_positions(root, 0.0, 1.0, 0)
+
+        # Include any nodes not reached by BFS (disconnected components)
         for node in self.graph.nodes():
-            if node not in levels:
-                levels[node] = max_level // 2
-
-        # Group nodes by level
-        level_nodes = {}
-        for node, level in levels.items():
-            if level not in level_nodes:
-                level_nodes[level] = []
-            level_nodes[level].append(node)
-
-        # Calculate positions
-        num_levels = max(level_nodes.keys()) + 1 if level_nodes else 1
-        for level, nodes in level_nodes.items():
-            y = 1 - (level / max(num_levels - 1, 1))
-            for i, node in enumerate(nodes):
-                x = (i + 1) / (len(nodes) + 1)
-                pos[node] = (x, y)
+            if node not in pos:
+                pos[node] = (0.5, 0.5)
 
         return pos
 
