@@ -81,15 +81,10 @@ def main():
             save_path_input = input("Enter path to save visualization (leave blank to display only): ").strip()
             save_path = save_path_input if save_path_input else None
 
-            # Ask for layout preference
-            print("Available layouts: spring, kamada_kawai, circular, shell, spectral, hierarchical")
-            layout_input = input("Enter layout (leave blank for 'hierarchical'): ").strip()
-            layout = layout_input if layout_input else 'hierarchical'
-
             # Plot the paths
             plotter.plot_paths(
                 paths=test_path,
-                layout=layout,
+                layout='hierarchical',
                 title='Demo Project - Hydraulic System Paths',
                 save_path=save_path,
                 show=True
