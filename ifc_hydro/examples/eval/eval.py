@@ -85,7 +85,7 @@ def main():
             plotter.plot_paths(
                 paths=test_path,
                 layout='hierarchical',
-                title='Eval Project - Hydraulic System Paths',
+                title='Eval Project - Hydraulic System Topology',
                 save_path=save_path,
                 show=True
             )

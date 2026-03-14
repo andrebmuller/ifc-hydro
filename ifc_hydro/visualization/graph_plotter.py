@@ -413,7 +413,7 @@ class GraphPlotter:
                    show_labels: bool = True,
                    node_size: int = 400,
                    font_size: int = 7,
-                   title: str = 'Hydraulic System Paths',
+                   title: str = 'Hydraulic System Topology',
                    save_path: Optional[str] = None,
                    show: bool = True) -> plt.Figure:
         """
